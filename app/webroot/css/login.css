@@ -1,0 +1,4077 @@
+/*
+    Document   :  login
+    Created on :  Jun 5,  2011,  7:50:53 PM
+    Author     :  nuku
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/*
+   TODO customize this sample style
+   Syntax recommendation http: //www.w3.org/TR/REC-CSS2/
+*/
+
+root  {
+
+    display:  block;
+
+}
+.jqmWindow {
+    display: none;
+    position: fixed;
+    top: 17%;
+    left: 50%;
+    margin-left:  -300px;
+    width: 600px;
+    background-color: #fff;
+    border: 2px
+        solid #06C}
+.jqm-window-title {
+    padding: 7px
+        0px;
+    width: 100%;
+    color: white;
+    background-color: #599BDD;
+    font-weight: bold;
+    font-size: 120%;
+    text-align: left}
+.jqm-window-body {
+    padding: 12px}
+.jqm-controls {
+    margin-top: 10px;
+    padding-top: 10px;
+    text-align: right;
+    border-top: 1px #DDD solid}
+.jqmOverlay {
+    background-color: #000}
+*
+iframe.jqm {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: expression(this.parentNode.offsetWidth+'px');
+    height: expression(this.parentNode.offsetHeight+'px')}
+* html
+.jqmWindow {
+    margin-left:  -480px}
+* html
+.jqmWindow {
+    position: absolute;
+    top: expression((document.documentElement.scrollTop || document.body.scrollTop) + Math.round(17 * (document.documentElement.offsetHeight || document.body.clientHeight) / 100) + 'px')}
+.ac_results {
+    padding: 0px;
+    border: 1px
+        solid WindowFrame;
+    background-color: Window;
+    overflow: hidden}
+.ac_results
+ul {
+    width: 100%;
+    list-style-position: outside;
+    list-style: none;
+    padding: 0;
+    margin: 0}
+.ac_results
+li {
+    margin: 0px;
+    padding: 2px
+        5px;
+    cursor: default;
+    display: block;
+    width: 100%;
+    overflow: hidden}
+.ac_loading {
+    background: Window url('../img/indicator.gif') right center no-repeat}
+.ac_over {
+    background-color: Highlight;
+    color: HighlightText}
+.popup-help {
+    position: absolute;
+    color: black;
+    z-index: 1000;
+    border: 1px
+        solid #666;
+    background-color: #ffc;
+    padding: 7px;
+    -moz-border-radius: 8px;
+    font-weight: normal}
+.popup-help-link {
+    padding-left: 5px;
+    position: relative;
+    font-weight: normal}
+.popup-help .help-content {
+    min-height: 30px;
+    height: auto;
+    width: 190px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    line-height: normal}
+.popup-help
+.close {
+    text-align: right;
+    padding-bottom: 3px}
+.long-help-text {
+    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px}
+.long-help-text li, ol {
+    margin: 0;
+    padding: 0}
+.long-help-text
+ol {
+    margin-left: 2em}
+.long-help-text
+li {
+    margin-bottom: 1ex}
+.ac_results {
+    padding: 0px;
+    border: 1px
+        solid WindowFrame;
+    background-color: Window;
+    overflow: hidden}
+.ac_results
+ul {
+    width: 100%;
+    list-style-position: outside;
+    list-style: none;
+    padding: 0;
+    margin: 0}
+.ac_results
+li {
+    margin: 0px;
+    padding: 2px
+        5px;
+    cursor: default;
+    display: block;
+    width: 100%;
+    overflow: hidden}
+.ac_loading {
+    background: Window url('../img/indicator.gif') right center no-repeat}
+.ac_over {
+    background-color: Highlight;
+    color: HighlightText}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    vertical-align: baseline}
+img, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0}
+:focus {
+    outline: 0}
+body {
+    line-height: 1;
+    color: black;
+    background: white}
+ol, ul {
+    list-style: none}
+table {
+    border-collapse: separate;
+    border-spacing: 0}
+caption, th, td {
+    text-align: left;
+    font-weight: normal}
+blockquote:before, blockquote:after, q:before, q:after {
+    content: ""}
+blockquote, q {
+    quotes: "" ""}
+html {
+    -filter: expression(document.execCommand("BackgroundImageCache", false, true))}
+body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #444}
+body.hasInterface {
+    min-width: 1000px;
+    -width: expression((document.documentElement.offsetWidth < 1020)? "1000px": "auto" )}
+a {
+    color: #0767A8;
+    text-decoration: none}
+a:hover {
+    text-decoration: underline}
+#oaHeader {
+    position: relative;
+    background-color: #fff;
+    height: 68px}
+#oaHeaderBranding {
+    position: absolute;
+    left: 0;
+    z-index: 3}
+.brandingDefault {
+    width: 170px;
+    height: 62px;
+    background: url(../img/logo-wtag.png) no-repeat;
+    margin: 3px
+        0px 0px 3px;
+    text-indent:  -1000px;
+    -background: none;
+    -filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='assets/images/logo-wtag.png')}
+.brandingName {
+    height: 48px;
+    padding: 0
+        0 0 22px;
+    line-height: 48px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #888;
+    word-spacing:  -0.2em}
+.brandingName
+div {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+    width: 36px;
+    height: 34px;
+    background: url(../img/logo-s.png) top left no-repeat;
+    -background: none;
+    -filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='assets/images/logo-s.png')}
+.brandingAdServer {
+    width: 270px;
+    height: 32px;
+    background: url(../img/logo-adserver.png) no-repeat;
+    margin: 5px
+        0px 0px 8px;
+    text-indent:  -1000px}
+#oaSearch {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    height: 31px;
+    width: 194px;
+    color: #444;
+    padding: 0;
+    border: 0;
+    margin: 0;
+    background: url(../img/searchfull.png) 0px 0px no-repeat}
+#oaSearch
+form {
+    margin: 0;
+    padding: 0}
+#oaSearch
+input.search {
+    position: relative;
+    left: 32px;
+    top: 7px;
+    border: 0;
+    margin: 0;
+    width: 130px;
+    height: 13px;
+    background: none}
+#oaSearch
+input.submit {
+    position: absolute;
+    right: 9px;
+    top: 9px;
+    width: 12px;
+    height: 12px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    cursor: pointer;
+    background: url(../img/searchfull.png) -194px -9px no-repeat}
+#oaSearch input.submit:hover,  #oaSearch input.submit:focus {
+    background-position:  -206px -9px}
+#oaNavigation {
+    position: relative;
+    top:  -24px;
+    z-index: 2;
+    height: 24px;
+    border-bottom: 1px solid #d1d1d1}
+#oaNavigation ul,  #oaHeader
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none}
+#oaNavigationTabs {
+    position: absolute;
+    top: 1px;
+    left: 7px;
+    line-height: 26px;
+    height: 29px;
+    min-width: 300px;
+    list-style-type: none;
+    white-space: nowrap}
+#oaNavigationTabs
+* {
+    height: 29px}
+#oaNavigationTabs
+li {
+    float: left;
+    margin: 0;
+    background: url(../img/tab-body.gif) left 0px repeat-x}
+#oaNavigationTabs li
+div.left {
+    background: url(../img/tab-link.gif) left 0px no-repeat}
+#oaNavigationTabs li.first
+div.left {
+    background: url(../img/tab-lead-in.gif) left 0px no-repeat}
+#oaNavigationTabs li.last
+div.right {
+    background: url(../img/tab-lead-out.gif) right 0px no-repeat}
+#oaNavigationTabs li.active,
+#oaNavigationTabs li.active
+div.left {
+    background-position: left -40px}
+#oaNavigationTabs li.after-active
+div.left {
+    background-position: left -80px;
+
+}
+#oaNavigationTabs li.active
+div.right {
+    background-position: right -40px}
+#oaNavigationTabs li
+div {
+    overflow: hidden;
+    -overflow: visible;
+    -width: 1px}
+#oaNavigationTabs li span,
+#oaNavigationTabs li
+a {
+    display: block;
+    float: left;
+    font-size: 11px;
+    color: #444;
+    padding: 0
+        6px 0 17px;
+    white-space: nowrap}
+#oaNavigationTabs li.last span,
+#oaNavigationTabs li.last
+a {
+    margin-right: 11px;
+    -margin-right: 5px}
+#oaNavigationTabs li.active span,
+#oaNavigationTabs li.active
+a {
+    background: url(../img/tab-body.gif) center -80px no-repeat;
+    color: #fff}
+#oaNavigationExtra {
+    position: absolute;
+    top: 7px;
+    right: 14px;
+    color: #9c9c9c}
+#oaNavigationExtra select:focus,  #oaNavigationExtraTop select:focus {
+    background-color: #fff}
+#oaNavigationExtra img,  #oaNavigationExtraTop
+img {
+    position: relative;
+    border: none}
+#oaNavigationExtra
+a {
+    color: #0767A8}
+#oaNavigationExtra
+li {
+    margin: 0
+        0 0 12px}
+.triggerContainer {
+    overflow: auto;
+    text-align: right;
+    max-width: 250px}
+.switchTrigger {
+    position: relative;
+    top:  -2px;
+    float: right;
+    height: 14px;
+    overflow: hidden;
+    max-width: 130px;
+    -width: 130px;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding: 2px
+        14px 0px 5px;
+    color: #444;
+    background: url("../img/arrow-d.gif") no-repeat right 3px;
+    cursor: pointer}
+.expanded
+.switchTrigger {
+    background: url("../img/arrowwh-d.gif") no-repeat right 3px;
+    background-color: #9c9c9c;
+    color: white;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px}
+.hover
+.switchTrigger {
+    background: url("../img/arrowwh-d.gif") no-repeat right 3px;
+    background-color: #9c9c9c;
+    color: white;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px}
+.accountsPanel {
+    display: none}
+.expanded
+.accountsPanel {
+    display: block;
+    color: #444;
+    position: absolute;
+    right: 0px;
+    top: 14px;
+    width: 249px;
+    z-index: 100}
+.expanded
+.switchTop {
+    background: url('../img/accountswitcher-header.png') no-repeat;
+    height: 1px;
+    overflow: hidden;
+    -background: none;
+    -filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='assets/images/accountswitcher-header.png',  sizingMethod='scale')}
+.expanded
+.switchDown {
+    background: url('../img/accountswitcher-footer.png') no-repeat;
+    height: 15px;
+    -background: none;
+    -filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='assets/images/accountswitcher-footer.png',  sizingMethod='scale')}
+.expanded
+.switchMiddle {
+    background: url('../img/accountswitcher-shadow.png') repeat-y;
+    padding-left: 3px;
+    padding-right: 3px;
+    zoom: 1;
+    -background: none;
+    -filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='assets/images/accountswitcher-shadow.png',  sizingMethod='scale')}
+.expanded
+.switchMiddleBody {
+    background: url('../img/accountswitcher-gradient.png') repeat-x}
+.expanded
+.label {
+    font-weight: bold;
+    height: 23px;
+    line-height: 23px;
+    padding-left: 10px}
+.expanded
+#accounts {
+    padding-top: 5px}
+#oaNavigationExtra
+.accountSwitcher {
+    position: relative}
+.accountSwitcherOverlay {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    background-color: none;
+    z-index: 99}
+#oaNavigationExtra .accountSwitcher
+li {
+    padding-left: 10px;
+    float: none;
+    margin: 0px;
+    line-height: 150%;
+    overflow: hidden;
+    -position: relative;
+    -zoom: 1}
+#oaNavigationExtra .accountSwitcher
+li.opt {
+    color: #9c9c9c;
+    margin-top: 2px}
+#oaNavigationExtra .accountSwitcher
+li.inopt {
+    padding-left: 25px}
+#oaNavigationExtra .accountSwitcher
+li.more {
+    color: #a0a0a0;
+    font-size: 10px}
+#oaNavigationExtra .accountSwitcher li.hover,  #oaNavigationExtra .accountSwitcher .result ul li.hover
+a {
+    background-color: #0767A8;
+    color: white;
+    cursor: pointer}
+#oaNavigationExtra .accountSwitcher .result ul li
+a {
+    display: block;
+    padding: 0pt;
+    text-decoration: none}
+#oaNavigationExtra .accountSwitcher .result ul li a
+b {
+    font-weight: normal}
+.accountSwitcher
+#accountSearch {
+    border: 1px
+        inset #808080;
+    height: 13px}
+.accountSwitcher #accountSearch:focus {
+    background-color: white}
+.accountSwitcher
+#accountSearch.example {
+    color: #b0b0b0}
+.accountSwitcher
+#accountSearchIcon {
+    background: url(../img/icon-magnifying-glass.gif) no-repeat;
+    display: inline;
+    position: relative;
+    padding-left: 9px;
+    line-height: 9px;
+    left:  -16px;
+    top: 2px}
+.accountSwitcher
+.result {
+    min-height: 50px;
+    -height: 50px}
+.accountSwitcher
+#accountLoading {
+    background-image: url(../img/indicator-blue-small-transparent.gif);
+    background-repeat: no-repeat;
+    display: block;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    display: none}
+.accountSwitcher
+#accountLoadingError {
+    margin: 10px;
+    padding-left: 16px;
+    background-image: url(../img/icon-warning.gif);
+    background-repeat: no-repeat}
+#oaNavigationExtraTop {
+    padding-top: 12px;
+    color: #9c9c9c;
+    padding-right: 12px}
+#oaNavigationExtraTop.hasSearch {
+    padding-right: 225px}
+#oaNavigationExtraTop
+ul {
+    float: right}
+#oaNavigationExtraTop
+li {
+    float: left;
+    padding: 0
+        7px 0 7px}
+#oaNavigationExtraTop li.infoUser,
+#oaNavigationExtraTop li.buttonHelp,
+#oaNavigationExtraTop li.buttonContactUs,
+#oaNavigationExtraTop
+li.buttonReportBugs {
+    border-right: 1px solid #9c9c9c}
+#oaNavigationExtraTop
+li.last {
+    border-right: none}
+#oaNavigationExtraTop
+.buttonStartOver {
+    font-weight: bold}
+#firstLevelContent {
+    margin-top:  -24px}
+body.hasGradient
+#firstLevelContent {
+    background: #fff url(../img/background-gradient.gif) left -16px repeat-x;
+    -zoom: 1}
+#context-help {
+    position: absolute;
+    right: 40px;
+    margin-top: 32px;
+    padding: 1px
+        0px 1px 20px;
+    background: url(../img/icon-help.gif) no-repeat left center}
+#secondLevelNavigation {
+    position: absolute;
+    left: 0;
+    width: 160px;
+    margin: 12px
+        0 0 12px}
+#secondLevelNavigation
+.navigation {
+    width: 160px;
+    margin: 0
+        0 12px 0;
+    padding: 0;
+    list-style-type: none;
+    background: #f4f4f4}
+#secondLevelNavigation .navigation
+li {
+    position: relative;
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+    -zoom: 1;
+    -float: left;
+    -width: 160px;
+    * zoom:  1;
+    * float:  left;
+    * width:  160px}
+#secondLevelNavigation .navigation li
+a {
+    display: block;
+    position: relative;
+    padding: 7px
+        10px;
+    color: #444;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd}
+#secondLevelNavigation .navigation li.last
+a {
+    border-bottom: none}
+#secondLevelNavigation .navigation
+li.active {
+    background: url(../img/button-navigation.gif) left center no-repeat}
+#secondLevelNavigation .navigation li.active
+a {
+    background: url(../img/button-navigation.gif) left center no-repeat;
+    border: none;
+    color: #fff}
+#secondLevelNavigation .navigation li .top,  #secondLevelNavigation .navigation li
+.bottom {
+    display: block;
+    position: absolute;
+    left:  -1px;
+    height: 4px;
+    width: 160px;
+    background: url(../img/button-navigation.gif) left 0 no-repeat;
+    font-size: 0;
+    -left:  -11px}
+#secondLevelNavigation .navigation li.active .top,  #secondLevelNavigation .navigation li.active
+.bottom {
+    left: 0;
+    -left:  -10px}
+#secondLevelNavigation .navigation li
+.top {
+    top: 0}
+#secondLevelNavigation .navigation li
+.bottom {
+    bottom: 0;
+    -bottom:  -1px}
+#secondLevelNavigation .navigation li.first .top,  #secondLevelNavigation .navigation li.single
+.top {
+    background-position: left -4px}
+#secondLevelNavigation .navigation.first li.first .top,  #secondLevelNavigation .navigation.first li.single
+.top {
+    background-position: left -12px}
+#secondLevelNavigation .navigation li.last .bottom,  #secondLevelNavigation .navigation li.single
+.bottom {
+    background-position: left -8px}
+#secondLevelNavigation .navigation li.active
+ul {
+    margin: 0;
+    background: #fff;
+    border: none}
+#secondLevelNavigation .navigation li.active
+.top {
+    top:  -1px;
+    background-position: left -152px}
+#secondLevelNavigation .navigation li.active
+.bottom {
+    background-position: left -156px}
+#secondLevelNavigation .navigation li.first.active .top,
+#secondLevelNavigation .navigation li.single.active
+.top {
+    top:  -1px;
+    background-position: left -144px}
+#secondLevelNavigation .navigation li.last.active .bottom,
+#secondLevelNavigation .navigation li.single.active
+.bottom {
+    background-position: left -148px}
+#secondLevelNavigation .navigation.first li.first.active .top,
+#secondLevelNavigation .navigation.first li.single.active
+.top {
+    top:  -1px;
+    background-position: left -140px}
+#secondLevelNavigation .navigation li.active ul li
+a {
+    padding-left: 20px;
+    color: #444;
+    background: #fff url(../img/button-navigation.gif) -160px 1px no-repeat;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd}
+#secondLevelNavigation .navigation li.active ul li.active
+a {
+    color: #07963e;
+    background-position:  -160px -79px}
+#secondLevelNavigation .navigation.first li.first.active li .top,
+#secondLevelNavigation .navigation.first li.single.active li .top,
+#secondLevelNavigation .navigation li.first.active li .top,
+#secondLevelNavigation .navigation li.single.active li
+.top {
+    background-position: left 0}
+#secondLevelNavigation .navigation.first li.active li.first .top,
+#secondLevelNavigation .navigation li.active li.first
+.top {
+    top:  -4px;
+    left:  -1px;
+    background-position: left -156px;
+    -margin-left:  -20px}
+#secondLevelNavigation .navigation li.active li .top,
+#secondLevelNavigation .navigation li.last.active li .bottom,
+#secondLevelNavigation .navigation li.single.active li .bottom,
+#secondLevelNavigation .navigation li.active li
+.bottom {
+    background-position: left 0}
+#secondLevelNavigation .navigation li.active ul li.last a
+.bottom {
+    left:  -1px;
+    bottom:  -3px;
+    height: 6px;
+    background-position: left -20px;
+    -margin-left:  -20px}
+#secondLevelNavigation .navigation li.last.active ul li.last a .bottom,
+#secondLevelNavigation .navigation li.single.active ul li.last a
+.bottom {
+    left:  -1px;
+    bottom:  -1px;
+    height: 4px;
+    background-position: left -16px;
+    -margin-left:  -20px}
+#secondLevelContent {
+    margin: 0}
+.hasGradient
+#secondLevelContent {
+    padding: 12px
+        12px 12px 12px}
+.hasSidebar
+#secondLevelContent {
+    margin: 0
+        0 0 184px;
+    padding-left: 0px}
+#thirdLevelNavigation {
+    position: absolute;
+    margin:  -21px 0 0 8px;
+    *z-index: 2}
+#thirdLevelNavigation
+.navigation {
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    height: 21px;
+    line-height: 21px}
+#thirdLevelNavigation
+li {
+    float: left;
+    margin: 0;
+    padding: 0;
+    background: url(../img/section-body.gif) left 0px repeat-x;
+    list-style-type: none}
+#thirdLevelNavigation li
+div.left {
+    background: url(../img/section-link.gif) left 0px no-repeat}
+#thirdLevelNavigation li.first
+div.left {
+    background: url(../img/section-lead-in-plain.gif) left 0px no-repeat}
+#thirdLevelNavigation li.last
+div.right {
+    background: url(../img/section-lead-out.gif) right 0px no-repeat}
+#thirdLevelNavigation li.active,
+#thirdLevelNavigation li.active
+div.left {
+    background-position: left -40px}
+#thirdLevelNavigation li.after-active
+div.left {
+    background-position: left -80px}
+#thirdLevelNavigation li.active
+div.right {
+    background-position: right -40px}
+#thirdLevelNavigation li
+div {
+    overflow: hidden;
+    -overflow: visible;
+    -width: 1px}
+#thirdLevelNavigation li span,
+#thirdLevelNavigation li
+a {
+    display: block;
+    float: left;
+    font-size: 11px;
+    color: #444;
+    padding: 0
+        6px 0 17px;
+    white-space: nowrap}
+#thirdLevelNavigation li.last span,
+#thirdLevelNavigation li.last
+a {
+    padding-right: 17px}
+#thirdLevelNavigation li.active span,
+#thirdLevelNavigation li.active
+a {
+    color: #0767A8}
+#thirdLevelHeader {
+    position: relative;
+    *z-index: 1;
+    height: 68px;
+    margin: 0;
+    border: 1px
+        solid #ddd;
+    background: #fff url(../img/header-background.gif) left top repeat-x;
+    border-top-left-radius:5px 5px !important;
+    border-top-right-radius:5px 5px !important;
+
+}
+#thirdLevelHeader.hasTabs {
+    height: 88px}
+#thirdLevelHeader
+.corner {
+    position: absolute;
+    overflow: hidden;
+    font-size: 0;
+    height: 8px;
+    width: 8px;
+    background-image: url("../img/header-corners.png");
+    background-repeat: no-repeat}
+#thirdLevelHeader
+.left {
+    left:  -1px;
+    top:  -1px;
+    background-position: top left}
+#thirdLevelHeader
+.right {
+    right:  -1px;
+    top:  -1px;
+    background-position: top right;
+    -right:  -2px}
+#thirdLevelHeader
+div.breadcrumb {
+    margin: 9px
+        250px 0 9px;
+    padding: 0px
+        0px 0 3px;
+    min-height: 50px;
+    -height: 50px}
+#thirdLevelHeader
+div.breadcrumb.hasIcon {
+    padding-left: 59px;
+    background-position: left top;
+    background-repeat: no-repeat}
+#thirdLevelHeader div.breadcrumb.hasIcon
+.titleIcon {
+    display: inline;
+    background-position: left top;
+    background-repeat: no-repeat;
+    padding: 0px
+        0px 55px 55px}
+#thirdLevelContent {
+    margin: 0;
+    padding: 12px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    position: relative}
+#thirdLevelTools {
+    position: relative;
+    min-height: 38px;
+    -height: 38px}
+#thirdLevelTools
+ul {
+    list-style-type: none;
+    line-height: 26px;
+    margin: 0;
+    padding: 0}
+#thirdLevelTools ul
+li {
+    float: right;
+    padding: 0;
+    margin: 0
+        0 0 10px}
+#thirdLevelTools
+a.buttonLink {
+    display: block;
+    background: url(../img/header-dropdown-background.png) left -128px no-repeat;
+    cursor: pointer;
+    position: relative;
+    top: 0;
+    padding: 0
+        0 4px;
+    height: 26px;
+    line-height: 26px;
+    -width: 0%}
+#thirdLevelTools a.buttonLink
+span {
+    display: block;
+    background: url(../img/header-dropdown-background.png) right -160px no-repeat;
+    padding: 0
+        8px;
+    position: relative;
+    top: 0;
+    font-weight: bold;
+    color: #255792}
+#thirdLevelTools
+.dropDown {
+    display: block;
+    float: left;
+    position: relative;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    margin: 0}
+#thirdLevelTools .dropDown
+span {
+    display: block;
+    background: url(../img/header-dropdown-background.png) left top no-repeat;
+    cursor: pointer;
+    position: relative;
+    top: 4px;
+    padding: 0
+        0 4px;
+    height: 20px;
+    line-height: 20px;
+    -width: 0%}
+#thirdLevelTools .contextContainer .dropDown
+span {
+    top: 0px;
+    line-height: 26px;
+    height: 26px}
+#thirdLevelTools .dropDown span
+span {
+    display: block;
+    background-position: right -32px;
+    padding: 0
+        26px 0 8px;
+    position: relative;
+    top: 0;
+    font-weight: bold;
+    color: #255792}
+#thirdLevelTools .dropDown.active
+span {
+    background-position: left -64px;
+    z-index: 1002}
+#thirdLevelTools .dropDown.active span
+span {
+    background-position: right -96px}
+#thirdLevelTools .dropDown
+div.panel {
+    background: #fff;
+    display: none;
+    position: absolute;
+    top: 25px;
+    margin: 0;
+    padding: 0
+        6px 0 0;
+    z-index: 1001;
+    background: url(../img/header-dropdown-right.gif) right bottom no-repeat;
+    border: none;
+    border-top: 1px solid #e4e5e4;
+    -width: 160px}
+#thirdLevelTools .alignRight .dropDown
+div.panel {
+    left: auto;
+    right: 0;
+    margin-top: 6px}
+#thirdLevelTools .contextContainer .alignRight .dropDown
+div.panel {
+    margin-top: 4px}
+#thirdLevelTools .dropDown.active
+div.panel {
+    display: block}
+#thirdLevelTools .dropDown div.panel
+div {
+    background: url(../img/header-dropdown-left.gif) left bottom no-repeat;
+    border: 0;
+    overflow: visible}
+#thirdLevelTools .dropDown div.panel div
+div {
+    background: none}
+#thirdLevelTools .dropDown
+ul {
+    display: block;
+    padding: 6px
+        0}
+#thirdLevelTools .dropDown ul
+li {
+    float: none;
+    display: block;
+    line-height: 22px;
+    padding: 0;
+    margin: 0}
+#thirdLevelTools .dropDown ul li
+a {
+    display: block;
+    color: #255792;
+    padding: 0
+        4px 0 8px;
+    -zoom: 1}
+#thirdLevelTools .dropDown ul li
+label {
+    display: block;
+    color: #888;
+    padding: 0
+        40px 0 8px}
+#thirdLevelTools .dropDown ul li
+.inlineIcon {
+    padding-left: 30px;
+    background-position: 8px center}
+#thirdLevelTools .dropDown ul li
+form {
+    padding: 0
+        6px 0 30px;
+    margin: 0}
+#thirdLevelTools .dropDown ul li form
+select {
+    width: 100px;
+    margin: 0
+        2px 0 0}
+#thirdLevelTools .dropDown
+.mask {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: transparent;
+    z-index: 1000}
+#thirdLevelTools .dropDown.active
+div.mask {
+    display: block}
+#oaSection {
+    background: #fff url(../img/section-body.gif) left -80px repeat-x;
+    height: 22px;
+    line-height: 22px}
+#oaSectionTabs {
+    margin: 0
+        0 0 36px;
+    padding: 0;
+    list-style-type: none;
+    white-space: nowrap;
+    overflow: hidden}
+#oaSectionTabs
+li {
+    float: left;
+    margin: 0;
+    background: url(../img/section-body.gif) left 0px repeat-x}
+#oaSectionTabs li
+div.left {
+    background: url(../img/section-link.gif) left 0px no-repeat}
+#oaSectionTabs li.first
+div.left {
+    background: url(../img/section-lead-in.gif) left 0px no-repeat}
+#oaSectionTabs li.last
+div.right {
+    background: url(../img/section-lead-out.gif) right 0px no-repeat}
+#oaSectionTabs li.active,
+#oaSectionTabs li.active
+div.left {
+    background-position: left -40px}
+#oaSectionTabs li.after-active
+div.left {
+    background-position: left -80px}
+#oaSectionTabs li.active
+div.right {
+    background-position: right -40px}
+#oaSectionTabs li
+div {
+    overflow: hidden;
+    -overflow: visible;
+    -width: 1px}
+#oaSectionTabs li span,
+#oaSectionTabs li
+a {
+    display: block;
+    float: left;
+    font-size: 11px;
+    color: #444;
+    padding: 0
+        6px 0 17px;
+    white-space: nowrap}
+#oaSectionTabs li.last span,
+#oaSectionTabs li.last
+a {
+    padding-right: 17px}
+#oaSectionTabs li.active span,
+#oaSectionTabs li.active
+a {
+    color: #0767A8}
+hr {
+    display: block;
+    border: none;
+    border-top: 1px solid #ddd;
+    height: 1px;
+    margin: 4px
+        0 -8px;
+    padding: 0}
+select.switcher {
+    font-size: 10px;
+    width: 12em;
+    border: 1px
+        solid #aaa}
+select.switcher
+option {
+    font-size: 10px}
+select.switcher
+optgroup {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-style: normal}
+.stats-tz-warning {
+    margin-top: 1em;
+    border: 1px
+        solid red;
+    background-color: pink;
+    padding:  .5em;
+    color: black;
+    font-weight: bold}
+div.breadcrumb {
+    font-size: 10px;
+    position: relative;
+    z-index: 2000}
+div.breadcrumb
+h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0px;
+    padding-top: 2px;
+    color: #666;
+    height: 22px;
+    overflow: hidden}
+div.breadcrumb h3
+span.label {
+    color: #333}
+div.breadcrumb
+h3.noBreadcrumb {
+    padding-top: 14px;
+    margin: 0;
+    overflow: visible;
+    height: auto}
+div.breadcrumb h3 span.dest,
+div.breadcrumb h3
+span.target {
+    color: #999}
+div.breadcrumb
+span.sep {
+    padding-left: 2ex;
+    padding-right: 2ex;
+    position: relative;
+    color: #606060}
+div.breadcrumb
+.entityLinks {
+    position: relative;
+    top: 3px}
+div.breadcrumb
+form {
+    margin: 4px
+        0px 0px 0px}
+div.breadcrumb
+select {
+    font-weight: normal}
+div.bannercode {
+    margin-left: 20px}
+div.breadcrumb .adv,
+div.breadcrumb .camp,
+div.breadcrumb .ban,
+div.breadcrumb
+.webs {
+    padding: 2px
+        0px 2px 20px;
+    background-repeat: no-repeat}
+div.breadcrumb
+.adv {
+    background-image: url("../img/icon-advertiser.gif")}
+div.breadcrumb
+.camp {
+    background-image: url("../img/icon-campaign.gif")}
+div.breadcrumb
+.ban {
+    background-image: url("../img/icon-campaign.gif")}
+div.breadcrumb
+.webs {
+    background-image: url("../img/icon-affiliate.gif")}
+#contextContainer {
+    position: absolute;
+    right: 20px}
+div.contextLinks {
+    float: right;
+    padding: 3px
+        10px 3px 10px;
+    border-top: none;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+    position: relative;
+    z-index: 1;
+    margin-left: 20px}
+div.contextLinks .expanded .more,  div.contextLinks
+.less {
+    display: none}
+div.contextLinks .expanded
+.less {
+    display: inline}
+div.contextLinks a.more-less {
+    display: block;
+    text-align: right;
+    font-size: 10px}
+div.contextLinks
+.corner {
+    position: absolute;
+    overflow: hidden;
+    font-size: 0;
+    top: 0;
+    -top: auto;
+    bottom:  -1px;
+    -bottom:  -2px;
+    width: 8px;
+    -height: expression((this.offsetParent.scrollHeight + 1) + 'px');
+    background-image: url("../img/dark-control-corners.png");
+    background-repeat: no-repeat}
+div.contextLinks .bottom-left {
+    left:  -1px;
+    background-position: bottom left}
+div.contextLinks .bottom-right {
+    right:  -1px;
+    background-position: bottom right}
+div.contextLinks
+h4 {
+    padding: 5px
+        5px 5px 0px;
+    margin: 0;
+    font-size: 100%;
+    font-weight: bold;
+    color: #626262}
+div.contextLinks
+.title {
+    font-weight: bold;
+    margin-bottom: 2px}
+div.contextLinks
+ul {
+    list-style-type: none;
+    margin: 0pt;
+    padding: 0pt}
+div.contextLinks
+li {
+    padding: 0px
+        0px 5px 0px}
+div.contextLinks
+.form {
+    display: none;
+    margin: 3px
+        0px 3px 0px;
+    padding: 0px}
+div.contextLinks form
+.submit {
+    margin-left: 3px;
+    vertical-align: middle}
+div.contextLinks form
+select {
+    width: 100px}
+.ent {
+    font-weight: bold}
+span.required {
+    font-weight: bold;
+    color: red;
+    font-size: 150%;
+    line-height: 50%;
+    position: relative;
+    top: 0.3ex}
+td.required-explanation {
+    color: #606060;
+    padding-bottom: 5px}
+#auditFilter {
+    margin-top: 12px}
+form.flat {
+    margin-bottom: 20px}
+form.flat select,  form.flat textarea,  form.flat input[type=text],  form.flat input[type=password] {
+    border: 1px
+        solid #888;
+    padding-left: 3px}
+form.flat select.frozen,  form.flat textarea.frozen,  form.flat input[type=text].frozen {
+    color: #6F6F6F}
+form.flat input[type=radio],  form.flat input[type=checkbox] {
+    position: relative;
+    margin-right: 5px}
+form.flat select.error,  form.flat textarea.error,  form.flat
+input.error {
+    border-color: #900}
+form.flat .x-small, .x-small {
+    width: 50px}
+form.flat .small, .small {
+    width: 100px}
+form.flat .medium, .medium {
+    width: 200px}
+form.flat .large, .large {
+    width: 350px}
+form.flat .x-large, .x-large {
+    width: 550px}
+form.flat textarea.x-small-h {
+    height: 50px}
+form.flat textarea.small-h {
+    height: 100px}
+form.flat textarea.h-medium-h {
+    height: 160px}
+form.flat textarea.h-large-h {
+    height: 260px}
+form.flat .x-small {
+    width: 50px}
+form.flat
+.small {
+    width: 100px}
+form.flat
+.medium {
+    width: 200px}
+form.flat
+.large {
+    width: 350px}
+form.flat textarea.x-small-h {
+    height: 50px}
+form.flat textarea.small-h {
+    height: 100px}
+form.flat textarea.h-medium-h {
+    height: 160px}
+form.flat textarea.h-large-h {
+    height: 260px}
+form.flat
+.prefix {
+    margin-right: 5px}
+form.flat
+.suffix {
+    margin-left: 5px}
+.campaign-type
+.sep {
+    padding: 0px
+        10px}
+.campaign-remnant, .campaign-contract {
+    color: #848484}
+#campaignform .type-name {
+    font-weight: bold}
+#campaignform .type-desc {
+    width: 330px;
+    margin: 2px
+        0px 4px 20px}
+#campaignform
+.static {
+    padding-top: 5px}
+#impressions_remaining_span, #clicks_remaining_span, #conversions_remaining_span {
+    margin-left: 5px;
+    padding: 2px
+        7px;
+    background-color: #feffa7}
+#impressions_remaining_count, #clicks_remaining_count, #conversions_remaining_count {
+    margin-left: 5px}
+#section-switcher {
+    padding-bottom: 12px;
+    border-bottom: 1px #ddd solid}
+#section-switcher form, form.packageform {
+    margin: 0px}
+.control-panel {
+    overflow: hidden;
+    margin-bottom: 30px}
+.control-panel
+.left {
+    margin-right: 25px}
+.control-panel
+.right {
+    margin-right: 0px}
+.control-set {
+    float: left;
+    color: #666;
+    margin-right: 10px;
+    padding: 15px
+        15px 10px 15px;
+    border-top: none;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    background: url("../img/control-background.png") bottom left repeat-x}
+.control-set
+.corner {
+    position: absolute;
+    overflow: hidden;
+    font-size: 0;
+    top: 0;
+    -top: auto;
+    bottom:  -1px;
+    -bottom:  -2px;
+    width: 8px;
+    -height: expression((this.offsetParent.scrollHeight + 1) + 'px');
+    background-image: url("../img/control-corners.png");
+    background-repeat: no-repeat}
+.control-set .bottom-left {
+    left:  -1px;
+    background-position: bottom left}
+.control-set .bottom-right {
+    right:  -1px;
+    background-position: bottom right}
+.control-set
+h2 {
+    font-weight: bold;
+    font-size: 1.4em;
+    margin: 0px
+        0px 5px 0px}
+.control-set
+input {
+    margin-right: 5px}
+.panel {
+    padding: 15px;
+    border: 1px
+        solid #ddd;
+    position: relative;
+    top: 0;
+    left: 0;
+    background: #fff url("../img/panel-background.png") bottom left repeat-x;
+    -zoom: 1;
+    margin: 10px
+        0px 15px 0px}
+.panel
+.corner {
+    position: absolute;
+    overflow: hidden;
+    font-size: 0;
+    height: 8px;
+    width: 8px;
+    background-image: url("../img/panel-corners.png");
+    background-repeat: no-repeat}
+.panel .bottom-left {
+    left:  -1px;
+    bottom:  -1px;
+    -bottom:  -2px;
+    background-position: bottom left}
+.panel .bottom-right {
+    right:  -1px;
+    -right:  -2px;
+    bottom:  -1px;
+    -bottom:  -2px;
+    background-position: bottom right}
+.panel .top-left {
+    left:  -1px;
+    top:  -1px;
+    background-position: top left}
+.panel .top-right {
+    right:  -1px;
+    -right:  -2px;
+    top:  -1px;
+    background-position: top right}
+.panel .split-left {
+    width: 39%;
+    float: left}
+.panel .split-right {
+    float: right;
+    width: 60%;
+    height: 100%;
+    border-left: 1px solid #ddd}
+.panel
+.vertical {
+    padding: 15px
+        0px}
+.panel .first-vertical {
+    padding-top: 0px}
+.panel .last-vertical {
+    padding-bottom: 0px}
+.panel .top-split {
+    border-top: 1px solid #ddd}
+.panel-plain {
+    border: 1px
+        solid #d4d4d4;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background: transparent}
+div.panel-plain div.topleft,
+div.panel-plain div.topright,
+div.panel-plain div.bottomleft,
+div.panel-plain
+div.bottomright {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-image: url("../img/corners.png");
+    background-repeat: no-repeat;
+    font-size: 0}
+div.panel-plain
+div.topleft {
+    top:  -1px;
+    left:  -1px;
+    background-position: 0px 0px}
+div.panel-plain
+div.topright {
+    top:  -1px;
+    right:  -1px;
+    background-position:  -6px 0px}
+div.panel-plain
+div.bottomleft {
+    bottom:  -1px;
+    left:  -1px;
+    background-position: 0px -6px}
+div.panel-plain
+div.bottomright {
+    bottom:  -1px;
+    right:  -1px;
+    background-position:  -6px -6px}
+table.global {
+    width: 100%;
+    empty-cells: show;
+    border-collapse: collapse}
+table.global td,  table.global
+th {
+    font-size: 11px;
+    text-align: left;
+    line-height: 26px;
+    height: 26px;
+    padding: 0
+        6px 0 6px;
+    white-space: nowrap}
+table.global thead
+th {
+    border-bottom: 1px solid #aaa;
+    text-align: left}
+table.global thead
+th.number {
+    text-align: right}
+table.global tbody
+a {
+    color: #039;
+    text-decoration: none}
+table.global tbody a:hover {
+    text-decoration: underline}
+table.global tbody td,  table.global tbody
+th {
+    border-bottom: 1px solid #e6e6e6;
+    font-weight: normal;
+    width: 20%}
+table.global tbody
+td {
+    text-align: left;
+    width: 15%}
+table.global tbody
+td.number {
+    text-align: right}
+table.global .odd td,
+table.global .odd
+th {
+    background-color: #f6f6f6}
+table.global
+th.first {
+    text-align: left}
+table.global caption,  table.data
+caption {
+    text-align: left;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 2em}
+table.data, .detail-table {
+    width: 100%}
+.detail-table td,  .detail-table
+th {
+    padding: 0px
+        15px;
+    height: 1.5em}
+table.data thead th,  table.data thead
+td {
+    border-bottom: 1px solid #aaa;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 25px}
+table.data thead.no-header
+th {
+    height: 1px}
+table.data {
+    margin-top: 15px}
+table.data
+td {
+    text-align: left}
+table.data
+tr.even {
+    background-color: #f6f6f6}
+table.data tbody td,  table.data
+.header {
+    padding: 10px
+        5px;
+    border-bottom: 1px solid #e6e6e6}
+table.data
+.header {
+    text-align: left}
+table.data
+td.label {
+    text-align: right;
+    width: 1%}
+table.data
+td.graph {
+    width: 10%;
+    border-left: 1px solid #ccc;
+    text-align: left;
+    padding-left: 0}
+table.data td.graph
+div {
+    height: 6px;
+    font-size: 1px}
+table.data td.graph
+.impression {
+    color: #b9d669}
+table.data td.graph
+.clicks {
+    background-color: #069}
+table.data td.graph
+.percentage {
+    background-color: #00B1E3}
+.detail-table
+th {
+    text-align: left;
+    font-weight: bold;
+    padding-right: 5px;
+    white-space: nowrap;
+    width: 10%}
+.icon {
+    padding-left: 20px;
+    line-height: 20px;
+    background-repeat: no-repeat;
+    background-position: left center}
+.icon-info {
+    background-image: url("../img/information.gif")}
+.action {
+    display: block;
+    float: left}
+.details {
+    background-image: url("../img/information.gif")}
+.enable {
+    background-image: url("../img/tick.gif")}
+.disable {
+    background-image: url("../img/cross.gif")}
+.uninstall {
+    background-image: url("../img/plugin_delete.gif")}
+.settings {
+    background-image: url("../img/wrench.gif")}
+.preferences {
+    background-image: url("../img/pencil.gif")}
+.item-info
+.name {
+    font-weight: bold;
+    font-size: 1.4em;
+    color: #666;
+    margin-right: 10px}
+.item-info
+.version {
+    color: #666}
+.item-info
+p {
+    margin: 0px
+        0px 5px 10px}
+.checkdb {
+    float: right;
+    margin-top: 12px}
+.form-message {
+    width: 650px;
+    margin-bottom: 1em;
+    padding:  .7em 1em 0.7em 30px;
+    color: black;
+    border: 1px
+        solid #CA888A;
+    background-position: 5px center;
+    background-repeat: no-repeat}
+.form-message-error {
+    background-color: pink;
+    font-weight: bold;
+    /**background-image: url("../img/errormessage.gif")**/}
+.form-message-error
+ul {
+    padding-left: 15px;
+    margin: 5px}
+div.dropDown div.panel
+div {
+    overflow: hidden;
+    padding: 0
+        8px}
+div.dropDown div.panel div
+div.column {
+    float: left;
+    border: none;
+    padding: 8px
+        0}
+.entityList .column
+strong {
+    line-height: 22px}
+.entityList .column
+ul {
+    width: 260px;
+    height: 300px;
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    border-top: 1px solid #bbb;
+    border-right: 1px solid #969a9d;
+    border-bottom: 1px solid #969a9d;
+    background: #fff}
+.entityList .column.first
+ul {
+    border-left: 1px solid #bbb}
+.entityList .column
+.loading {
+    background-image: url(../img/indicator-blue-small.gif);
+    background-repeat: no-repeat;
+    background-position: 8px 8px}
+.entityList .column
+li {
+    cursor: pointer;
+    font-size: 1.1em;
+    padding: 0}
+.entityList .column li
+a {
+    display: block;
+    position: static;
+    text-decoration: none;
+    color: #444;
+    padding: 1px
+        4px 1px 24px;
+    background-position: 5px 3px;
+    width: 100%;
+    overflow: hidden}
+.entityList .column
+.selected {
+    background-color: #ddd;
+    background-image: url(../img/message-background.png);
+    background-position: 0 -2px;
+    background-repeat: repeat-x;
+    -background-image: none}
+.entityList .column .active
+.selected {
+    background-color: #0767A8}
+.entityList .column .active .selected
+a {
+    color: #fff}
+.breadcrumb ul,
+.breadcrumb ul
+li {
+    margin: 0;
+    padding: 0}
+.breadcrumb
+.dropDown {
+    display: block;
+    position: relative;
+    top: 3px;
+    left: 1px;
+    white-space: nowrap}
+.breadcrumb .dropDown
+span {
+    position: relative;
+    display: block;
+    float: left;
+    z-index: 2002;
+    background: transparent url(../img/dropdown-background.png) repeat scroll left 1px;
+    line-height: 20px;
+    padding: 0;
+    cursor: pointer;
+    top:  -1px;
+    left:  -1px;
+    -display: inline;
+    -float: none}
+.breadcrumb .dropDown.active
+span {
+    background-color: #e5f0f8;
+    background-image: url(../img/message-background.png);
+    background-position: left -2px;
+    background-repeat: repeat-x;
+    -background-image: none;
+    border-left: 1px solid #e4e5e4;
+    border-right: 1px solid #aac0d8;
+    border-bottom: 1px solid #e5f0f8;
+    border-top: 1px solid #e4e5e4;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    top:  -2px;
+    left:  -2px;
+    -top:  -1px}
+.breadcrumb .dropDown span span,
+.breadcrumb .dropDown.active span
+span {
+    position: static;
+    float: none;
+    background-position: right -23px;
+    background-repeat: no-repeat;
+    color: #444;
+    border: none;
+    padding: 1px
+        16px 1px 0;
+    *padding: 1px
+        16px 2px 0;
+    -padding: 3px
+        16px 3px 0}
+.breadcrumb .dropDown.active span
+span {
+    background: transparent url(../img/message-arrow-d.gif) right center no-repeat}
+.breadcrumb .dropDown span span ul,
+.breadcrumb .dropDown span span ul
+li {
+    display: inline;
+    margin: 0
+        4px 0 0;
+    border: none}
+.breadcrumb .dropDown
+div.panel {
+    background: #e5f0f8;
+    display: none;
+    position: absolute;
+    top: 22px;
+    left:  -2px;
+    margin: 0;
+    padding: 0;
+    z-index: 2001;
+    border-top: 1px solid #e4e5e4;
+    border-left: 1px solid #e4e5e4;
+    border-right: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -webkit-bottom-top-left-radius: 5px;
+    -webkit-bottom-top-right-radius: 5px}
+.breadcrumb .dropDown.active
+div.panel {
+    display: block}
+h2.section {
+    border-bottom: 1px solid #DDD;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 17px;
+    padding: 4px
+        0px}
+h3.section {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 14px;
+    padding-bottom: 4px}
+h1, h2, h3, h4 {
+    color: #444}
+p {
+    margin: 0pt 0pt 0.7em;
+    line-height: 150%}
+.wizard-steps {
+    line-height: 44px;
+    font-size: 12px;
+    margin-bottom: 12px;
+    overflow: auto;
+    -zoom: 1}
+.wizard-steps
+li {
+    height: 44px;
+    padding: 0px;
+    list-style: none;
+    float: left;
+    background-color: #e4e4e4;
+    color: #898989;
+    background-image: url(../img/wizard-lead-out.png);
+    background-repeat: no-repeat;
+    background-position: right 0px}
+.wizard-steps li
+div.body {
+    padding: 0px
+        32px 0px 12px}
+.wizard-steps li.first
+div.body {
+    background-image: url(../img/wizard-lead-in.png);
+    background-repeat: no-repeat;
+    background-position: left 0px}
+.wizard-steps li.current
+div.body {
+    background-position: left -44px}
+.wizard-steps
+li.last {
+    background-position: right -44px}
+.wizard-steps li.current,  .wizard-steps li.current-last {
+    background-color: #2098c8;
+    color: white}
+.wizard-steps
+li.current {
+    background-position: right -88px}
+.wizard-steps li.current-last {
+    background-position: right -132px}
+.wizard-steps li.done,  .wizard-steps li.last-done {
+    background-color: #c3e4f1;
+    color: #2098c8}
+.wizard-steps
+li.done {
+    background-position: right -176px}
+.wizard-steps li.last-done {
+    background-position: right -220px}
+.wizard-steps
+em {
+    font-style: normal;
+    font-weight: bold}
+.tableWrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 2px}
+.tableWrapper
+.tableHeader {
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding: 6px
+        0 0;
+    position: relative;
+    z-index: 1;
+    zoom: 1}
+.tableWrapper .tableHeader
+.corner {
+    position: absolute;
+    overflow: hidden;
+    font-size: 0;
+    height: 8px;
+    width: 8px;
+    background-image: url("../img/panel-corners.png");
+    background-repeat: no-repeat}
+.tableWrapper .tableHeader
+.left {
+    left:  -1px;
+    top:  -1px;
+    background-position: top left}
+.tableWrapper .tableHeader
+.right {
+    right:  -1px;
+    top:  -1px;
+    background-position: top right;
+    -right:  -1px}
+.tableWrapper
+.clear {
+    clear: both;
+    height: 0px;
+    overflow: hidden;
+    margin: 6px
+        0 0}
+.tableWrapper .tableActions,
+.tableWrapper
+.tableFilters {
+    display: block;
+    float: left;
+    clear: left;
+    margin: 0;
+    padding: 0
+        0 0 8px;
+    line-height: 26px;
+    height: 26px}
+.tableWrapper tfoot .tableActions,  .tableWrapper .tableFooter
+.tableActions {
+    padding: 0px}
+.tableWrapper
+.tableFilters.alignRight {
+    clear: none;
+    float: right}
+.tableWrapper
+.tableFilters.alignLeft {
+    clear: none;
+    float: left}
+.tableWrapper .tableActions li,
+.tableWrapper .tableFilters
+li {
+    display: block;
+    float: left;
+    list-style-type: none;
+    padding: 0
+        12px 0 0}
+.tableWrapper
+table {
+    width: 100%;
+    border-collapse: separate;
+    clear: left;
+    border-left: 1px solid #e3e3e3;
+    border-right: 1px solid #e3e3e3}
+.tableWrapper
+table.fixedLayout {
+    table-layout: fixed}
+.tableWrapper table
+table {
+    border: none}
+.tableWrapper table
+th {
+    background: url(../img/table-header.png) left -2px repeat-x;
+    border-top: 1px solid #f4f4f4;
+    border-bottom: 1px solid #c9c9c9;
+    line-height: 26px;
+    padding: 0
+        8px;
+    font-weight: bold}
+.tableWrapper table .toggleSelection,
+.tableWrapper table
+.toggleAll {
+    width: 20px;
+    padding: 5px
+        0 0 6px;
+    *padding: 0
+        0 0 6px;
+    -padding: 5px
+        0 0 6px}
+.tableWrapper table
+.toggleAll {
+    padding: 0
+        0 0 6px}
+.tableWrapper table
+td {
+    border-bottom: 1px solid #e6e6e6;
+    line-height: 1.2;
+    padding: 8px
+        8px 6px;
+    vertical-align: top;
+    overflow: hidden;
+    text-overflow: ellipsis}
+.tableWrapper table
+.alignRight {
+    text-align: right}
+.tableWrapper table .sortDown a,
+.tableWrapper table .sortDown
+span {
+    background: url(../img/arrow-d.gif) center right no-repeat;
+    padding: 2px
+        16px 2px 0}
+.tableWrapper table .sortUp a,
+.tableWrapper table .sortUp
+span {
+    background: url(../img/arrow-u.gif) center right no-repeat;
+    padding: 2px
+        16px 2px 0}
+.tableWrapper table .sortDown.alignRight a,
+.tableWrapper table .sortDown.alignRight span,
+.tableWrapper table .sortUp.alignRight a,
+.tableWrapper table .sortUp.alignRight
+span {
+    background-position: center left;
+    padding: 2px
+        0 2px 16px}
+.horizontalActions {
+    -width: 0}
+.rowActions {
+    display: inline;
+    margin: 0;
+    padding: 0}
+.rowActions
+li {
+    display: inline;
+    margin: 0
+        0 0 16px}
+.tableWrapper table .alignRight .rowActions li
+a {
+    padding: 2px
+        0 2px 20px}
+.verticalActions {
+    width: 0}
+.verticalActions
+.rowActions {
+    display: block;
+    margin: 2px
+        0 0}
+.verticalActions .rowActions
+li {
+    display: block;
+    margin: 0;
+    text-align: left;
+    white-space: nowrap;
+    line-height: 22px}
+.tableWrapper .tableHeader
+.label {
+    float: left}
+.tableWrapper
+.dropDown {
+    display: block;
+    float: left;
+    position: relative;
+    top:  -1px;
+    left: 0;
+    white-space: nowrap;
+    margin: 0
+        0 0 4px}
+.tableWrapper .dropDown
+span {
+    display: block;
+    background: url(../img/dropdown-background.png) left top no-repeat;
+    cursor: pointer;
+    position: relative;
+    top: 4px;
+    padding: 0
+        0 4px;
+    height: 20px;
+    line-height: 20px;
+    -width: 0%}
+.tableWrapper .dropDown span
+span {
+    display: block;
+    background-position: right -24px;
+    padding: 0
+        26px 0 8px;
+    position: relative;
+    top: 0;
+    color: #444}
+.tableWrapper .dropDown.active
+span {
+    background-position: left -49px}
+.tableWrapper .dropDown.active span
+span {
+    background-position: right -73px;
+    color: #fff}
+.tableWrapper .dropDown
+div.panel {
+    background: #fff;
+    display: none;
+    position: absolute;
+    top: 22px;
+    left:  -2px;
+    margin: 0;
+    padding: 0
+        6px 0 0;
+    z-index: 1001;
+    background: url(../img/dropdown-right.png) right bottom no-repeat;
+    border: none;
+    -width: 160px;
+    -background: url(../img/dropdown-right.gif) right bottom no-repeat}
+.tableWrapper .alignRight .dropDown
+div.panel {
+    left: auto;
+    right:  -2px}
+.tableWrapper .dropDown.active
+div.panel {
+    display: block}
+.tableWrapper .dropDown div.panel
+div {
+    background: url(../img/dropdown-left.png) left bottom no-repeat;
+    max-width: 200px;
+    padding: 0
+        0 8px;
+    overflow: visible;
+    -background: url(../img/dropdown-left.gif) left bottom no-repeat}
+.tableWrapper .dropDown
+ul {
+    display: block;
+    border-top: 1px solid #ccc;
+    padding: 6px
+        0 0;
+    margin: 0
+        -3px 0 3px}
+.tableWrapper .dropDown ul
+li {
+    float: none;
+    display: block;
+    line-height: 22px;
+    padding: 0}
+.tableWrapper .tableWrapper .tableFilters .dropDown
+li {
+    float: none;
+    padding: 0}
+.tableWrapper .dropDown ul li
+a {
+    display: block;
+    color: 0767a8;
+    padding: 0
+        40px 0 8px;
+    -zoom: 1}
+.tableWrapper .dropDown ul li a:hover {
+    background-color: #0767a8;
+    color: #fff;
+    text-decoration: none}
+.tableWrapper .dropDown
+.mask {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: transparent;
+    z-index: 1000}
+.tableWrapper .dropDown.active
+div.mask {
+    display: block}
+.tableMessage
+.panel {
+    padding: 15px;
+    border: 1px
+        solid #ddd;
+    position: relative;
+    top: 0;
+    left: 0;
+    background: #fff url("../img/panel-background.png") bottom left repeat-x;
+    -zoom: 1;
+    margin: 10px
+        0px 15px 0px}
+.tableMessage .panel
+.corner {
+    position: absolute;
+    overflow: hidden;
+    font-size: 0;
+    height: 8px;
+    width: 8px;
+    background-image: url("../img/panel-corners.png");
+    background-repeat: no-repeat}
+.tableMessage .panel .bottom-left {
+    left:  -1px;
+    bottom:  -1px;
+    -bottom:  -2px;
+    background-position: bottom left}
+.tableMessage .panel .bottom-right {
+    right:  -1px;
+    -right:  -2px;
+    bottom:  -1px;
+    -bottom:  -2px;
+    background-position: bottom right}
+.tableMessage .panel .top-left {
+    left:  -1px;
+    top:  -1px;
+    background-position: top left}
+.tableMessage .panel .top-right {
+    right:  -1px;
+    -right:  -2px;
+    top:  -1px;
+    background-position: top right}
+.tableMessage {
+    position: relative}
+.tableMessage
+.panel {
+    position: absolute;
+    float: left;
+    top:  -22px;
+    left: 100px;
+    right: 100px;
+    padding: 16px
+        10px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 140%}
+.tableWrapper table
+td.hasPanel {
+    width: 0;
+    overflow: visible}
+.tableWrapper table td.hasPanel
+div.panel {
+    padding: 16px
+        10px;
+    margin: 4px
+        0 6px}
+.tableWrapper table td.hasPanel div.panel
+table {
+    width: 0}
+.tableWrapper table td.hasPanel div.panel table td,
+.tableWrapper table td.hasPanel div.panel table
+th {
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 0.9em;
+    white-space: nowrap;
+    line-height: 140%;
+    padding: 0}
+.tableWrapper table td.hasPanel div.panel table
+th {
+    padding: 0
+        12px 0 0;
+    text-align: right}
+.tableHeader .inactive
+a {
+    color: #999;
+    cursor: default}
+.tableHeader .inactive a:hover {
+    text-decoration: none}
+.tableHeader
+span {
+    color: #999}
+.tableWrapper .tableFooter td,  .tableWrapper tfoot
+td {
+    line-height: 350%}
+.tableWrapper table tr.level0
+td.indented {
+}
+.tableWrapper table tr.level1
+td.indented {
+    padding-left: 26px}
+.tableWrapper table tr.level2
+td.indented {
+    padding-left: 52px}
+.tableWrapper table th.num,
+.tableWrapper table
+td.num {
+    text-align: right;
+    padding-right: 2em}
+.tableWrapper table th.bool,
+.tableWrapper table
+td.bool {
+    text-align: center}
+.tableWrapper table tbody
+tr.hl {
+    background-color: #d4f4de !important}
+.tableWrapper table tbody
+tr.even {
+    background-color: #f6f6f6}
+.tableWrapper table tbody
+tr.odd {
+    background-color: #fff}
+.tableWrapper table tbody tr:hover {
+    background-color: #ffffeb}
+.tableWrapper table tbody tr.empty:hover {
+    background-color: transparent}
+.tableWrapper table tbody
+tr.active {
+    background-color: #ffc}
+.tableWrapper table tbody tr td.cursor-pointer {
+    cursor: pointer}
+.tableWrapper
+.pager {
+    float: right}
+.tableWrapper .pager
+.summary {
+    color: #444;
+    margin-right: 5px}
+.tableWrapper .pager .summary
+em {
+    font-style: normal;
+    font-weight: bold}
+.tableWrapper .pager .controls
+.current {
+    font-weight: bold}
+.tableWrapper .pager .controls .current,  .tableWrapper .pager .controls
+.page {
+    padding-left: 5px;
+    padding-right: 5px}
+.tableWrapper
+small {
+    font-size: 100%;
+    color: #b8b8b8}
+div.messagePlaceholder {
+    position: relative;
+    top: 0;
+    height: 0;
+    overflow: visible;
+    line-height: 0px;
+    -height: 33px;
+    -margin-bottom:  -33px;
+    -overflow: hidden}
+div.messagePlaceholderForm, div.messagePlaceholderStatic {
+    height: auto;
+    margin-bottom: 1em}
+div.message
+div.panel {
+    position: relative;
+    font-size: 1em;
+    line-height: 135%;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    background: transparent}
+div.message div.panel
+div.icon {
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/message.gif");
+    background-repeat: no-repeat;
+    padding: 0}
+div.message div.topleft,
+div.message div.topright,
+div.message div.bottomleft,
+div.message
+div.bottomright {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-image: url("../img/message.gif");
+    background-repeat: no-repeat;
+    font-size: 0}
+div.message
+div.topleft {
+    top:  -1px;
+    left:  -1px;
+    -top: 0px}
+div.message
+div.topright {
+    top:  -1px;
+    right:  -1px;
+    -top: 0px;
+    -right: 0px}
+div.message
+div.bottomleft {
+    bottom:  -1px;
+    left:  -1px}
+div.message
+div.bottomright {
+    bottom:  -1px;
+    right:  -1px;
+    -right: 0px}
+div.message div.panel
+p {
+    padding: 5px
+        5px 4px 28px;
+    margin: 0}
+div.message div.panel.hasClose
+p {
+    padding-right: 32px}
+div.message div.panel
+a {
+    font-weight: bold;
+    text-decoration: underline}
+div.message
+div.confirm {
+    color: #045222;
+    background-color: #a8e9be;
+    border: 1px
+        solid #9ad6b2}
+div.message div.confirm
+a {
+    color: #045222}
+div.message div.confirm
+div.icon {
+    background-position: 0px -8px}
+div.message div.confirm
+div.topleft {
+    background-position: 0px 0px}
+div.message div.confirm
+div.topright {
+    background-position:  -4px 0px}
+div.message div.confirm
+div.bottomleft {
+    background-position: 0px -4px}
+div.message div.confirm
+div.bottomright {
+    background-position:  -4px -4px}
+div.message
+div.info {
+    color: #255792;
+    background-color: #b3def1;
+    border: 1px
+        solid #a7cae0}
+div.message div.info
+a {
+    color: #255792}
+div.message div.info
+div.icon {
+    background-position:  -24px -8px}
+div.message div.info
+div.topleft {
+    background-position:  -24px 0px}
+div.message div.info
+div.topright {
+    background-position:  -28px 0px}
+div.message div.info
+div.bottomleft {
+    background-position:  -24px -4px}
+div.message div.info
+div.bottomright {
+    background-position:  -28px -4px}
+div.message
+div.warning {
+    color: #7d4605;
+    background-color: #fed39e;
+    border: 1px
+        solid #f7bc78}
+div.message div.warning
+a {
+    color: #7d4605}
+div.message div.warning
+div.icon {
+    background-position:  -48px -8px}
+div.message div.warning
+div.topleft {
+    background-position:  -48px 0px}
+div.message div.warning
+div.topright {
+    background-position:  -52px 0px}
+div.message div.warning
+div.bottomleft {
+    background-position:  -48px -4px}
+div.message div.warning
+div.bottomright {
+    background-position:  -52px -4px}
+div.message
+div.error {
+    color: #760605;
+    background-color: #ff9798;
+    border: 1px
+        solid #ca888a}
+div.message div.error
+a {
+    color: #760605}
+div.message div.error
+div.icon {
+    background-position:  -72px -8px}
+div.message div.error
+div.topleft {
+    background-position:  -72px 0px}
+div.message div.error
+div.topright {
+    background-position:  -76px 0px}
+div.message div.error
+div.bottomleft {
+    background-position:  -72px -4px}
+div.message div.error
+div.bottomright {
+    background-position:  -76px -4px}
+div.message
+div.close {
+    position: absolute;
+    right: 6px;
+    bottom: 5px;
+    width: 14px;
+    height: 14px;
+    background: url("../img/message.gif") -96px 0px no-repeat;
+    line-height: 14px;
+    text-indent:  -2000em;
+    cursor: pointer}
+div.localMessage {
+    padding: 0;
+    border: none;
+    width: 100%}
+div.localMessage
+div.panel {
+    width: 500px}
+div.formMessage {
+    overflow: hidden}
+div.formMessage
+div.panel {
+    width: 550px}
+div.globalMessage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 0;
+    border: none}
+div.globalMessage
+div.panel {
+    width: 400px;
+    border-top: none;
+    margin: 0
+        auto}
+div.globalMessage div.panel div.topleft,
+div.globalMessage div.panel
+div.topright {
+    display: none}
+div.notificationPlaceholder div.message
+div.panel {
+    margin-bottom: 5px}
+div.calendar {
+    position: relative}
+.calendar,  .calendar
+table {
+    border: 1px
+        solid black;
+    font-size: 11px;
+    color: #000;
+    cursor: default;
+    background-color: rgb(246,  246,  246);
+    padding: 10px;
+    font-family: tahoma, verdana, sans-serif}
+.calendar
+table {
+    border: none}
+.calendar
+.button {
+    text-align: center;
+    padding: 2px}
+.calendar
+.nav {
+    color: rgb(111,  111,  111);
+    border: 1px
+        solid rgb(193,  193,  193);
+    padding: 2px;
+    background: rgb(255,  255,  255) url(../img/jscalendar/menuarrow.gif) no-repeat 100% 100%}
+.calendar thead
+.title {
+    font-weight: bold;
+    text-align: center;
+    background: rgb(246,  246,  246);
+    ;
+    color: #000;
+    padding: 2px}
+.calendar.thead
+tr {
+    border-bottom: 1px solid #000}
+.calendar thead
+.headrow {
+    background: rgb(246,  246,  246);
+    ;
+    color: #000}
+.calendar thead
+.daynames {
+    background: rgb(246,  246,  246);
+}
+.calendar thead
+.name {
+    padding: 2px;
+    text-align: center;
+    color: #000}
+.calendar thead
+.weekend {
+    color: #a66}
+.calendar thead
+.hilite {
+    background-color: #d2d2d2;
+    color: #000;
+    padding: 2px}
+.calendar thead
+.active {
+    background-color: #77c;
+    padding: 2px
+        0px 0px 2px}
+.calendar tbody
+.day {
+    width: 2em;
+    color: rgb(131,  131,  165);
+    text-align: right;
+    padding: 2px
+        4px 2px 2px;
+    border: 1px
+        solid rgb(201,  201,  201);
+    background-color: #fff}
+.calendar tbody
+.day.othermonth {
+    font-size: 80%;
+    color: #bbb}
+.calendar tbody
+.day.othermonth.oweekend {
+    color: #fbb}
+.calendar table
+.wn {
+    padding: 2px
+        3px 2px 2px;
+    border-right: 1px solid #000;
+    background: #bdf}
+.calendar tbody .rowhilite
+td {
+    background: #f6f6f6}
+.calendar tbody .rowhilite
+td.wn {
+    background: #eef}
+.calendar tbody
+td.hilite {
+    background: #c9c9c9;
+    padding: 2px
+        4px 2px 2px}
+.calendar tbody
+td.active {
+    background: #f6f6f6;
+    padding: 2px
+        2px 0px 2px}
+.calendar tbody
+td.selected {
+    color: rgb(131,  131,  165);
+    border: 2px
+        solid #000;
+    padding: 1px
+        3px 1px 1px}
+.calendar tbody
+td.weekend {
+    color: rgb(131,  131,  165)}
+.calendar tbody
+td.today {
+    color: #a66}
+.calendar tbody
+.disabled {
+    color: #999}
+.calendar tbody
+.emptycell {
+    border: 1px
+        solid rgb(201,  201,  201);
+    background-color: rgb(201,  201,  201)}
+.calendar tbody
+.emptyrow {
+    display: none}
+.calendar tfoot
+.footrow {
+    text-align: center;
+    background: #556;
+    color: #fff;
+    display: none}
+.calendar tfoot
+.ttip {
+    background: #fff;
+    color: #445;
+    border-top: 1px solid #556;
+    padding: 1px}
+.calendar tfoot
+.hilite {
+    background: #aaf;
+    border: 1px
+        solid #04f;
+    color: #000;
+    padding: 1px}
+.calendar tfoot
+.active {
+    background: #77c;
+    padding: 2px
+        0px 0px 2px}
+.calendar
+.combo {
+    position: absolute;
+    display: none;
+    top: 0px;
+    left: 0px;
+    width: 4em;
+    cursor: default;
+    border: 1px
+        solid #655;
+    background-color: rgb(246,  246,  246);
+    color: #000;
+    font-size: 90%;
+    z-index: 100}
+.calendar .combo .label,
+.calendar .combo .label-IEfix {
+    text-align: center;
+    padding: 1px}
+.calendar .combo .label-IEfix {
+    width: 4em}
+.calendar .combo
+.hilite {
+    background: #c9c9c9}
+.calendar .combo
+.active {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    background: #c9c9c9;
+    font-weight: bold}
+.calendar
+td.time {
+    border-top: 1px solid #000;
+    padding: 1px
+        0px;
+    text-align: center;
+    background-color: #f4f0e8}
+.calendar td.time .hour,
+.calendar td.time .minute,
+.calendar td.time
+.ampm {
+    padding: 0px
+        3px 0px 4px;
+    border: 1px
+        solid #889;
+    font-weight: bold;
+    background-color: #fff}
+.calendar td.time
+.ampm {
+    text-align: center}
+.calendar td.time
+.colon {
+    padding: 0px
+        2px 0px 3px;
+    font-weight: bold}
+.calendar td.time
+span.hilite {
+    border-color: #000;
+    background-color: #667;
+    color: #fff}
+.calendar td.time
+span.active {
+    border-color: #f00;
+    background-color: #000;
+    color: #0f0}
+body, table, td, select, textarea, input, button {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px}
+span.link {
+    color: #039;
+    text-decoration: none}
+span.link:hover {
+    text-decoration: underline}
+.csverror {
+    color: #000;
+    font-size: 8px;
+    font-weight: bold;
+    text-decoration: none}
+.tab-s {
+    color: #44444}
+.tab-s, .tab-u, .tab-g, .tab-r {
+    font-size: 120%;
+    font-weight: bold;
+    text-decoration: none}
+div.errormessage {
+    background-color: #FFFFE1;
+    border: 1px
+        dashed #CFCFCF;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    padding: 6px
+        6px 6px 32px;
+    line-height: 18px;
+    width: 50%;
+}
+
+div.errormessage
+td {
+    line-height: 18px}
+img.errormessage {
+    margin-left:  -24px}
+div.infomessage {
+    background-color: #FFFFE1;
+    border: 1px
+        dashed #CFCFCF;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    margin-right: 80px;
+    padding: 6px
+        6px 6px 32px;
+    line-height: 18px;
+    background-image: url('../img/info.gif');
+    background-repeat: no-repeat;
+    background-position: 8px 8px;
+    width: 540px}
+div.infomessage
+p {
+    margin-top: 0;
+    margin-bottom: 6px}
+div.errormessageicon {
+    background-color: #FFFFE1;
+    border: 1px
+        dashed #CFCFCF;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    margin-right: 80px;
+    padding: 6px
+        6px 6px 32px;
+    line-height: 18px;
+    background-image: url('../img/errormessage.gif');
+    background-repeat: no-repeat;
+    background-position: 8px 8px}
+div#helpLayer {
+    background-color: #FFFFE1;
+    border-top: 1px dashed #CFCFCF;
+    padding: 8px
+        8px 8px 28px}
+img#helpIcon {
+    margin-left:  -20px}
+.topLink {
+    color: #FFF;
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration: none}
+.topLink:hover {
+    text-decoration: none}
+.topLink:hover
+span {
+    text-decoration: underline}
+* html a.topLink:hover {
+    text-decoration: underline}
+.topLink
+img {
+    border: 0;
+    vertical-align: middle;
+    height: 16px;
+    width: 16px}
+select[disabled], textarea[disabled], input[disabled], input[disabled] {
+    background-color: #eeeff2}
+textarea:focus, input[type=text]:focus, input[type=password]:focus {
+    background-color: #c7e9d1}
+select.flat, textarea.flat, input.flat, select.error, textarea.error, input.error, textarea.code, button.flat {
+    border-style: solid;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px}
+button.flat {
+    border-color: ButtonShadow}
+input.checkbox {
+    border: 0}
+select.error:focus, textarea.error:focus, input.error:focus {
+    background-color: #ffd4d4}
+select.flat, textarea.flat, input.flat, textarea.code {
+    border-color: #888}
+select.error, textarea.error, input.error {
+    border-color: #900}
+textarea.code, textarea.code-gray {
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    font-size: 12px;
+    line-height: 15px}
+textarea.code-gray {
+    border-style: solid;
+    border-top-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    color: #808080}
+textarea.comments {
+    border-style: solid;
+    border-color: #808080;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    overflow: visible}
+div.box {
+    height: 100px;
+    width: 275px;
+    background-color: #FFF;
+    border: 1px
+        solid #7F9DB9;
+    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin-top: 1px;
+    margin-bottom: 1px}
+textarea.box {
+    margin-top:  -1px;
+    height: 100px;
+    width: 275px}
+div.boxtitle {
+    font-weight: bold;
+    border-bottom: 1px #DDD solid;
+    padding-top: 6px;
+    padding-bottom: 5px}
+div.boxrow {
+    cursor: pointer;
+    border-bottom: 1px #DDD solid;
+    padding-top: 2px;
+    padding-bottom: 2px}
+div.boxrow
+img {
+    vertical-align: middle}
+div.boxrow
+input {
+    vertical-align: middle}
+input.accept {
+    background-image: url('../img/icon-checkmark.gif');
+    background-repeat: no-repeat;
+    background-position: 4px 3px;
+    padding-left: 14px;
+    font-weight: bold}
+fieldset {
+    border: 1px
+        solid #CDCDCD;
+    padding: 10px}
+form
+div.checkboxDesc {
+    padding: 1px
+        0px 3px 19px;
+    background: url(../img/indent.gif) 0px 0px no-repeat;
+    font-style: italic}
+form.login img,  form.login
+td {
+    vertical-align: bottom}
+form.login
+img.break {
+    margin: 8px
+        0px}
+.install {
+    font-size: 1.1em;
+    line-height: 21px;
+    color: #006}
+td.cellenabled {
+    color: #000}
+td.celldisabled {
+    color: #888}
+table {
+    border-collapse: collapse}
+table.targeting {
+    width: 90%}
+thead td, thead
+th {
+    font-weight: bold;
+    text-align: left}
+td.date, td.time {
+    text-align: left}
+td.numeric, td.percentage {
+    text-align: right}
+td.empty:after {
+    color: #707070;
+    content: '-'}
+tbody>tr>td.percentage:after {
+    content: '%';
+    color: #707070}
+tbody>tr>td.percentage.empty:after {
+    content: '-'}
+.ratio-somewhat-off-target {
+    color: black;
+    background: #ffe}
+table.targeting tbody tr.ratio-somewhat-off-target:hover {
+    color: #121010;
+    background-color: #ffc}
+.ratio-very-off-target {
+    color: black;
+    background: #fee}
+table.targeting tbody tr.ratio-very-off-target:hover {
+    color: #121010;
+    background-color: #fcc}
+table.targeting tbody tr:hover {
+    color: #121010;
+    background-color: #eee}
+cc.zone.unlinked:before, a.zone:before {
+    content: url('http://admin.m3.net/images/icon-zone.gif');
+    vertical-align: middle;
+    padding-right: 0.3em}
+.ad.unlinked:before, a.ad:before {
+    content: url('http://admin.m3.net/images/icon-banner-stored.gif');
+    vertical-align: middle;
+    padding-right: 0.3em}
+.interval.unlinked:before, a.interval:before {
+    content: url('http://admin.m3.net/images/icon-time.gif');
+    vertical-align: middle;
+    padding-right: 0.3em}
+.date.unlinked:before, a.date:before {
+    content: url('http://admin.m3.net/images/icon-date.gif');
+    vertical-align: middle;
+    padding-right: 0.3em}
+.time.unlinked:before, a.time:before {
+    content: url('http://admin.m3.net/images/icon-time.gif');
+    vertical-align: middle;
+    padding-right: 0.3em}
+.table {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    margin-top: 1em;
+    margin-bottom:  .5em}
+.attached-table {
+    margin-top:  -.5em}
+.table
+th {
+    font-weight: bold;
+    border-bottom: 1px solid #999;
+    padding: 0.4em 0.8em}
+.table th
+a {
+    white-space: nowrap}
+.table th a
+img {
+    margin-left: 4px}
+.table
+td {
+    border-bottom: 1px solid #CCC;
+    padding: 0.4em 0.8em}
+.table
+.last {
+    border-bottom: 1px solid #999}
+.table
+.aleft {
+    text-align: left}
+.table .aright, .table
+.toolbar {
+    text-align: right}
+.table .acenter, table td.acenter, table
+th.acenter {
+    text-align: center}
+.table
+td.light {
+    background-color: #FFF}
+.table
+td.dark {
+    background-color: #F6F6F6}
+.table
+td.redlight {
+    background-color: #FEE}
+.table
+td.reddark {
+    background-color: #F6E6E6}
+.table
+td.greenlight {
+    background-color: #CFC}
+.table
+td.greendark {
+    background-color: #C6F6C6}
+.table
+td.nblight {
+    background-color: #FFF;
+    border-bottom: 1px solid #FFF}
+.table
+td.nbdark {
+    background-color: #F6F6F6;
+    border-bottom: 1px solid #F6F6F6}
+.table
+td.nbredlight {
+    background-color: #FEE;
+    border-bottom: 1px solid #FEE}
+.table
+td.nbreddark {
+    background-color: #F6E6E6;
+    border-bottom: 1px solid #F6E6E6}
+.table
+td.nbgreenlight {
+    background-color: #CFC;
+    border-bottom: 1px solid #CFC}
+.table
+td.nbgreendark {
+    background-color: #C6F6C6;
+    border-bottom: 1px solid #C6F6C6}
+.table
+td.dblight {
+    background-color: #FFF;
+    border-bottom: 3px double #999}
+.table
+td.separate {
+    border-left: 1px solid #E0E0E0}
+.table
+td.toolbar {
+    font-size: 95%}
+.table td.toolbar a, .table td.toolbar
+span {
+    margin-left: 16px}
+.table td.toolbar
+span {
+    color: #999}
+.table td.details
+.toolbar {
+    clear: both;
+    text-align: right;
+    margin: 0.4em 0 0;
+    border-top: 1px solid #ccc;
+    padding-top: 0.4em}
+.table td.details .toolbar
+a {
+    margin-left: 16px}
+.section {
+    margin-bottom: 3em;
+    clear: both}
+.section
+img {
+    border: none}
+.section
+h2 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin: 24px
+        0 12px 0px}
+.section
+h3 {
+    font-size: 11px;
+    font-weight: bold;
+    margin: 2em
+        0 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #666}
+.section
+.row {
+    padding: 8px
+        10px;
+    border-bottom: 1px solid #666}
+.section
+.smallrow {
+    padding: 4px
+        10px}
+.section
+.light {
+    background-color: #fff}
+.section
+.dark {
+    background-color: #f6f6f6}
+.section
+.last {
+    border-bottom: none}
+.section
+div.label {
+    float: left;
+    width: 29%}
+.section .label
+label {
+    display: block;
+    width: 100%}
+label.error {
+    padding-left: 0.5em;
+    color: red}
+.section
+.element {
+    width: 70%;
+    margin-left: 30%}
+.section .element textarea, .section .element
+input {
+    width: 100%}
+.section .element
+span {
+    display: block;
+    margin-top: 4px}
+.section .element span
+input {
+    width: auto}
+.section .link-buttons {
+    text-align: right;
+    padding-top: 6px}
+.section .link-buttons
+img {
+    vertical-align: middle}
+.section .link-buttons a, .section .link-buttons
+span {
+    margin-left: 16px}
+.section .link-buttons
+span {
+    color: #999}
+.section
+.title {
+    font-weight: bold;
+    padding: 5px
+        0px 8px 0px;
+    border-bottom: 1px solid #E6E6E6;
+    margin-bottom: 5px;
+    color: #444}
+.section
+.content {
+    padding: 5px
+        0px 10px 15px}
+.even {
+    background-color: #f6f6f6}
+.odd {
+    background-color: #FFF}
+.add {
+    background-color: #ffedc7}
+table.data-grid {
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 1px
+        solid #cdcdcd;
+    width: 100%}
+table.data-grid
+tr.header {
+    background-image: url('css/../table-bg.gif');
+    background-repeat: repeat-x;
+    background-position: left bottom;
+    height: 35px}
+table.data-grid
+th {
+    padding: 2px;
+    border-bottom: 1px solid #cdcdcd;
+    font-weight: bold;
+    text-align: left}
+table.data-grid tr:hover {
+    background-color: #ffedc7}
+table.data-grid
+tr.odd {
+    background-color: #FFF}
+table.data-grid
+td.url {
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap}
+table.data-grid
+img {
+    border: 0}
+div.filters {
+    text-align: right;
+    margin-bottom: 15px;
+    margin-top: 15px}
+.hide {
+    display: none}
+.block {
+    display: block}
+.link {
+    cursor: pointer}
+.pointer {
+    cursor: pointer}
+.font-small {
+    font-size: 80%}
+span.start-edit {
+    background-image: url('../img/icon-edit.gif');
+    background-repeat: no-repeat;
+    background-position: 0 -1px;
+    padding-left: 20px}
+span.start-edit-disabled {
+    background-image: url('../img/icon-edit-disabled.gif');
+    background-repeat: no-repeat;
+    background-position: 0 -1px;
+    padding-left: 20px;
+    color: #a0a0a0}
+span.save-edit {
+    background-image: url('../img/icon-checkmark.gif');
+    background-repeat: no-repeat;
+    background-position: 1px 2px;
+    padding-left: 20px;
+    font-weight: bold}
+span.cancel-edit, span.cancel-add {
+    background-image: url('../img/icon-x.gif');
+    background-repeat: no-repeat;
+    background-position: 1px 2px;
+    padding-left: 15px;
+    margin-left: 3px}
+div.error-box {
+    background-image: url('../img/errormessage.gif');
+    background-repeat: no-repeat;
+    background-position: 5px 5px;
+    background-color: #fcc;
+    padding: 5px;
+    padding-left: 25px;
+    width: 70%;
+    border: 1px
+        solid red;
+    margin: 0
+        auto 0 auto6;
+    -moz-border-radius: 5px;
+    text-align: left;
+    line-height: 150%}
+select.inerror, input.inerror {
+    background-color: #fcc}
+select.inline {
+    margin-bottom: 2px;
+    margin-top: 2px}
+.main-submit {
+    font-weight: bold}
+.arrow-submit {
+    border: 0;
+    background-image: url('../img/ltr/go_blue.gif');
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: 0px 1px;
+    cursor: pointer;
+    width: 12px}
+.arrow-submit:focus {
+    background-color: transparent}
+form
+.section {
+    margin-bottom: 2em}
+form.new-form div.line:after, .clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden}
+form.new-form
+div.line {
+    margin-bottom: 5px}
+form.new-form div.line-nolabel {
+    margin-bottom: 3px;
+    padding-left: 100px}
+form.new-form
+label.left {
+    width: 100px;
+    float: left;
+    font-weight: bold}
+form.new-form input[type='checkbox'] {
+    margin: 3px
+        5px 3px 0}
+.line-cb {
+    margin: 0px
+        2px 0 2px}
+html>body label.cb, html>body
+a.cb {
+    position: relative;
+    top:  -2px}
+form.new-form
+label.inline {
+    position: relative;
+    top:  -1px;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-right: 5px}
+form.new-form input[type='text'], form.new-form
+select {
+    width: 18em}
+form.new-form
+input.main {
+    font-weight: bold}
+form.new-form {
+    margin: 10px
+        0 0 0}
+form
+.controls {
+    text-align: left;
+    margin-top: 15px;
+    padding-top: 7px;
+    width: 560px}
+a.adv-list-entry {
+    width: 150px;
+    float: left}
+.captcha {
+    margin-top: 20px;
+    vertical-align: top}
+.captcha
+img {
+    float: left;
+    margin-top: 10px}
+.captcha
+input {
+    margin: 10px;
+    margin-top: 15px}
+.deleted-affiliate {
+    font-weight: bold}
+.oa {
+    background-color: #E7F7CE}
+.space
+td {
+    height: 9px}
+.break
+td {
+    background-color: #888;
+    height: 1px}
+.sts {
+    padding: 0px
+        5px}
+.sts-accepted {
+    color: #299B3C}
+.sts-rejected, .sts-pending, .sts-paused, .sts-not-started, .sts-finished {
+    color: #777}
+.sts-inactive {
+    color: #EB7E23}
+.sts-pending, .sts-paused {
+    font-style: italic}
+.sts-awaiting, .sts-awaiting:hover, .sts-insufficient, .sts-awaiting a, .sts-awaiting:hover a, .sts-insufficient
+a {
+    color: #EF0E17 !important}
+.sts-reason {
+    display: none;
+    background-color: #F9FFD0}
+.dev-note {
+    padding: 15px;
+    color: #000;
+    background-color: #F7FFC0;
+    border: 1px
+        solid #D7D7D7;
+    width: 90%;
+    margin: 15px
+        0px}
+pre.invocation-codes {
+    background: #FFF none repeat scroll 0%;
+    border: 1px
+        solid #CCC;
+    cursor: text;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px;
+    white-space:  -moz-pre-wrap;
+    width: 100%}
+pre.invocation-codes {
+    color: #777;
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    font-size: 12px}
+div.table-content {
+    margin: 0
+        40px}
+.hint {
+    color: #a0a0a0}
+#user-access-action {
+    width: 6em}
+#user-access-table
+td {
+    padding-right: 10px}
+#user-access-table
+td.first {
+    padding-left: 5px}
+#user-access-table
+td.last {
+    padding-right: 0px}
+tr.hl {
+    background-color: #FFFFE1}
+td.norows {
+    text-align: center}
+a.permissions {
+    background-image: url('../img/icon-acl.gif');
+    background-repeat: no-repeat;
+    padding-left: 18px;
+    padding-bottom: 2px;
+    background-position: 0 -1px}
+a.unlink {
+    background-image: url('../img/icon-recycle.gif');
+    background-repeat: no-repeat;
+    padding-left: 18px;
+    padding-bottom: 2px;
+    background-position: 0 -1px}
+a.edit {
+    background-image: url('../img/icon-edit.gif');
+    background-repeat: no-repeat;
+    padding-left: 18px;
+    padding-bottom: 2px;
+    background-position: 0 -1px}
+div.terms {
+    padding: 1ex;
+    border: 1px
+        solid #808080;
+    height: 40ex;
+    margin-bottom: 20px;
+    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden}
+div.terms
+iframe {
+    border: 0;
+    width: 100%;
+    height: 100%}
+.available-int, .unavailable-int, .checking-int, .error-int {
+    font-weight: bold;
+    margin: 0
+        0 0 0.5em}
+.available-int {
+    color: #22b24c}
+.unavailable-int {
+    color: #f15922}
+#user-check-indicator .checking-int, #user-check-indicator .error-int {
+    color: #808080}
+#user-check-indicator.checking .unavailable-int, #user-check-indicator.checking .available-int, #user-check-indicator.checking .error-int, #user-check-indicator.error .unavailable-int, #user-check-indicator.error .available-int, #user-check-indicator.error .checking-int, #user-check-indicator.available .unavailable-int, #user-check-indicator.available .checking-int, #user-check-indicator.available .error-int, #user-check-indicator.unavailable .checking-int, #user-check-indicator.unavailable .available-int, #user-check-indicator.unavailable .error-int {
+    display: none}
+.terms-contents {
+    height: 500px;
+    overflow-y: scroll;
+    overflow-x: none}
+.terms-contents
+.li1 {
+    padding-left: 2px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    font-style: normal;
+    font-weight: bold}
+.terms-contents
+.li2txt {
+    margin: 25px;
+    padding-left: 25px;
+    padding-right: 20px}
+.terms-contents
+.li2 {
+    margin-left:  -25px;
+    margin-bottom: 0px;
+    float: left}
+.terms-contents ul, .terms-contents
+ol {
+    padding: 0pt 0.8em 0pt 1.5em;
+    margin-top: 1em;
+    margin-bottom: 1em}
+.terms-contents
+h1 {
+    border: 0;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    font-size: 200%}
+.filterLabel {
+    float: left;
+    font-weight: bold;
+    padding-right: 0.5em;
+    text-align: left;
+    width: 10em}
+.filterWrapper {
+    margin-bottom: 5px}
+.tableTitle {
+    font-weight: bold;
+    font-size: 9pt;
+    margin-bottom: 0}
+input.checkbox {
+    vertical-align: middle}
+#campaign-zone {
+}
+#select-zones {
+    clear: both}
+#campaign-zone #select-zones {
+    text-align: center}
+#campaign-zone #select-zones #linking-buttons {
+    width: 10%;
+    margin-left: auto;
+    margin-right: auto}
+#campaign-zone
+.button {
+    width: 100%;
+    margin-bottom: 3px}
+#campaign-zone
+#filters {
+    line-height: 170%}
+#campaign-zone #available, #campaign-zone #linked, #campaign-zone #filters-linked, #campaign-zone #filters-available {
+    width: 44%}
+#campaign-zone #available, #campaign-zone
+#linked {
+    height: 100%}
+#campaign-zone .zones-container {
+    overflow: auto;
+    overflow-x: hidden;
+    height: 380px;
+    position: relative}
+*+html #campaign-zone .zones-container {
+    padding-right: 15px}
+#campaign-zone #available, #campaign-zone #filters-available {
+    float: left;
+    text-align: left}
+#campaign-zone #linked, #campaign-zone #filters-linked {
+    float: right;
+    text-align: left}
+#campaign-zone #filters-search #search-phrase {
+    font-weight: bold}
+#campaign-zone #status-available, #campaign-zone #status-linked {
+    color: #999;
+    float: left;
+    width: 22%;
+    overflow: hidden;
+    padding-right: 10px;
+    white-space: nowrap;
+    line-height: 140%;
+    padding-top: 3px}
+#campaign-zone .status-value {
+    font-weight: bold;
+    color: #696969}
+#campaign-zone
+.zones {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center}
+#campaign-zone .zones td
+label {
+    white-space: nowrap}
+#campaign-zone table.zones tr th.name
+label {
+    color: #0767a8;
+    cursor: pointer}
+#campaign-zone table.zones tr th, #campaign-zone table.zones tr
+td {
+    text-align: center}
+#campaign-zone table.zones .name, #campaign-zone table.zones
+.category {
+    overflow: hidden;
+    white-space: nowrap}
+#campaign-zone table.zones
+.name {
+    text-align: left;
+    padding-left: 0}
+#campaign-zone .zones .ctr, #campaign-zone .zones .cr, #campaign-zone .zones .ecpm, #campaign-zone .zones
+.category {
+    width: 4em}
+#campaign-zone .zones
+.link {
+    width: 20px;
+    border-left: none}
+#campaign-zone .zones
+.category {
+    width: 20%}
+#campaign-zone table.zones tbody tr.zone
+td.name {
+    padding-left: 1.8em}
+#campaign-zone .zones tr.to-link {
+    background-color: #d1e6f6}
+#campaign-zone .zones tr.just-linked {
+    background-color: #ffefc4}
+#campaign-zone .zones
+td.estim {
+    color: #d09902}
+#campaign-zone .estim-box, #campaign-zone .accurate-box {
+    float: left;
+    width: 10px;
+    height: 10px;
+    margin-top: 2px;
+    margin-right: 3px}
+#campaign-zone .accurate-box {
+    background-color: #d09902}
+#campaign-zone .estim-box {
+    background-color: #000}
+#campaign-zone .accurate-info, #campaign-zone .estim-info {
+    position: relative;
+    top: 20px;
+    padding-top: 5px;
+    clear: both;
+    color: #707070}
+#campaign-zone .accurate-info {
+    border-top: 1px solid #e6e6e6}
+#campaign-zone .zones tbody
+tr {
+    cursor: pointer}
+#campaign-zone .zones tr.header, #campaign-zone .zones
+tr.empty {
+    cursor: default;
+    text-align: center}
+#campaign-zone .zones
+tr.empty {
+    height: 6ex}
+#campaign-zone table.zones tbody tr.header:hover td, #campaign-zone table.zones tbody tr.empty:hover
+td {
+    background-color: transparent}
+#quick-search.example-search {
+    color: #909090}
+#campaign-zone .panel-loading {
+    position: absolute;
+    top: 3px;
+    right: 0;
+    z-index: 1}
+#campaign-zone .show-filters {
+    padding-right: 1.5em}
+#campaign-zone .category-filter, #campaign-zone .search-filter {
+    width: 32%}
+#campaign-zone .zone-icon, #campaign-zone .website-icon {
+    display: block;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat}
+#campaign-zone .zone-icon {
+    background-image: url("../img/icon-shortcut-zone.png")}
+#campaign-zone .website-icon {
+    background-image: url("../img/icon-shortcut-website.png")}
+.example-search {
+    color: #b0b0b0}
+.ajax-loading {
+    background-image: url(../img/indicator-blue-small-transparent.gif);
+    background-repeat: no-repeat;
+    padding-left: 20px;
+    padding-bottom: 16px}
+.ajax-loading-big {
+    background-image: url("../img/indicator-blue-big.gif");
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding-bottom: 32px;
+    padding-right: 32px}
+.ajax-error {
+    background-image: url("../img/icon-warning.gif");
+    background-repeat: no-repeat;
+    padding-left: 20px}
+#campaign-zone
+.topPagerContainer {
+    background-color: #EEE;
+    min-height: 32px}
+#campaign-zone .topPagerContainer em,
+#campaign-zone #select-all-container-available em,
+#campaign-zone #select-all-container-linked
+em {
+    font-style: normal;
+    font-weight: bold}
+#campaign-zone .pager
+.summary {
+    margin-left: 5px}
+#campaign-zone
+.topPager {
+    margin: 5px
+        0;
+    margin-right: 5px}
+#campaign-zone #select-all-container-linked div,
+#campaign-zone #select-all-container-available
+div {
+    text-align: left}
+#campaign-zone #select-all-container-linked th,
+#campaign-zone #select-all-container-available
+th {
+    background-color: #fef2bc;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    color: #222}
+#campaign-zone #zones-linked-loading.has-paging,
+#campaign-zone #zones-available-loading.has-paging {
+    top: 35px}
+#campaign-zone
+.selectAllInAccount {
+    padding: 2px
+        0 2px 5px}
+.new-form input, .new-form
+select {
+    border-width: 1px;
+    font-weight: normal}
+.new-form input:focus {
+    background-color: transparent}
+.new-form
+button {
+    padding-top: 2px;
+    padding-bottom: 2px}
+.new-form button .arrow-right, .new-form button .arrow-left {
+    padding-left: 5px;
+    position: relative;
+    top: 5px;
+    background-repeat: no-repeat}
+.new-form button .arrow-right {
+    left: 5px;
+    background-image: url("../img/arrow-right.gif")}
+.new-form button .arrow-left {
+    right: 2px;
+    background-image: url("../img/arrow-left.gif")}
+.new-form button[disabled] .arrow-left {
+    background-image: url("../img/arrow-left-disabled.gif")}
+.new-form button[disabled] .arrow-right {
+    background-image: url("../img/arrow-right-disabled.gif")}
+.new-form
+button {
+    background-color: #0966ab;
+    color: white;
+    border-top-color: #0966ab;
+    border-left-color: #0966ab;
+    border-right-color: #003e7b;
+    border-bottom-color: #003e7b}
+.new-form button[disabled] {
+    background-color: #ddd;
+    color: #909090;
+    border-top-color: #ddd;
+    border-left-color: #ddd;
+    border-right-color: #7f7f7f;
+    border-bottom-color: #7f7f7f}
+.new-table-container {
+    border: 1px
+        solid #e6e6e6}
+table.new-table {
+    border-collapse: collapse}
+table.new-table tr th, table.new-table tr
+td {
+    padding-top: 3px;
+    padding-bottom: 3px}
+table.new-table tr
+td {
+    border-bottom: 1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6}
+table.new-table tr
+th {
+    background-color: #eee;
+    color: #696969;
+    font-weight: normal;
+    border-right: 1px solid white;
+    border-left: 1px solid white}
+table.new-table tr
+th {
+    border-right: none}
+table.new-table tbody tr:hover
+td {
+    background-color: #eee}
+b.sr {
+    background-color: #ffefc4}
+.filter-panel {
+    position: relative;
+    background-image: url("../img/filter-panel-body.png");
+    background-repeat: repeat-x;
+    min-height: 44px}
+.filter-content {
+    padding: 8px;
+    padding-left: 10px;
+    margin-bottom: 30px}
+.filter-panel-title {
+    color: #0867a9;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0
+        0 3px 1px}
+.filter-panel
+label.filter {
+    display: block;
+    float: left;
+    position: relative;
+    padding-left: 14px;
+    font-weight: bold}
+.filter-panel label.filter select, .filter-panel label.filter
+input {
+    width: 100%}
+.filter-panel .bg-left, .filter-panel .bg-right {
+    position: absolute;
+    top: 0;
+    width: 5px;
+    height: 44px;
+    background-repeat: no-repeat}
+.filter-panel .bg-left {
+    left: 0;
+    background-image: url("../img/filter-panel-left.png")}
+.filter-panel .bg-right {
+    right: 0;
+    background-image: url("../img/filter-panel-right.png")}
+div.breadcrumb
+.inlineIcon {
+    padding: 2px
+        0 2px 20px;
+    line-height: 20px}
+.inlineIcon, .inlineIconHasNext {
+    padding: 2px
+        0 2px 20px;
+    background-position: left center;
+    background-repeat: no-repeat}
+.inlineIconHasNext {
+    padding: 1px
+        5px 1px 20px}
+.iconAdvertiser {
+    background-image: url("../img/icon-advertiser.png")}
+.iconAdvertiserSystem {
+    background-image: url("../img/icon-advertiser-openx.png")}
+.iconAdvertiserLarge {
+    background-image: url("../img/icon-advertiser-large.png")}
+.iconAdvertiserAdd {
+    background-image: url("../img/icon-advertiser-add.png")}
+.iconAdvertiserAddLarge {
+    background-image: url("../img/icon-advertiser-add-large.png")}
+.iconAdvertisersLarge {
+    background-image: url("../img/icon-advertisers-large.png")}
+.iconCampaign {
+    background-image: url("../img/icon-campaign.png")}
+.iconCampaignSystem {
+    background-image: url("../img/icon-campaign-openx.png")}
+.iconCampaignSystemLarge {
+    background-image: url("../img/icon-campaign-openx-large.png")}
+.iconCampaignDisabled {
+    background-image: url("../img/icon-campaign-disabled.png")}
+.iconCampaignLarge {
+    background-image: url("../img/icon-campaign-large.png")}
+.iconCampaignAdd {
+    background-image: url("../img/icon-campaign-add.png")}
+.iconCampaignAddDisabled {
+    background-image: url("../img/icon-campaign-add-disabled.png")}
+.iconCampaignAddLarge {
+    background-image: url("../img/icon-campaign-add-large.png")}
+.iconCampaignSystemAdd {
+    background-image: url("../img/icon-campaign-openx-add.png")}
+.iconCampaignSystemAddLarge {
+    background-image: url("../img/icon-campaign-openx-add-large.png")}
+.iconCampaignDuplicate {
+    background-image: url("../img/icon-campaign-duplicate.png")}
+.iconCampaignMove {
+    background-image: url("../img/icon-campaign-to-advertiser.png")}
+.iconCampaignDelete {
+    background-image: url("../img/icon-campaign-remove.png")}
+.iconCampaigns {
+    background-image: url("../img/icon-campaigns.png")}
+.iconCampaignsLarge {
+    background-image: url("../img/icon-campaigns-large.png")}
+.iconCampaignsSystem {
+    background-image: url("../img/icon-campaigns-openx.png")}
+.iconCampaignsSystemLarge {
+    background-image: url("../img/icon-campaigns-openx-large.png")}
+.iconTracker {
+    background-image: url("../img/icon-tracker.png")}
+.iconTrackerLarge {
+    background-image: url("../img/icon-tracker-large.png")}
+.iconTrackerAddLarge {
+    background-image: url("../img/icon-tracker-add-large.png")}
+.iconTrackerLink {
+    background-image: url("../img/icon-zone-linked.gif")}
+.iconTrackerAdd {
+    background-image: url("../img/icon-tracker-add.png")}
+.iconTrackerDuplicate {
+    background-image: url("../img/icon-tracker-duplicate.png")}
+.iconTrackerMove {
+    background-image: url("../img/icon-tracker-to-advertiser.png")}
+.iconBanner {
+    background-image: url("../img/icon-banner.png")}
+.iconBannerDisabled {
+    background-image: url("../img/icon-banner-disabled.png")}
+.iconBannerText {
+    background-image: url("../img/icon-banner-text.png")}
+.iconBannerTextDisabled {
+    background-image: url("../img/icon-banner-text-disabled.png")}
+.iconBannerHtml {
+    background-image: url("../img/icon-banner-html.png")}
+.iconBannerHtmlDisabled {
+    background-image: url("../img/icon-banner-html-disabled.png")}
+.iconBannerExternal {
+    background-image: url("../img/icon-banner-external.png")}
+.iconBannerExternalDisabled {
+    background-image: url("../img/icon-banner-external-disabled.png")}
+.iconBannerLarge {
+    background-image: url("../img/icon-banner-large.png")}
+.iconBannerAdd {
+    background-image: url("../img/icon-banner-add.png")}
+.iconBannerAddDisabled {
+    background-image: url("../img/icon-banner-add-disabled.png")}
+.iconBannerAddLarge {
+    background-image: url("../img/icon-banner-add-large.png")}
+.iconBannerDuplicate {
+    background-image: url("../img/icon-banner-duplicate.png")}
+.iconBannerMove {
+    background-image: url("../img/icon-banner-to-campaign.png")}
+.iconBannerApplyLimitations {
+    background-image: url("../img/icon-delivery.png")}
+.iconBanners {
+    background-image: url("../img/icon-banners.png")}
+.iconBannersLarge {
+    background-image: url("../img/icon-banners-large.png")}
+.iconWebsite {
+    background-image: url("../img/icon-website.png")}
+.iconWebsiteShortcut {
+    background-image: url("../img/icon-shortcut-website.png")}
+.iconWebsiteLarge {
+    background-image: url("../img/icon-website-large.png")}
+.iconWebsiteAdd {
+    background-image: url("../img/icon-website-add.png")}
+.iconWebsiteAddLarge {
+    background-image: url("../img/icon-website-add-large.png")}
+.iconWebsiteUserAdd {
+    background-image: url("../img/icon-website-add.png")}
+.iconWebsitesLarge {
+    background-image: url("../img/icon-websites-large.png")}
+.iconZone {
+    background-image: url("../img/icon-zone.png")}
+.iconZoneShortcut {
+    background-image: url("../img/icon-shortcut-zone.png")}
+.iconZoneDisabled {
+    background-image: url("../img/icon-zone-disabled.png")}
+.iconZoneWarning {
+    background-image: url("../img/icon-zone-w.gif")}
+.iconZoneEmail {
+    background-image: url("../img/icon-zone-email.png")}
+.iconZoneEmailDisabled {
+    background-image: url("../img/icon-zone-email-disabled.png")}
+.iconZoneText {
+    background-image: url("../img/icon-zone-text.png")}
+.iconZoneTextDisabled {
+    background-image: url("../img/icon-zone-text-disabled.png")}
+.iconZoneFloating {
+    background-image: url("../img/icon-zone-floating.png")}
+.iconZoneFloatingDisabled {
+    background-image: url("../img/icon-zone-floating-disabled.png")}
+.iconZoneVideoInstream {
+    background-image: url("../img/icon-zone-video-instream.png")}
+.iconZoneVideoInstreamDisabled {
+    background-image: url("../img/icon-zone-video-instream-disabled.png")}
+.iconZoneVideoOverlay {
+    background-image: url("../img/icon-zone-video-overlay.png")}
+.iconZoneVideoOverlayDisabled {
+    background-image: url("../img/icon-zone-video-overlay-disabled.png")}
+.iconZoneLarge {
+    background-image: url("../img/icon-zone-large.png")}
+.iconZoneAdd {
+    background-image: url("../img/icon-zone-add.png")}
+.iconZoneAddDisabled {
+    background-image: url("../img/icon-zone-add-disabled.png")}
+.iconZoneAddLarge {
+    background-image: url("../img/icon-zone-add-large.png")}
+.iconZoneDuplicate {
+    background-image: url("../img/icon-zone-duplicate.png")}
+.iconZoneMove {
+    background-image: url("../img/icon-zone-to-website.png")}
+.iconZones {
+    background-image: url("../img/icon-zones.png")}
+.iconZonesLarge {
+    background-image: url("../img/icon-zones-large.png")}
+.iconZoneLinked {
+    background-image: url("../img/icon-zone-link.png")}
+.iconZoneProbability {
+    background-image: url("../img/icon-probability.png")}
+.iconZoneInvocation {
+    background-image: url("../img/icon-tag.png")}
+.iconTargetingChannel {
+    background-image: url("../img/icon-targeting-channel.png")}
+.iconTargetingChannelAcl {
+    background-image: url("../img/icon-acl.gif")}
+.iconTargetingChannelLarge {
+    background-image: url("../img/icon-targeting-channel-large.png")}
+.iconTargetingChannelAdd {
+    background-image: url("../img/icon-targeting-channel-add.png")}
+.iconTargetingChannelAddDisabled {
+    background-image: url("../img/icon-targeting-channel-add-disabled.png")}
+.iconTargetingChannelAddLarge {
+    background-image: url("../img/icon-targeting-channel-add-large.gif")}
+.iconTargetingChannelDuplicate {
+    background-image: url("../img/icon-targeting-channel-duplicate.png")}
+.iconTargetingChannels {
+    background-image: url("../img/icon-targeting-channels.png")}
+.iconTargetingChannelsLarge {
+    background-image: url("../img/icon-targeting-channels-large.png")}
+.iconDirectSelectionLarge {
+    background-image: url("../img/icon-direct-select-large.png")}
+.iconActivate {
+    background-image: url("../img/icon-activate.png")}
+.iconDeactivate {
+    background-image: url("../img/icon-deactivate.png")}
+.iconBack {
+    background-image: url("../img/icon-back.gif")}
+.iconDelete {
+    background-image: url("../img/icon-cross.gif")}
+.inactive
+.iconDelete {
+    background-image: url("../img/icon-cross-d.gif")}
+.iconStatistics {
+    background-image: url("../img/icon-statistics.png")}
+.iconZoom {
+    background-image: url("../img/icon-zoom.gif")}
+.iconEdit {
+    background-image: url("../img/icon-edit.gif")}
+.iconRefresh {
+    background-image: url("../img/icon-refresh.png")}
+.iconDummyLarge {
+    background-image: url("../img/icon-dummy-large.png")}
+
+.install_error
+{
+    color: red !important;
+    font-size: 1.1em  !important;
+
+}
+
+.icon-logs{
+    background-image: url("../img/icon-statistics.png")
+}
+
+.iconlock{
+    background-image: url("../img/padlock-closed.gif")
+}
+
+.iconopen{
+    background-image: url("../img/padlock-open.gif")
+}
+
+#page_div{
+    text-align: center;
+    margin: 10px;
+    font-size: 11px !important;
+    font-weight: bolder;
+}
+
+a.pglink{
+    margin: 5px !important;
+
+
+}
+.dwl{
+
+    background-image: url("../img/go.gif")
+
+}
+
+.batch_list {
+    position: relative;
+    width: 80% !important;
+    padding-top: 2px}
