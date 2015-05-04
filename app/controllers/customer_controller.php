@@ -96,49 +96,36 @@ class CustomerController extends AppController {
         }
     }
 
-	//this is for adding sales 
-	//products are divided up into categories for easier selection
-     function add_sales(){
-		 
-		 $this->autoLayout = false;
-         $inst_id = $this->Session->read('inst_id');
-         $site_id = $this->Session->read('site_id');
+    //this is for adding sales 
+    //products are divided up into categories for easier selection
+    function add_sales() {
 
-		        if (isset($_GET['perform_sales'])) {
-				
-				
-				
-				}
-				else{
-			    $products = $this->Product->find('all', array('recursive'=>'-1','fields' => array('selling_price','id','product_name','category_product','stock_available')));			
-				$this->set(compact('categories','products'));
-
-	
-				}
-		
-
-	 }
-	
-	
-	//this is for adding new receivables
-	function add_recv(){
-		
-		$this->autoLayout = false;
+        $this->autoLayout = false;
         $inst_id = $this->Session->read('inst_id');
         $site_id = $this->Session->read('site_id');
-		
-		   if (isset($_GET['perform_recv'])) {
-				
-				}
-		  else{
-			  
-			  
-		  }
-		
-	}
-	
-	
-	
+
+        if (isset($_GET['perform_sales'])) {
+            
+        } else {
+            $products = $this->Product->find('all', array('recursive' => '-1', 'fields' => array('selling_price', 'id', 'product_name', 'category_product', 'stock_available')));
+            $this->set(compact('categories', 'products'));
+        }
+    }
+
+    //this is for adding new receivables
+    function add_recv() {
+
+        $this->autoLayout = false;
+        $inst_id = $this->Session->read('inst_id');
+        $site_id = $this->Session->read('site_id');
+
+        if (isset($_GET['perform_recv'])) {
+            
+        } else {
+            
+        }
+    }
+
     //this is for deleting customers 
     function del_customer() {
 
@@ -243,9 +230,9 @@ class CustomerController extends AppController {
     //this will affect the product/product_transactions table
     function edit_stock() {
 
-	
-	   
-	
+
+
+
         $this->autoLayout = false;
         $inst_id = $this->Session->read('inst_id');
         $site_id = $this->Session->read('site_id');
@@ -258,8 +245,8 @@ class CustomerController extends AppController {
             $this->set(compact('product'));
             // exit;
         } else if (isset($_GET['save_stock'])) {
-			print_r($_GET['data']['Product']);
-			exit();
+            print_r($_GET['data']['Product']);
+            exit();
             $prod_tran_data = $_GET['data']['ProductTransaction'];
             $prod_data = $_GET['data']['Product'];
             $memberdata = $this->Session->read('memberData');

@@ -34,7 +34,7 @@ var settings={
     
     setup_ajax:function(){
 		
-		        $(document).bind("ajaxSend",function(){
+        $(document).bind("ajaxSend",function(){
             $(".ui-dialog-buttonpane button:contains('Save')").attr("disabled",true).addClass("ui-state-disabled");
 
         }).bind("ajaxSuccess",function(){
@@ -45,12 +45,13 @@ var settings={
 
              
         });
-	},
+    },
 	
     init:function(){
         _this=this;
 
-	        $(document).bind("ajaxSend",function(){
+/**
+        $(document).bind("ajaxSend",function(){
             $(".ui-dialog-buttonpane button:contains('Save')").attr("disabled",true).addClass("ui-state-disabled");
 
         }).bind("ajaxSuccess",function(){
@@ -61,7 +62,7 @@ var settings={
 
              
         });
-
+**/
 		
         $(".change_inst").live('click',function(e){
             e.preventDefault();
@@ -80,7 +81,7 @@ var settings={
                 buttons: {
                     "Save": function() {
                         
-                     //alert()
+                        //alert()
                         
                         
                       
@@ -95,7 +96,7 @@ var settings={
                                     return false;
                                 }
                                 else{
-                if(confirm("You Are About To Change Your Active Institution And Site\n\Do You Want To Continue ?"))
+                                    if(confirm("You Are About To Change Your Active Institution And Site\n\Do You Want To Continue ?"))
                                     {
                                         site_id=$(this).attr("site_id");
                                         inst_id=$(this).attr("inst_id");
@@ -118,7 +119,7 @@ var settings={
         })
         
         $(".stn").live('click',function(e) {
-          //  var _this=this;
+            //  var _this=this;
 
             e.preventDefault();
             var data="";
