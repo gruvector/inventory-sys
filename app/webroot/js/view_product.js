@@ -6,8 +6,8 @@
 
 $(document).ready(function(){
 
-    product.init();
     transaction=new Transaction();
+    product.init();
 })
 
 
@@ -18,11 +18,13 @@ function Transaction(){
 	
     //below three attributes are properties of a  current transaction	
     //not all attributes of a transaction will be used depending on the transaction type
-    this.total_transaction=0;
-    this.amount_paid=0;
-    this.amount_balance_due=0;
-    this.transaction_items=[];
+    this.total_transaction=0.00;//type is Float
+    this.total_quantity_items=0;//type in integer
+    this.amount_paid=0;  //type is Float
+    this.amount_balance_due=0;//type is Float
+    this.transaction_items=[];//contains objects of type item
     this.transaction_type="def";//can be either sale/receivable/invoice	
+    this.total_interface_status="false"
 
 
 
@@ -32,22 +34,49 @@ function Transaction(){
         this.amount_paid=0;
         this.amount_balance_due=0;
         this.total_transaction=0;
+        this.total_quantity_items=0;//type in integer
+        this.transaction_type="def";
+        this.total_interface_status="false";
+                      
 	
     };
     //this is for adding an item to the transaction list
     this.addItem=function(Item){
-	
-        this.total_transaction=this.total_transaction+(Item.getUnitPrice*Item.quant_sale);	
-        this.transaction_items.push(item);
+
+        this.total_transaction=this.total_transaction+Item.cost;
+        this.total_quantity_items=this.total_transaction+parseInt(Item.quant_sale,10);
+        this.transaction_items.push(Item);
     };
+
+    //this is for calculating total quantity of current transaction
+    ///tricky stuff
+    this.calculate_quan=function(){
+        var sum =0;
+        for (var i=0;i<this.transaction_items.length;i++){
+            sum=sum+this.transaction_items[i].quant_sale;
+        }
+        return sum;
+    };
+
+    ///this is for calculating the total money value for the transaction
+    this.calculate_money=function(){
+        var cost =0;
+        for (var i=0;i<this.transaction_items.length;i++){
+            cost=cost+this.transaction_items[i].cost;
+        }
+        return cost;
+    };
+
 
     //this is for removing an item from a transaction 
     this.removeItem=function(itemId){
         for (var i=0;i<this.transaction_items.length;i++){
             if(this.transaction_items[i].id==itemId)
             {
-                this.total_transaction=this.total_transaction-(this.transaction_items[i].getUnitPrice*this.transaction_items[i].quant_sale);	
+                this.total_transaction=this.total_transaction-this.transaction_items[i].cost;	
+                this.total_quantity_items=this.total_quantity_items-parseInt(this.transaction_items[i].quant_sale,10);
                 this.transaction_items.splice(i,1);
+                return "true";
                 break;
 
             }
@@ -90,29 +119,49 @@ function Item(id,unit_price,stock_avail,name){
     this.getUnitPrice=function(){
         return this.unit_price;
     };
-    //for getting stock available
+    //for getting old stock available
     this.getStockAvail=function(){
-        return this.stock_avail-this.quant_sale;
+        return this.stock_avail;
     };
     //for getting new cost of transaction for that particular item for the transaction
     this.getCost=function(){
-        return this.unit_price*this.quant_sale;
+        //  return this.unit_price*this.quant_sale;
+        return this.cost;
     };
     
     //this is  for gettng the new stock available for that particular item for the transaction
     this.getNewStock=function(){
-        return this.stock_avail-this.quant_sale;
+        //  return this.stock_avail-this.quant_sale;
+        return this.new_stock;  
+    };
+    
+    ///this is for getting the quantity of the item which will be sold
+    this.getQuant=function(){
+        return this.quant_sale ;
     };
     //this is for setting the quantity which will be sold for this transaction
+    //thsi also changes the totalcost of the transaction as well as changes the new_stock
     //shouldent be more than the stock available
+    //very interesting trick in javascript below
     this.setQuant=function(quant_sale){
-        if(quant_sale < 0 || quant_sale > this.stock_avail || parseInt(quant_sale)==""){
+        if(quant_sale < 0 || quant_sale > this.stock_avail || parseInt(quant_sale)!==parseInt(quant_sale)){
 	
             //alert("Please Enter Correct Quantity."+"Quantity Should Be More Than 0 And Less Than Or Equal To Quantity Available");
             return "false";
         }
         else{
-            this.quant_sale=quant_sale;			
+            transaction.total_quantity_items=transaction.calculate_quan()-(this.quant_sale);
+            transaction.total_transaction=transaction.calculate_money()-(this.cost);
+          
+            this.quant_sale=parseInt(quant_sale,10);     
+            this.cost=this.unit_price*this.quant_sale;
+            this.new_stock=this.stock_avail-this.quant_sale;  
+            
+                     
+            transaction.total_transaction=transaction.total_transaction+(this.cost);              
+            transaction.total_quantity_items=transaction.total_quantity_items+(this.quant_sale);
+            // alert(transaction.total_transaction);
+            return "true";
         }
     };
 
@@ -215,7 +264,7 @@ var product={
     for (var selector in config) {
       $(selector).chosen(config[selector]);
     }
-	**/
+         **/
     },
     
     //this is for adding an item to the  transaction object
@@ -261,10 +310,83 @@ var product={
         
         _this=this;
         var new_item= _this.build_item(item);
-        $(product.item_table).append(new_item);
+        $(product.item_table).prepend(new_item);
     },
+      
+    ///this for adding the total interface
+    //status field is reset to show that total interface has been added
+    add_total_interface:function(){
+        _this=this;
+        var total_int=_this.build_total();
+        $(product.item_table).append(total_int);
+        transaction.total_interface_status="true";
+
+    },   
+      
+      
+    remove_item:function(itemId)
+    {
+        _this=this;
+        var rm  = transaction.removeItem(itemId);
+        if (rm=="true"){
+            $(product.item_table).find("tr[data-id="+itemId+"]").remove();
+            _this.edit_total_interface();
+
+        }
+        else {
+            _this.error_interface("Item Couldent Be Found");  
+        }
+    },      
+    //total object has to be included to hold the total value
+    //below object is for adding the total interface to the system so the 
+    //total can be changed as the items are also being changed both via a model/interface
+
+    build_total:function(){
+        _this=this;
+
+        //this is a table row which woll hold the totol item 
+        var tr_all_trans=document.createElement("tr");
+        $(tr_all_trans).attr("class","total_trans_tr");
+
+        var td_item=document.createElement("td");
+
+        var td_cstock=document.createElement("td");
     
-    //this is for building an item object 
+        var td_unit_price=document.createElement("td");
+        $(td_unit_price).css("font-weight","bold");
+        $(td_unit_price).html("TOTAL");
+        
+        //this will hold the total quantity for sale for the transaction 
+        //this defaults to zero if its just been created
+        var td_quant_sale=document.createElement("td");
+        $(td_quant_sale).attr("class","total_trans_for_sale");
+        $(td_quant_sale).html(transaction.total_quantity_items);
+        
+        
+        //this will hold the total  cost for the transaction
+        var td_cost=document.createElement("td");
+        $(td_cost).attr("class","total_cost_for_sale");
+        $(td_cost).html(transaction.total_transaction);
+        
+        //this will hold the new stock for the transaction
+        var td_new_stock=document.createElement("td");
+      
+        
+        var empty_td=document.createElement("td");
+        
+        var remove_td=document.createElement("td");
+        
+        $(tr_all_trans).append(td_item).append(td_cstock)
+        .append(td_unit_price).append(td_quant_sale)
+        .append(td_cost).append(td_new_stock)
+        .append(empty_td).append(remove_td);
+        return tr_all_trans ;
+    },  
+
+
+
+    //this is for building an item object
+    
     build_item:function(item){
         _this=this;
 
@@ -314,7 +436,15 @@ var product={
         $(remove_link).attr("class","inlineIcon preferences iconDelete remove_item");
         $(remove_link).attr("href","#");
         $(remove_link).html("Remove");
-        $(remove_td).append(remove_link);
+        $(remove_td).append(remove_link);      
+        $(remove_td).live('click',function(e) {
+            if(confirm("Do You Want To Remove Item From Sale")){            
+                _this.remove_item(item.id);
+                    
+            }
+        });
+        
+        
         
         
         $(tr_all).append(td_item).append(td_cstock)
@@ -324,6 +454,19 @@ var product={
         return tr_all ;
     },   
     
+    //this is for editing the total interface
+    //this will edit both the total cost and the total quantity
+    //total_trans_for_sale,total_cost_for_sale
+    edit_total_interface:function(){
+        _this=this;
+        var tr_table =  $(product.item_table).find("tr.total_trans_tr");
+        $(tr_table).find("td.total_trans_for_sale").html(transaction.total_quantity_items);
+        $(tr_table).find("td.total_cost_for_sale").html(transaction.total_transaction);
+
+
+ 
+    },
+    
     //this is for editing the interface 
     //edit of the interface results in the model data being edited first 
     //item is an input parameter
@@ -331,13 +474,19 @@ var product={
         _this=this;   
         
         var tr_table =  $(product.item_table).find("tr[data-id="+item.id+"]");
-        //$(tr_table).find(".item_stock_avail").html(item.getStockAvail());
+        $(tr_table).find(".item_stock_avail").html(item.getStockAvail());
         $(tr_table).find(".cost").html(item.getCost());
         $(tr_table).find(".new_stock").html(item.getNewStock());
 
     },
     
     
+    message_interface:function(message){
+        
+        alert(message);
+        
+        
+    },    
     //this is for errors which may be associated with interface functionality
     error_interface:function(message){
         
@@ -369,7 +518,8 @@ var product={
 
             //   alert(" Stock is "+stock+" Please Restock ");
             }
-            else if( stock=="" || itemId=="" || unit_price==""){
+            else if( stock!==stock  || unit_price!==unit_price){
+                // else if(isNaN(stock) ||isNaN(itemId) || isNaN(unit_price)){
                 _this.error_interface("error_stock");
             //alert ("Stock/Item is Unknown .Please Check Item/Stock Value");
 
@@ -380,8 +530,11 @@ var product={
                 if (item=="error_duplicate"){
                     _this.error_model("error_duplicate");             
                 }else{
-                    _this.add_interface(item);
-
+                    _this.add_interface(item);                 
+                    if(transaction.total_interface_status=="false")
+                    {
+                        _this.add_total_interface();
+                    }
                 }
             }
    
@@ -390,27 +543,32 @@ var product={
         });
         
         //this is where all the fun modification will begin 
-        //will have a ripple effect on the model and the interface 
+        //will have a ripple effect on the  interface 
         $(".item_for_sale").live('keyup',function(){
             
             var itemId=$(this).closest("tr").data('id');
             var item= transaction.getItem(itemId);
+            var old_quant=item.getQuant();
             if(item=="not_found")
             {
                 _this.error_model("Item Not Found");
-            }else{     
+            }else{  
+                //  alert(parseInt($(this).val(),10)+"--"+isNaN($(this).val()));
+                //   console.log($(this).val());
                 var return_msg=item.setQuant($(this).val());
                 if(return_msg=="false"){  
-                    _this.error_model("Stock You Want To Sell Isnt Avaialable");
+                    _this.error_model("Stock You Want To Sell Isnt Available");
+                    $(this).val(old_quant);
 
                 //  console.log(transaction.getItem(itemId));
-                }else
-                {
+                }else if(return_msg=="true"){  
+
                     _this.edit_interface(item);
+                    _this.edit_total_interface();
     
                 }
             }
-        })
+        });
         
         
         $("a.pglink").live('click',function(e) {
@@ -477,7 +635,7 @@ var product={
                 $(".quantity_crate").css("border","solid grey 1px");    
   
             }
-            **/
+             **/
             //  stock_available,selling_price,cost_price
             product.checkfields();
             
@@ -533,37 +691,45 @@ var product={
 		
 		
         //this is for adding or editing 
-        $("#add_sales,#add_recv").live('click',function(e) {
+        $(".tran_type").live('click',function(e) {
             e.preventDefault();
             var title ="";
+            title=$(this).attr("title");
+            transaction.transaction_type=$(this).attr("type");
+           
+           /**  
             if($(this).attr("id")=="add_sales"){
-                title="New Sales";
+                title=(this).attr("title");
+                transaction.transaction_type=$(this).attr("type");
             }	     
             else if($(this).attr("id")=="add_recv"){
-                title="New Receivables";
-
+                title=(this).attr("title");
+                transaction.transaction_type="recv";
             }
-		
+            
+            else if($(this).attr("id")=="add_inv"){
+                title=(this).attr("title");
+                transaction.transaction_type="inv";
+            }
+	**/
 			 
             var $dialog = $("<div></div>")
             .load($(this).attr('href'),function(rdata){
                 product.init_chosen();
-                transaction.transaction_type="sale"
 
             })
             .dialog({
                 autoOpen: false,
                 title:title,
                 width: 700,
-                height: 400,
+                height: 420,
                 position:"center",
-                modal:false,
+                modal:true,
                 buttons: {
                     "Save": function() {
                     //$( this ).dialog( "close" );
                     },
                     "Cancel": function() {
-                        transaction.transaction_type="def";
                         transaction.resetSale();
                         $( this ).dialog( "close" );
                         $(this).dialog('destroy').remove()
@@ -710,10 +876,10 @@ var product={
 
 }
 
-        /*   
-         *            below is for building the item interface 
-         *                     
-         *                                       <tr>
+/*   
+ *            below is for building the item interface 
+ *                     
+ *                                       <tr>
 	   <td>Item</td>
 	   <td>Current Stock</td>
 	   <td>Unit Price</td>
@@ -724,5 +890,5 @@ var product={
       <td><a href="#" class="inlineIcon preferences iconDelete remove_item">Remove</a></td>
       </tr>
                 item= new Item(itemId,unit_price,stock_avail,name);
-     *
-     *  */   
+ *
+ *  */   

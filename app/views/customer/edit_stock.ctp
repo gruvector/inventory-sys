@@ -5,12 +5,13 @@
  * 
  */
 ?>
+<!--
 <style>
     div.tableWrapper li {
         width: 150px !important;
     }   
 </style>
-
+-->
 <form name="add_stock_form" id="add_stock_form" class="cmxform">
     <div class='tableWrapper'>
         <div class='tableHeader' style="border: 0px !important;">

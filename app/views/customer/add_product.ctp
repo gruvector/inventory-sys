@@ -39,7 +39,7 @@
              -->  
             <ul class='tableActions'>
                 <li>
-                    <label> Quantity/Crate </label> 
+                    <label> Quantity/Batch </label> 
                 </li>
                 <li>
                     <input type='text' class="quantity_crate check" required name="data[Product][quantity_crate]"  value="<?php echo isset($product) ? $product['Product']['quantity_crate'] : "0"; ?>" />      

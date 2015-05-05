@@ -245,8 +245,8 @@ class CustomerController extends AppController {
             $this->set(compact('product'));
             // exit;
         } else if (isset($_GET['save_stock'])) {
-            print_r($_GET['data']['Product']);
-            exit();
+       //     print_r($_GET['data']['Product']);
+      //      exit();
             $prod_tran_data = $_GET['data']['ProductTransaction'];
             $prod_data = $_GET['data']['Product'];
             $memberdata = $this->Session->read('memberData');

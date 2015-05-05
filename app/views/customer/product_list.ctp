@@ -9,10 +9,10 @@
               Stock
             </th>
  <th class="sortup">
-              Nb/Crt
+              Unit/Item
             </th>
  <th class="sortup">
-              Crts/Avl
+              Batch/Avl
             </th>
  <th class="sortup">
              Rmd

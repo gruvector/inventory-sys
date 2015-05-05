@@ -2,12 +2,10 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- 
- 
+
+
 
  */
- 
- 
 ?>
 
 
@@ -15,21 +13,23 @@
     <div class='tableHeader'>
         <ul class='tableActions'>
             <li>
-                <a name="add_prod" id="add_prod" title="Add New Product"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_product')); ?>" class='inlineIcon iconWebsiteAdd'>New Product</a>
+                <a name="add_prod" type="prod" id="add_prod" title="Add New Product"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_product')); ?>" class='inlineIcon iconWebsiteAdd'>New Product</a>
             </li>
-			<li>
-                <a name="add_sales" id="add_sales" title="New Sales"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd'>New Sales</a>
+            <li>
+                <a name="add_sales" type="sale" id="add_sales" title="New Sales"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Sales</a>
             </li>
-			
-			<li>
-                <a name="add_recv" id="add_recv" title="New Receivables"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_recv')); ?>" class='inlineIcon iconWebsiteAdd'>New Receivables</a>
+            <li>
+                <a name="add_order" type="order" id="add_order" title="New Order"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Order</a>
             </li>
-				
-			<li>
-                <a name="add_inv" id="add_inv" title="New Invoice"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_inv')); ?>" class='inlineIcon iconWebsiteAdd'>New Invoices</a>
+            <li>
+                <a name="add_recv" type="rec"  id="add_recv" title="New Receivables"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Receivables</a>
+            </li>
+
+            <li>
+                <a name="add_inv" type="inv" id="add_inv" title="New Invoice"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Invoices</a>
             </li>	
-			<li>
-                <a name="add_recpt" id="add_recpt" title="Receipt Management"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_recpt')); ?>" class='inlineIcon iconWebsiteAdd'>Receipts</a>
+            <li>
+                <a name="add_recpt" type="rec"  id="add_recpt" title="Receipt Management"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_recpt')); ?>" class='inlineIcon iconWebsiteAdd'>Receipts</a>
             </li>
             <li>
                 <input type="text" name="search_prod" id="search_prod" placeholder="Search By Name"/>
