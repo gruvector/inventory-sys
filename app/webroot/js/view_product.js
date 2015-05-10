@@ -41,9 +41,10 @@ function Transaction(){
         this.total_interface_status="false";
         this.vat_transaction=0.00;
         this.vat_percentage=0;
+        this.rtotal_transaction=0.00;
 
-                      
-	
+
+                     	
     };
     //this is for adding an item to the transaction list
     this.addItem=function(Item){
@@ -172,17 +173,20 @@ function Item(id,unit_price,stock_avail,name){
     this.getQuant=function(){
         return this.quant_sale ;
     };
-    //this is for setting the quantity which will be sold for this transaction
+    //this is for setting the quantity which will be sold for this transaction .
     //thsi also changes the totalcost of the transaction as well as changes the new_stock
     //shouldent be more than the stock available
     //very interesting trick in javascript below
+    //this is for sales
     this.setQuant=function(quant_sale){
+        
+               
         if(quant_sale < 0 || quant_sale > this.stock_avail ){
 	
             //alert("Please Enter Correct Quantity."+"Quantity Should Be More Than 0 And Less Than Or Equal To Quantity Available");
             return "false";
         }
-        else{
+        else{           
             transaction.total_quantity_items=transaction.calculate_quan()-(this.quant_sale);
             transaction.total_transaction=transaction.calculate_money()-(this.cost);
           
@@ -200,10 +204,69 @@ function Item(id,unit_price,stock_avail,name){
 
             // alert(transaction.total_transaction);
             return "true";
-        }
+        }      
     };
 
+    //this one is for receivables
+    this.setQuantRecv=function(quant_sale){
+     
+        if(quant_sale < 1 ){
 	
+            //alert("Please Enter Correct Quantity."+"Quantity Should Be More Than 0 And Less Than Or Equal To Quantity Available");
+            return "false";
+        }
+        else{          
+            
+            transaction.total_quantity_items=transaction.calculate_quan()-(this.quant_sale);
+            transaction.total_transaction=transaction.calculate_money()-(this.cost);
+          
+            this.quant_sale=parseInt(quant_sale,10);     
+            this.cost=this.unit_price*this.quant_sale;
+            this.new_stock=this.stock_avail+this.quant_sale;  
+            
+                     
+            transaction.total_transaction=transaction.round_value(transaction.total_transaction+(this.cost));              
+            transaction.total_quantity_items=transaction.total_quantity_items+(this.quant_sale);
+
+            transaction.vat_transaction=transaction.round_value((transaction.vat_percentage/100)*transaction.total_transaction);
+            transaction.rtotal_transaction=transaction.round_value(transaction.total_transaction+transaction.vat_transaction);
+            transaction.amount_balance_due=transaction.round_value(transaction.rtotal_transaction-transaction.amount_paid);
+
+            // alert(transaction.total_transaction);
+            return "true";
+        }  
+       
+    };
+ 
+    //this one is for invoices
+    this.setQuantInv=function(quant_sale){
+
+        if(quant_sale < 0 || quant_sale > this.stock_avail ){
+	
+            //alert("Please Enter Correct Quantity."+"Quantity Should Be More Than 0 And Less Than Or Equal To Quantity Available");
+            return "false";
+        }
+        else{           
+            transaction.total_quantity_items=transaction.calculate_quan()-(this.quant_sale);
+            transaction.total_transaction=transaction.calculate_money()-(this.cost);
+          
+            this.quant_sale=parseInt(quant_sale,10);     
+            this.cost=this.unit_price*this.quant_sale;
+            this.new_stock=this.stock_avail;  
+            
+                     
+            transaction.total_transaction=transaction.round_value(transaction.total_transaction+(this.cost));              
+            transaction.total_quantity_items=transaction.total_quantity_items+(this.quant_sale);
+
+            transaction.vat_transaction=transaction.round_value((transaction.vat_percentage/100)*transaction.total_transaction);
+            transaction.rtotal_transaction=transaction.round_value(transaction.total_transaction+transaction.vat_transaction);
+            transaction.amount_balance_due=transaction.round_value(transaction.rtotal_transaction-transaction.amount_paid);
+
+            // alert(transaction.total_transaction);
+            return "true";
+        } 
+    };
+
 }
 
 
@@ -751,76 +814,139 @@ var product={
         }
     },
    
-    init:function(){
-        var _this=this;
-        _this.load_prod(product.load_url);
-
-        $("#search_item").live('change',function(){
-            
-            var stock      = parseInt($('option:selected', this).data('stock'));
-            var unit_price = parseFloat($('option:selected', this).data('unit_price'));
-            var name =$('option:selected', this).data('name');
-            var itemId =$('option:selected', this).val(); 
-
-            if (stock==0){
-                _this.error_interface(" Stock Of "+name+" Is "+stock+" Please Restock ");
-
-            //   alert(" Stock is "+stock+" Please Restock ");
-            }
-            else if( stock!==stock  || unit_price!==unit_price){
-                // else if(isNaN(stock) ||isNaN(itemId) || isNaN(unit_price)){
-                _this.error_interface("error_stock");
-            //alert ("Stock/Item is Unknown .Please Check Item/Stock Value");
-
-            } 
-            else{
-                //alert(stock+"--"+unit_price+"--"+itemId) ;
-                var item=_this.add_model(itemId,unit_price,stock,name);  
-                if (item=="error_duplicate"){
-                    _this.error_model("error_duplicate");             
-                }else{
-                    _this.add_interface(item);                 
-                    if(transaction.total_interface_status=="false")
-                    {
-                        _this.add_total_interface();
-                        _this.add_vat_interface();
-                        _this.add_rtotal_interface();
-                        _this.add_amount_collected_interface();
-                        
-                    }
-                }
-            }
    
-        // var stock = parseInt($('#search_item option:selected').data('stock'));
-    			
-        });
+    //this is for performing basic item selection but for sales
+    perform_search_sale:function(stock,unit_price,name,itemId){
+        _this=this;
         
-        //this is where all the fun modification will begin 
-        //will have a ripple effect on the  interface 
-        $(".item_for_sale").live('keyup',function(event){
-            
-            var itemId=$(this).closest("tr").data('id');
-            var item= transaction.getItem(itemId);
-            var old_quant=item.getQuant();
-            if(item=="not_found")
-            {
-                _this.error_model("Item Not Found");
-            }
- 
-            else{  
-                //  alert(parseInt($(this).val(),10)+"--"+isNaN($(this).val()));
-                //   console.log($(this).val());
-                if (! (event.target.validity.valid)){
-                    _this.error_interface("Stock You Want To Sell Isnt Available");  
-                    $(this).val(old_quant);
+        if (stock==0){
+            _this.error_interface(" Stock Of "+name+" Is "+stock+" Please Restock ");
+
+        //   alert(" Stock is "+stock+" Please Restock ");
+        }
+        else if( stock!==stock  || unit_price!==unit_price){
+            // else if(isNaN(stock) ||isNaN(itemId) || isNaN(unit_price)){
+            _this.error_interface("error_stock");
+        //alert ("Stock/Item is Unknown .Please Check Item/Stock Value");
+
+        } 
+        else{
+            //alert(stock+"--"+unit_price+"--"+itemId) ;
+            var item=_this.add_model(itemId,unit_price,stock,name);  
+            if (item=="error_duplicate"){
+                _this.error_model("error_duplicate");             
+            }else{
+                _this.add_interface(item);                 
+                if(transaction.total_interface_status=="false")
+                {
+                    _this.add_total_interface();
+                    _this.add_vat_interface();
+                    _this.add_rtotal_interface();
+                    _this.add_amount_collected_interface();
+                        
                 }
-               else{ 
+            }
+        }
+              
+    },
+    
+    //this is for performing basic item selection but for receivables
+    perform_search_recv:function(stock,unit_price,name,itemId){
+        _this=this;
+         
+        /**
+        if (stock==0){
+        //   _this.error_interface(" Stock Of "+name+" Is "+stock+" Please Restock ");
+
+        //   alert(" Stock is "+stock+" Please Restock ");
+        }**/
+        
+        if( stock!==stock  || unit_price!==unit_price){
+            // else if(isNaN(stock) ||isNaN(itemId) || isNaN(unit_price)){
+            _this.error_interface("error_stock");
+        //alert ("Stock/Item is Unknown .Please Check Item/Stock Value");
+
+        } 
+        else{
+            //alert(stock+"--"+unit_price+"--"+itemId) ;
+            var item=_this.add_model(itemId,unit_price,stock,name);  
+            if (item=="error_duplicate"){
+                _this.error_model("error_duplicate");             
+            }else{
+                _this.add_interface(item);                 
+                if(transaction.total_interface_status=="false")
+                {
+                    _this.add_total_interface();
+                //  _this.add_vat_interface();
+                //    _this.add_rtotal_interface();
+                //     _this.add_amount_collected_interface();
+                        
+                }
+            }
+        }
+      
+
+    },
+    
+    //this is for performing basic item selection but for invoices
+    perform_search_inv:function(stock,unit_price,name,itemId){
+        _this=this;
+
+        if (stock==0){
+            _this.error_interface(" Stock Of "+name+" Is "+stock+" Please Restock ");
+
+        //   alert(" Stock is "+stock+" Please Restock ");
+        }
+        else if( stock!==stock  || unit_price!==unit_price){
+            // else if(isNaN(stock) ||isNaN(itemId) || isNaN(unit_price)){
+            _this.error_interface("error_stock");
+        //alert ("Stock/Item is Unknown .Please Check Item/Stock Value");
+
+        } 
+        else{
+            //alert(stock+"--"+unit_price+"--"+itemId) ;
+            var item=_this.add_model(itemId,unit_price,stock,name);  
+            if (item=="error_duplicate"){
+                _this.error_model("error_duplicate");             
+            }else{
+                _this.add_interface(item);                 
+                if(transaction.total_interface_status=="false")
+                {
+                    _this.add_total_interface();
+                    _this.add_vat_interface();
+                    _this.add_rtotal_interface();
+                //   _this.add_amount_collected_interface();
+                        
+                }
+            }
+        }
+      
+    },
+    
+    
+    //this is for modifying the search item after it has been been selected based on the transaction  type
+    //this one is for sales
+    perfrom_itemMod_sale:function(item,old_quant,event,val_item){
+        _this=this ;      
+     
+        if(item=="not_found")
+        {
+            _this.error_model("Item Not Found");
+        }
+        else{  
+            //  alert(parseInt($(this).val(),10)+"--"+isNaN($(this).val()));
+            //   console.log($(this).val());
+            if (! (event.target.validity.valid)){
+                _this.error_interface("Stock You Want To Sell Isnt Available");  
+                $(val_item).val(old_quant);
+            }
+            else{ 
                 
               
-                var return_msg=item.setQuant($(this).val());
+                var return_msg=item.setQuant($(val_item).val());
                 if(return_msg=="false"){  
                     _this.error_model("Stock You Want To Sell Isnt Available");
-                    $(this).val(old_quant);
+                    $(val_item).val(old_quant);
 
                 //  console.log(transaction.getItem(itemId));
                 }else if(return_msg=="true"){  
@@ -830,11 +956,148 @@ var product={
                     _this.edit_vat_interface();
                     _this.edit_rtotal_interface();
                     _this.edit_amount_collected_interface();
-    
                 }
             }
        
-   }
+        }
+    },
+    
+    //this one is for receivables
+    perfrom_itemMod_recv:function(item,old_quant,event,val_item){
+        _this=this;
+        
+        if(item=="not_found")
+        {
+            _this.error_model("Item Not Found");
+        }
+        else{  
+            //  alert(parseInt($(this).val(),10)+"--"+isNaN($(this).val()));
+            //   console.log($(this).val());
+            if (! (event.target.validity.valid)){
+                _this.error_interface("Stock You Want To Sell Isnt Available");  
+                $(val_item).val(old_quant);
+            }
+            else{ 
+                
+              
+                var return_msg=item.setQuantRecv( $(val_item).val());
+                if(return_msg=="false"){  
+                    _this.error_model("Stock You Want To Sell Isnt Available");
+                    $(val_item).val(old_quant);
+
+                //  console.log(transaction.getItem(itemId));
+                }else if(return_msg=="true"){  
+
+                    _this.edit_interface(item);
+                    _this.edit_total_interface();
+                //  _this.edit_vat_interface();
+                //  _this.edit_rtotal_interface();
+                //  _this.edit_amount_collected_interface();
+                }
+            }
+       
+        }
+        
+    },
+    
+    //this one is for invoices
+    perfrom_itemMod_inv:function(item,old_quant,event,val_item){
+        _this=this;
+        
+        if(item=="not_found")
+        {
+            _this.error_model("Item Not Found");
+        }
+        else{  
+            //  alert(parseInt($(this).val(),10)+"--"+isNaN($(this).val()));
+            //   console.log($(this).val());
+            if (! (event.target.validity.valid)){
+                _this.error_interface("Stock You Want To Sell Isnt Available");  
+                $(val_item).val(old_quant);
+            }
+            else{ 
+                
+              
+                var return_msg=item.setQuantInv( $(val_item).val());
+                if(return_msg=="false"){  
+                    _this.error_model("Stock You Want To Sell Isnt Available");
+                    $(val_item).val(old_quant);
+
+                //  console.log(transaction.getItem(itemId));
+                }else if(return_msg=="true"){  
+
+                    _this.edit_interface(item);
+                    _this.edit_total_interface();
+                    _this.edit_vat_interface();
+                    _this.edit_rtotal_interface();
+                //  _this.edit_amount_collected_interface();
+                }
+            }
+       
+        }
+        
+    },
+
+
+    ///this is for modifying the amount paid based on the transaction type 
+    perform_amount_paid_sale:function(){},
+    perform_amount_paid_recv:function(){},
+    perform_amount_paid_inv:function(){},
+
+   
+   
+    init:function(){
+        _this=this;
+        _this.load_prod(product.load_url);
+
+        $("#search_item").live('change',function(){
+            
+            var stock      = parseInt($('option:selected', this).data('stock'));
+            var unit_price = parseFloat($('option:selected', this).data('unit_price'));
+            var name =$('option:selected', this).data('name');
+            var itemId =$('option:selected', this).val(); 
+
+
+            // alert(transaction.transaction_type);
+         
+            if(transaction.transaction_type=="add_sales"){
+                _this.perform_search_sale(stock,unit_price,name,itemId);
+            }	     
+            else if(transaction.transaction_type=="add_recv"){
+                _this.perform_search_recv(stock,unit_price,name,itemId);
+            }
+            
+            else if(transaction.transaction_type=="add_inv"){
+                _this.perform_search_inv(stock,unit_price,name,itemId);
+            }
+         
+
+
+        // var stock = parseInt($('#search_item option:selected').data('stock'));
+    			
+        });
+        
+        //this is where all the fun modification will begin 
+        //will have a ripple effect on the  interface 
+        $(".item_for_sale").live('keyup',function(event){
+         
+            var itemId=$(this).closest("tr").data('id');
+            var item= transaction.getItem(itemId);
+            var old_quant=item.getQuant();
+  
+            if(transaction.transaction_type=="add_sales"){
+                _this.perfrom_itemMod_sale(item,old_quant,event,$(this));
+            }	     
+            else if(transaction.transaction_type=="add_recv"){
+               _this.perfrom_itemMod_recv(item,old_quant,event,$(this));
+            }
+            
+            else if(transaction.transaction_type=="add_inv"){
+               _this.perfrom_itemMod_inv(item,old_quant,event,$(this));
+            }
+            
+            
+            
         });
         
         $(".amount_paid_in").live('keyup',function(event){
@@ -982,21 +1245,7 @@ var product={
             title=$(this).attr("title");
             transaction.transaction_type=$(this).attr("type");
            
-            /**  
-            if($(this).attr("id")=="add_sales"){
-                title=(this).attr("title");
-                transaction.transaction_type=$(this).attr("type");
-            }	     
-            else if($(this).attr("id")=="add_recv"){
-                title=(this).attr("title");
-                transaction.transaction_type="recv";
-            }
-            
-            else if($(this).attr("id")=="add_inv"){
-                title=(this).attr("title");
-                transaction.transaction_type="inv";
-            }
-             **/
+           
 			 
             var $dialog = $("<div></div>")
             .load($(this).attr('href'),function(rdata){

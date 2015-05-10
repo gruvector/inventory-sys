@@ -17,7 +17,7 @@
             </li>
           
             <li>
-                <a name="add_sales" type="sale" id="add_sales" title="New Sales"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Sales</a>
+                <a name="add_sales" type="add_sales" id="add_sales" title="New Sales"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Sales</a>
             </li>
             <!--
             <li>
@@ -25,17 +25,17 @@
             </li>
             -->
             <li>
-                <a name="add_recv" type="rec"  id="add_recv" title="New Receivables"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Receivables</a>
+                <a name="add_recv" type="add_recv"  id="add_recv" title="New Receivables"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Receivables</a>
             </li>
 
             <li>
-                <a name="add_inv" type="inv" id="add_inv" title="New Invoice"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Invoices</a>
+                <a name="add_inv" type="add_inv" id="add_inv" title="New Invoice"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Invoices</a>
             </li>	
             <li>
-                <a name="add_recpt" type="rec"  id="add_recpt" title="Receipt Management"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_recpt')); ?>" class='inlineIcon iconWebsiteAdd'>Receipts</a>
+                <a name="add_recpt" type="add_recpt"  id="add_recpt" title="Receipt Management"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_recpt')); ?>" class='inlineIcon iconWebsiteAdd'>Receipts</a>
             </li>
             <li>
-                <a name="add_revr" type="revr" id="add_sales" title="Reversal"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_revr')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>Reversal</a>
+                <a name="add_revr" type="add_revr" id="add_sales" title="Reversal"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_revr')); ?>" class='inlineIcon iconWebsiteAdd'>Reversal</a>
             </li>
             <li>
                 <input type="text" name="search_prod" id="search_prod" placeholder="Search By Name"/>
