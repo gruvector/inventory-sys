@@ -11,6 +11,8 @@
   }
   </style>
  */
+
+//print_r($vat);
 ?>
 
 <style>
@@ -37,6 +39,11 @@
 </style>
 
 <form name="add_sales_form" id="add_sales_form" class="cmxform" action="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>">
+    <input type ='hidden'  id="vat_deduction" name="vat_deduction"
+           data-sname="<?php echo $vat['Taxe']['vat_short_name']; ?>" 
+           data-tvalue="<?php echo $vat['Taxe']['vat_value']; ?>" 
+
+           />
     <div class='tableWrapper' style="width: 100% !important;">
         <div class='tableHeader' style="border: 0px !important;">
 

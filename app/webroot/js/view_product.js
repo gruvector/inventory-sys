@@ -20,12 +20,14 @@ function Transaction(){
     //not all attributes of a transaction will be used depending on the transaction type
     this.total_transaction=0.00;//type is Float
     this.total_quantity_items=0;//type in integer
-    this.amount_paid=0;  //type is Float
-    this.amount_balance_due=0;//type is Float
+    this.amount_paid=0.00;  //type is Float
+    this.amount_balance_due=0.00;//type is Float
     this.transaction_items=[];//contains objects of type item
     this.transaction_type="def";//can be either sale/receivable/invoice	
-    this.total_interface_status="false"
-
+    this.total_interface_status="false";
+    this.vat_transaction=0.00;
+    this.vat_percentage=0;
+    this.rtotal_transaction=0.00;
 
 
     //this is for resetting transaction  items
@@ -37,6 +39,9 @@ function Transaction(){
         this.total_quantity_items=0;//type in integer
         this.transaction_type="def";
         this.total_interface_status="false";
+        this.vat_transaction=0.00;
+        this.vat_percentage=0;
+
                       
 	
     };
@@ -69,13 +74,27 @@ function Transaction(){
 
 
     //this is for removing an item from a transaction 
+    //and also for recalculating items  every stuff when items are removed
     this.removeItem=function(itemId){
         for (var i=0;i<this.transaction_items.length;i++){
             if(this.transaction_items[i].id==itemId)
             {
-                this.total_transaction=this.total_transaction-this.transaction_items[i].cost;	
+                this.total_transaction=this.round_value(this.total_transaction-this.transaction_items[i].cost);	
                 this.total_quantity_items=this.total_quantity_items-parseInt(this.transaction_items[i].quant_sale,10);
                 this.transaction_items.splice(i,1);
+                
+                //this is for recalculating the other stuff
+                this.vat_transaction=this.round_value((this.vat_percentage/100)*this.total_transaction);
+                this.rtotal_transaction=this.round_value(this.total_transaction+this.vat_transaction);
+                this.amount_balance_due=this.round_value(this.rtotal_transaction-this.amount_paid);
+                
+                /**   if(this.transaction_items.length==0)
+                {
+                    this.amount_paid=0.00;  
+                }
+           **/    
+                this.recal_totl(this.amount_paid);
+
                 return "true";
                 break;
 
@@ -98,6 +117,20 @@ function Transaction(){
         return "not_found";
     };	 
 
+    //this is for recalculating the total to be paid
+    this.recal_totl=function(amount_paid){
+    
+        this.amount_paid=this.round_value(amount_paid);
+        this.amount_balance_due=this.round_value(this.rtotal_transaction-this.amount_paid);
+
+    };
+    
+    this.round_value=function(num){
+        
+        //   return num;
+        return  Math.round(num * 100) / 100
+    };
+
 
 }
 
@@ -117,7 +150,7 @@ function Item(id,unit_price,stock_avail,name){
 
     //for  getting unit_price
     this.getUnitPrice=function(){
-        return this.unit_price;
+        return transaction.round_value(this.unit_price);
     };
     //for getting old stock available
     this.getStockAvail=function(){
@@ -126,7 +159,7 @@ function Item(id,unit_price,stock_avail,name){
     //for getting new cost of transaction for that particular item for the transaction
     this.getCost=function(){
         //  return this.unit_price*this.quant_sale;
-        return this.cost;
+        return transaction.round_value(this.cost);
     };
     
     //this is  for gettng the new stock available for that particular item for the transaction
@@ -144,7 +177,7 @@ function Item(id,unit_price,stock_avail,name){
     //shouldent be more than the stock available
     //very interesting trick in javascript below
     this.setQuant=function(quant_sale){
-        if(quant_sale < 0 || quant_sale > this.stock_avail || parseInt(quant_sale)!==parseInt(quant_sale)){
+        if(quant_sale < 0 || quant_sale > this.stock_avail ){
 	
             //alert("Please Enter Correct Quantity."+"Quantity Should Be More Than 0 And Less Than Or Equal To Quantity Available");
             return "false";
@@ -158,8 +191,13 @@ function Item(id,unit_price,stock_avail,name){
             this.new_stock=this.stock_avail-this.quant_sale;  
             
                      
-            transaction.total_transaction=transaction.total_transaction+(this.cost);              
+            transaction.total_transaction=transaction.round_value(transaction.total_transaction+(this.cost));              
             transaction.total_quantity_items=transaction.total_quantity_items+(this.quant_sale);
+
+            transaction.vat_transaction=transaction.round_value((transaction.vat_percentage/100)*transaction.total_transaction);
+            transaction.rtotal_transaction=transaction.round_value(transaction.total_transaction+transaction.vat_transaction);
+            transaction.amount_balance_due=transaction.round_value(transaction.rtotal_transaction-transaction.amount_paid);
+
             // alert(transaction.total_transaction);
             return "true";
         }
@@ -305,9 +343,7 @@ var product={
     },
     
     //this is for updating the interface
-    add_interface:function(item){
-        
-        
+    add_interface:function(item){       
         _this=this;
         var new_item= _this.build_item(item);
         $(product.item_table).prepend(new_item);
@@ -323,6 +359,27 @@ var product={
 
     },   
       
+    //this is for adding the vat interface
+    add_vat_interface:function(){ 
+        _this=this;    
+        var  total_vat=_this.build_vat(); 
+        $(product.item_table).append(total_vat);
+
+    },
+      
+    //this is for adding the real total interface
+    add_rtotal_interface:function(){
+        _this=this;
+        var rtotal=_this.build_rtotal();
+        $(product.item_table).append(rtotal);
+    },
+    
+    //this is for the amount_collected/balance interface
+    add_amount_collected_interface:function(){
+        _this=this;
+        var amt_collected=_this.build_amount_collected();
+        $(product.item_table).append(amt_collected);
+    },      
       
     remove_item:function(itemId)
     {
@@ -331,13 +388,164 @@ var product={
         if (rm=="true"){
             $(product.item_table).find("tr[data-id="+itemId+"]").remove();
             _this.edit_total_interface();
+            _this.edit_vat_interface();
+            _this.edit_rtotal_interface();
+            _this.edit_amount_collected_interface();
 
         }
         else {
             _this.error_interface("Item Couldent Be Found");  
         }
     },      
-    //total object has to be included to hold the total value
+    
+    
+    
+    //this is for building up the vat section of the total
+    build_vat:function(){
+        _this=this;
+
+        //this is a table row which woll hold the totol item 
+        var tr_all_trans=document.createElement("tr");
+        $(tr_all_trans).attr("class","total_vat_tr");
+
+        var td_item=document.createElement("td");
+
+        var td_cstock=document.createElement("td");
+    
+        var td_unit_price=document.createElement("td");
+        $(td_unit_price).css("font-weight","bold");
+        $(td_unit_price).html("VAT "+transaction.vat_percentage+" %");
+        
+        //this will hold the total quantity for sale for the transaction 
+        //this defaults to zero if its just been created
+        var td_quant_sale=document.createElement("td");
+        $(td_quant_sale).attr("class","total_vat_quant_sale");
+        
+        
+        //this will hold the total  cost for the transaction
+        var td_cost=document.createElement("td");
+        $(td_cost).attr("class","vat_transaction");
+        $(td_cost).html(transaction.vat_transaction);
+        
+        //this will hold the new stock for the transaction
+        var td_new_stock=document.createElement("td");
+        
+        var empty_td=document.createElement("td");
+        
+        var remove_td=document.createElement("td");
+        
+        $(tr_all_trans).append(td_item).append(td_cstock)
+        .append(td_unit_price).append(td_quant_sale)
+        .append(td_cost).append(td_new_stock)
+        .append(empty_td).append(remove_td);
+        return tr_all_trans ;
+          
+    },
+    //this  is for building the real total list 
+    build_rtotal:function(){
+
+        _this=this;
+
+        //this is a table row which woll hold the totol item 
+        var tr_all_trans=document.createElement("tr");
+        $(tr_all_trans).attr("class","total_rtotal_tr");
+
+        var td_item=document.createElement("td");
+
+        var td_cstock=document.createElement("td");
+    
+        var td_unit_price=document.createElement("td");
+        $(td_unit_price).css("font-weight","bold");
+        $(td_unit_price).html("TOTAL");
+        
+        //this will hold the total quantity for sale for the transaction 
+        //this defaults to zero if its just been created
+        var td_quant_sale=document.createElement("td");
+        $(td_quant_sale).attr("class","rtotal_sale");
+        
+        
+        //this will hold the total  cost for the transaction
+        var td_cost=document.createElement("td");
+        $(td_cost).attr("class","rtotal_transaction");
+        $(td_cost).html(transaction.rtotal_transaction);
+        
+        //this will hold the new stock for the transaction
+        var td_new_stock=document.createElement("td");
+        
+        var empty_td=document.createElement("td");
+        
+        var remove_td=document.createElement("td");
+        
+        $(tr_all_trans).append(td_item).append(td_cstock)
+        .append(td_unit_price).append(td_quant_sale)
+        .append(td_cost).append(td_new_stock)
+        .append(empty_td).append(remove_td);
+        return tr_all_trans ;
+   
+
+
+    },
+   
+    //this is for building the  amount collected/balance due interface depends on transction type
+    build_amount_collected:function(){
+        _this=this;
+
+        //this is a table row which woll hold the totol item 
+        var tr_all_trans=document.createElement("tr");
+        $(tr_all_trans).attr("class","rtotal_amt_tr");
+
+        var td_item=document.createElement("td");
+
+        var td_cstock=document.createElement("td");
+    
+        var td_unit_price=document.createElement("td");
+        
+        $(td_unit_price).css("font-weight","bold");
+        $(td_unit_price).html("AMOUNT PAID");
+        
+        //this will hold the total quantity for sale for the transaction 
+        //this defaults to zero if its just been created
+        
+        var amount_paid_td=document.createElement("td");
+        var amount_paid_in=document.createElement("input");
+        $(amount_paid_in).attr("type","number");
+        $(amount_paid_in).attr("step","0.00001");
+        $(amount_paid_in).attr("min","0");
+
+
+        $(amount_paid_in).attr("class","amount_paid_in");
+        $(amount_paid_in).val(transaction.amount_paid);
+        $(amount_paid_td).append(amount_paid_in);
+           
+        
+        //this will hold the total  cost for the transaction
+        var td_cost=document.createElement("td");
+        $(td_cost).attr("class","amount_paid");
+        $(td_cost).html(transaction.amount_paid);
+        
+        //this will hold the new stock for the transaction
+        var td_new_stock=document.createElement("td");
+        $(td_new_stock).html("AMOUNT DUE");
+
+        
+        var empty_td=document.createElement("td");
+        
+        var remove_td=document.createElement("td");
+        $(remove_td).attr("class","amount_due_for_sale");
+        $(remove_td).html(transaction.amount_balance_due);
+     
+     
+        $(tr_all_trans).append(td_item).append(td_cstock)
+        .append(td_unit_price).append(amount_paid_td)
+        .append(td_cost).append(td_new_stock)
+        .append(empty_td).append(remove_td);
+        return tr_all_trans ;
+    
+    },
+   
+
+   
+    //total object has to be included to hold the subtotal value
     //below object is for adding the total interface to the system so the 
     //total can be changed as the items are also being changed both via a model/interface
 
@@ -354,7 +562,7 @@ var product={
     
         var td_unit_price=document.createElement("td");
         $(td_unit_price).css("font-weight","bold");
-        $(td_unit_price).html("TOTAL");
+        $(td_unit_price).html("SUB TOTAL");
         
         //this will hold the total quantity for sale for the transaction 
         //this defaults to zero if its just been created
@@ -414,6 +622,8 @@ var product={
         var td_quant_id=document.createElement("td");
         var td_quant_sale=document.createElement("input");
         $(td_quant_sale).attr("type","number");
+        $(td_quant_sale).attr("step","1");
+        $(td_quant_sale).attr("min","0");
         $(td_quant_sale).attr("class","item_for_sale quant_sale");
         $(td_quant_sale).val(item.quant_sale);
         $(td_quant_id).append(td_quant_sale);
@@ -467,6 +677,36 @@ var product={
  
     },
     
+    //edit vat interface
+    edit_vat_interface:function(){
+        
+        var tr_table =  $(product.item_table).find("tr.total_vat_tr");
+        $(tr_table).find("td.vat_transaction").html(transaction.vat_transaction);
+           
+    },
+    
+    //edit rtotal interface
+    edit_rtotal_interface:function(){
+        
+        var tr_table =  $(product.item_table).find("tr.total_rtotal_tr");
+        $(tr_table).find("td.rtotal_transaction").html(transaction.rtotal_transaction);
+          
+    },
+    
+    ///edint amount collected vat due intreface
+    edit_amount_collected_interface:function(){
+        
+        var tr_table =  $(product.item_table).find("tr.rtotal_amt_tr");
+        //$(tr_table).find(".amount_paid_in").val(transaction.amount_paid);
+        $(tr_table).find(".amount_paid").html(-1*transaction.amount_paid);
+        $(tr_table).find("td.amount_due_for_sale").html(transaction.amount_balance_due);
+
+        
+        
+    },
+    
+    
+    
     //this is for editing the interface 
     //edit of the interface results in the model data being edited first 
     //item is an input parameter
@@ -500,7 +740,16 @@ var product={
         
     },
     
-  
+    setup_vat:function(){
+        
+        var vat=parseFloat($("#vat_deduction").data('tvalue'));
+        if(vat!==vat){
+            _this.error_interface("Incorrect Vat Value . Please Check Vat Value For Category");   
+        }else{
+            transaction.vat_percentage=vat;
+        // alert(transaction.vat_transaction);
+        }
+    },
    
     init:function(){
         var _this=this;
@@ -534,6 +783,10 @@ var product={
                     if(transaction.total_interface_status=="false")
                     {
                         _this.add_total_interface();
+                        _this.add_vat_interface();
+                        _this.add_rtotal_interface();
+                        _this.add_amount_collected_interface();
+                        
                     }
                 }
             }
@@ -544,7 +797,7 @@ var product={
         
         //this is where all the fun modification will begin 
         //will have a ripple effect on the  interface 
-        $(".item_for_sale").live('keyup',function(){
+        $(".item_for_sale").live('keyup',function(event){
             
             var itemId=$(this).closest("tr").data('id');
             var item= transaction.getItem(itemId);
@@ -552,9 +805,18 @@ var product={
             if(item=="not_found")
             {
                 _this.error_model("Item Not Found");
-            }else{  
+            }
+ 
+            else{  
                 //  alert(parseInt($(this).val(),10)+"--"+isNaN($(this).val()));
                 //   console.log($(this).val());
+                if (! (event.target.validity.valid)){
+                    _this.error_interface("Stock You Want To Sell Isnt Available");  
+                    $(this).val(old_quant);
+                }
+               else{ 
+                
+              
                 var return_msg=item.setQuant($(this).val());
                 if(return_msg=="false"){  
                     _this.error_model("Stock You Want To Sell Isnt Available");
@@ -565,10 +827,33 @@ var product={
 
                     _this.edit_interface(item);
                     _this.edit_total_interface();
+                    _this.edit_vat_interface();
+                    _this.edit_rtotal_interface();
+                    _this.edit_amount_collected_interface();
     
                 }
             }
+       
+   }
         });
+        
+        $(".amount_paid_in").live('keyup',function(event){
+            
+            var amount_paid =$(this).val();
+            var old_amount=transaction.amount_paid;
+            if(amount_paid < 0 || ! (event.target.validity.valid)  /**parseFloat(amount_paid)!==parseFloat(amount_paid)**/){
+                _this.error_interface("Amount Paid is Invalid");
+                $(this).val(old_amount);
+            }
+            else{
+                transaction.recal_totl(amount_paid);
+                _this.edit_amount_collected_interface();
+
+            }
+            
+            
+        });
+        
         
         
         $("a.pglink").live('click',function(e) {
@@ -697,7 +982,7 @@ var product={
             title=$(this).attr("title");
             transaction.transaction_type=$(this).attr("type");
            
-           /**  
+            /**  
             if($(this).attr("id")=="add_sales"){
                 title=(this).attr("title");
                 transaction.transaction_type=$(this).attr("type");
@@ -711,11 +996,13 @@ var product={
                 title=(this).attr("title");
                 transaction.transaction_type="inv";
             }
-	**/
+             **/
 			 
             var $dialog = $("<div></div>")
             .load($(this).attr('href'),function(rdata){
                 product.init_chosen();
+                product.setup_vat();
+
 
             })
             .dialog({
@@ -724,7 +1011,7 @@ var product={
                 width: 700,
                 height: 420,
                 position:"center",
-                modal:true,
+                modal:false,
                 buttons: {
                     "Save": function() {
                     //$( this ).dialog( "close" );

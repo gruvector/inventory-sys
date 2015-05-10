@@ -15,12 +15,15 @@
             <li>
                 <a name="add_prod" type="prod" id="add_prod" title="Add New Product"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_product')); ?>" class='inlineIcon iconWebsiteAdd'>New Product</a>
             </li>
+          
             <li>
                 <a name="add_sales" type="sale" id="add_sales" title="New Sales"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Sales</a>
             </li>
+            <!--
             <li>
                 <a name="add_order" type="order" id="add_order" title="New Order"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Order</a>
             </li>
+            -->
             <li>
                 <a name="add_recv" type="rec"  id="add_recv" title="New Receivables"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Receivables</a>
             </li>
@@ -30,6 +33,9 @@
             </li>	
             <li>
                 <a name="add_recpt" type="rec"  id="add_recpt" title="Receipt Management"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_recpt')); ?>" class='inlineIcon iconWebsiteAdd'>Receipts</a>
+            </li>
+            <li>
+                <a name="add_revr" type="revr" id="add_sales" title="Reversal"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_revr')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>Reversal</a>
             </li>
             <li>
                 <input type="text" name="search_prod" id="search_prod" placeholder="Search By Name"/>

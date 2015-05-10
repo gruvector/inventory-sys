@@ -9,7 +9,7 @@ class CustomerController extends AppController {
 
     var $name = 'Customer';
     var $components = array('RequestHandler', 'Session');
-    var $uses = array("Supplier", "Category", 'Site', 'Product', 'ProductTransaction');
+    var $uses = array("Taxe", "Supplier", "Category", 'Site', 'Product', 'ProductTransaction');
     var $layout = 'dashboard_layout';
 
     function beforeFilter() {
@@ -108,7 +108,8 @@ class CustomerController extends AppController {
             
         } else {
             $products = $this->Product->find('all', array('recursive' => '-1', 'fields' => array('selling_price', 'id', 'product_name', 'category_product', 'stock_available')));
-            $this->set(compact('categories', 'products'));
+            $vat = $this->Taxe->find('first', array('recursive', 'conditions' => array('Taxe.vat_category' => 'sales')));
+            $this->set(compact('categories', 'products', 'vat'));
         }
     }
 
@@ -245,8 +246,8 @@ class CustomerController extends AppController {
             $this->set(compact('product'));
             // exit;
         } else if (isset($_GET['save_stock'])) {
-       //     print_r($_GET['data']['Product']);
-      //      exit();
+            //     print_r($_GET['data']['Product']);
+            //      exit();
             $prod_tran_data = $_GET['data']['ProductTransaction'];
             $prod_data = $_GET['data']['Product'];
             $memberdata = $this->Session->read('memberData');

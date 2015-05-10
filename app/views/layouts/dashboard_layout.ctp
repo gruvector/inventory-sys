@@ -20,7 +20,7 @@ $categories = array_keys($links_array);
         echo $html->css('ui.theme.css');
         echo $html->css('custom.jq.css');
         echo $html->css('jquery-picklist.css');
-		echo $html->css('chosen.css');
+        echo $html->css('chosen.css');
 
 
         echo $html->script('jquery.min.1.8.js');
@@ -35,7 +35,7 @@ $categories = array_keys($links_array);
         //    echo $html->script('jquery.ui.datetime.min.js');
         echo $html->script('jquery-ui-timepicker-addon.js');
         echo $html->script('settings.js');
-		echo $html->script('chosen.jquery.js');
+        echo $html->script('chosen.jquery.js');
 
 
 
@@ -62,8 +62,9 @@ $categories = array_keys($links_array);
 
             .transparent { opacity:1 }
 
-            /*css below is to allow the datepicker to appear infront of the dialog box*/
-            #ui-datepicker-div{z-index:10000 !important;}
+            /*css below is to allow the datepicker to appear infront of the dialog box
+            #ui-datepicker-div{z-index:10000 !important;}*/
+            div.ui-dialog-buttonpane .ui-button{float:right;}
         </style>
     </head>
     <body class="hasInterface hasGradient hasSidebar">
@@ -83,7 +84,7 @@ $categories = array_keys($links_array);
                     ) {
                         ?>    
 
-                     <!--   <li class="infoUser"><a href="<?php echo $html->url(array('controller' => 'Admin', 'action' => 'change_inst')); ?>" class="change_inst" >Change Site</a></li>-->
+                         <!--   <li class="infoUser"><a href="<?php echo $html->url(array('controller' => 'Admin', 'action' => 'change_inst')); ?>" class="change_inst" >Change Site</a></li>-->
 
                     <?php } ?>
                     <li class="infoUser"><a name="<?php echo $_SESSION['memberData']['User']['fname'] . " " . $_SESSION['memberData']['User']['lname'] ?>" href="<?php echo $html->url(array('controller' => 'User', 'action' => 'add_user')); ?>" class="stn" id="<?php echo $_SESSION['memberData']['User']['id'] ?>">Settings</a></li>

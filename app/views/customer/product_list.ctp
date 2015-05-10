@@ -9,7 +9,7 @@
               Stock
             </th>
  <th class="sortup">
-              Unit/Item
+              Quant/Batch
             </th>
  <th class="sortup">
               Batch/Avl

@@ -51,6 +51,7 @@ var settings={
         _this=this;
 
 /**
+ *global ajax behaviour for the whole application
         $(document).bind("ajaxSend",function(){
             $(".ui-dialog-buttonpane button:contains('Save')").attr("disabled",true).addClass("ui-state-disabled");
 
@@ -63,7 +64,6 @@ var settings={
              
         });
 **/
-		
         $(".change_inst").live('click',function(e){
             e.preventDefault();
             var title="Change Site"
