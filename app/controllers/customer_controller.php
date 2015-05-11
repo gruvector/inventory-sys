@@ -227,6 +227,18 @@ class CustomerController extends AppController {
         }
     }
 
+    //this is for the batch addition of transaction depending on the transaction type 
+    function batch_transaction() {
+
+
+        $transaction_object = json_decode($_POST['data']);
+        echo json_last_error(); // 4 (JSON_ERROR_SYNTAX)
+        echo json_last_error_msg(); // unexpected character 
+        print_r($transaction_object);
+
+        exit();
+    }
+
     //this is for editing stock
     //this will affect the product/product_transactions table
     function edit_stock() {

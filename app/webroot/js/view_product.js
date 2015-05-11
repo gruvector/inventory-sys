@@ -126,13 +126,38 @@ function Transaction(){
 
     };
     
+    this.check_zero_length=function(){
+    
+        var response ="eureka";
+    
+    
+        if (this.transaction_items.length==0){
+            response ="shit";
+            return response;
+        };
+    
+    
+        for (var i=0;i<this.transaction_items.length;i++){
+            if(this.transaction_items[i].quant_sale==0)
+            {
+                response="shit";
+                return response;
+                break;
+
+            }
+        }
+        return response;
+         
+    };
+    
     this.round_value=function(num){
         
         //   return num;
         return  Math.round(num * 100) / 100
     };
 
-
+   
+ 
 }
 
 
@@ -277,6 +302,8 @@ function Item(id,unit_price,stock_avail,name){
 
 
 var product={
+    
+    message_diag:("#dialog-message"),
     current_stock:0,
     item_table:("#sales_info tbody"),
     
@@ -354,7 +381,7 @@ var product={
 			
         
         $("#search_item").chosen();
-    /*
+    /**
 		 var config = {
       '.chosen-select'           : {},
       '.chosen-select-deselect'  : {allow_single_deselect:false},
@@ -396,10 +423,10 @@ var product={
         // alert(message);
         switch(message) {
             case "error_duplicate":
-                alert ("Item Aready Exists In Sale List.Please Edit Below");
+                _this.show_message("Item Aready Exists In Sale List<br>Please Edit Below");
                 break;
             default:
-                alert(message);
+                _this.show_message(message);
         }
       
       
@@ -785,20 +812,20 @@ var product={
     
     
     message_interface:function(message){
-        
-        alert(message);
+        _this=this;
+        _this.show_message(message);
         
         
     },    
     //this is for errors which may be associated with interface functionality
     error_interface:function(message){
-        
+        _this=this;
         switch(message) {
             case "error_stock":
-                alert ("Stock/Item Has Issue .Please Check Item/Stock Value");
+                _this.show_message ("Stock/Item Has Issue .Please Check Item/Stock Value");
                 break;
             default:
-                alert(message);
+                _this.show_message(message);
         }
         
     },
@@ -937,7 +964,7 @@ var product={
             //  alert(parseInt($(this).val(),10)+"--"+isNaN($(this).val()));
             //   console.log($(this).val());
             if (! (event.target.validity.valid)){
-                _this.error_interface("Stock You Want To Sell Isnt Available");  
+                _this.error_interface("Please Enter Correct Value");  
                 $(val_item).val(old_quant);
             }
             else{ 
@@ -945,7 +972,7 @@ var product={
               
                 var return_msg=item.setQuant($(val_item).val());
                 if(return_msg=="false"){  
-                    _this.error_model("Stock You Want To Sell Isnt Available");
+                    _this.error_model("Please Enter Correct Value");
                     $(val_item).val(old_quant);
 
                 //  console.log(transaction.getItem(itemId));
@@ -974,7 +1001,7 @@ var product={
             //  alert(parseInt($(this).val(),10)+"--"+isNaN($(this).val()));
             //   console.log($(this).val());
             if (! (event.target.validity.valid)){
-                _this.error_interface("Stock You Want To Sell Isnt Available");  
+                _this.error_interface("Please Enter Correct Value");  
                 $(val_item).val(old_quant);
             }
             else{ 
@@ -982,7 +1009,7 @@ var product={
               
                 var return_msg=item.setQuantRecv( $(val_item).val());
                 if(return_msg=="false"){  
-                    _this.error_model("Stock You Want To Sell Isnt Available");
+                    _this.error_model("Please Enter Correct Value");
                     $(val_item).val(old_quant);
 
                 //  console.log(transaction.getItem(itemId));
@@ -1012,7 +1039,7 @@ var product={
             //  alert(parseInt($(this).val(),10)+"--"+isNaN($(this).val()));
             //   console.log($(this).val());
             if (! (event.target.validity.valid)){
-                _this.error_interface("Stock You Want To Sell Isnt Available");  
+                _this.error_interface("Please Enter Correct Value");  
                 $(val_item).val(old_quant);
             }
             else{ 
@@ -1020,7 +1047,7 @@ var product={
               
                 var return_msg=item.setQuantInv( $(val_item).val());
                 if(return_msg=="false"){  
-                    _this.error_model("Stock You Want To Sell Isnt Available");
+                    _this.error_model("Please Enter Correct Value");
                     $(val_item).val(old_quant);
 
                 //  console.log(transaction.getItem(itemId));
@@ -1044,10 +1071,36 @@ var product={
     perform_amount_paid_recv:function(){},
     perform_amount_paid_inv:function(){},
 
-   
+    //this  is for configuring the message dialog
+    configure_message_dialog:function(){
+        _this=this;
+        var diag = $(_this.message_diag);
+        
+        diag.dialog({
+            modal: true,
+            buttons: {
+                Ok: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    
+        diag.dialog('close');
+    },
+  
+    show_message:function(message){
+        _this=this;
+        $(_this.message_diag).dialog('close');
+        $("#dialog-message p.messsage").html(message);
+        $(_this.message_diag).dialog('open');
+
+    },
    
     init:function(){
         _this=this;
+        
+        _this.configure_message_dialog();
+        
         _this.load_prod(product.load_url);
 
         $("#search_item").live('change',function(){
@@ -1089,11 +1142,11 @@ var product={
                 _this.perfrom_itemMod_sale(item,old_quant,event,$(this));
             }	     
             else if(transaction.transaction_type=="add_recv"){
-               _this.perfrom_itemMod_recv(item,old_quant,event,$(this));
+                _this.perfrom_itemMod_recv(item,old_quant,event,$(this));
             }
             
             else if(transaction.transaction_type=="add_inv"){
-               _this.perfrom_itemMod_inv(item,old_quant,event,$(this));
+                _this.perfrom_itemMod_inv(item,old_quant,event,$(this));
             }
             
             
@@ -1260,17 +1313,27 @@ var product={
                 width: 700,
                 height: 420,
                 position:"center",
+                closeOnEscape: false,
                 modal:false,
                 buttons: {
-                    "Save": function() {
-                    //$( this ).dialog( "close" );
-                    },
                     "Cancel": function() {
                         transaction.resetSale();
                         $( this ).dialog( "close" );
-                        $(this).dialog('destroy').remove()
+                        $(this).dialog('destroy').remove();
 
+                    },
+                    "Save": function() {
+                      
+                        if (transaction.check_zero_length()=="shit"){
+                            product.show_message("Please Add Items For Transaction"
+                                +"<br>Please Remove Items With Zero Quantity .");
+                        }else{
+                            // alert("yes !!");
+                            product.save_batch();       
+                        }
+                    //$( this ).dialog( "close" );
                     }
+                   
                 }
             });	
             $dialog.dialog('open');
@@ -1353,6 +1416,42 @@ var product={
         }
        
     },
+    
+    
+    //this is for the batch addition of a particular transaction type
+    save_batch:function(){
+        _this=this;
+  
+        var formurl=$("#product_batch_add_url").val();
+       var formdata="data="+transaction+"";
+      //  var formdata="data="+transaction+"";
+
+        $.ajax({
+            url: formurl,
+            data:formdata,
+            type: 'POST',
+            dataType:'json',
+            beforeSend:function(){
+                console.log(transaction);
+                _this.show_message("Saving...");
+            },
+            success:function(data) {
+               
+                _this.show_message("Saved.");
+            //product.load_prod(product.load_url);
+                    
+
+
+            },
+            error:function(xhr){
+          
+                _this.show_message("Error<br>Please Try Again");
+            }
+        })
+    
+    },
+    
+    
     save_data:function(){
         
         var _this=this;

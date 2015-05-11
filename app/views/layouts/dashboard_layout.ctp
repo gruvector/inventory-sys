@@ -65,6 +65,7 @@ $categories = array_keys($links_array);
             /*css below is to allow the datepicker to appear infront of the dialog box
             #ui-datepicker-div{z-index:10000 !important;}*/
             div.ui-dialog-buttonpane .ui-button{float:right;}
+            .ui-dialog-titlebar-close{display:none;}
         </style>
     </head>
     <body class="hasInterface hasGradient hasSidebar">
