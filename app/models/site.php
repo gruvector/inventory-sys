@@ -25,15 +25,6 @@ class Site extends AppModel {
             'limit' => '',
             'dependent' => true
         )
-        ,
-        'TicketType' => array(
-            'className' => 'TicketType',
-            'foreignKey' => 'site_id',
-            'conditions' => '',
-            'order' => '',
-            'limit' => '',
-            'dependent' => true
-        )
     );
     var $belongsTo = array(
         'Institution' => array(

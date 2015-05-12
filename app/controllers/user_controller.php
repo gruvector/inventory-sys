@@ -4,7 +4,7 @@ class UserController extends AppController {
 
     var $name = 'User';
     var $components = array('RequestHandler', 'Session', 'TicketGenericEmail');
-    var $uses = array("User", 'Event', 'Batch', 'Ticket', 'Site', 'Role', 'UserRole');
+    var $uses = array('User', 'Site', 'Role', 'UserRole');
     var $layout = 'dashboard_layout';
     public $helpers = array('Form', 'Html', 'Js', 'Time', 'Paginator');
 

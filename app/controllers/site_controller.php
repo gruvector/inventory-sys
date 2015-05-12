@@ -4,7 +4,7 @@ class SiteController extends AppController {
 
     var $name = 'Site';
     var $components = array('RequestHandler', 'Session');
-    var $uses = array("User", 'Event', 'Batch', 'Ticket', 'Site', 'Role', 'UserRole');
+    var $uses = array("User",  'Site', 'Role', 'UserRole');
     var $layout = 'dashboard_layout';
     public $helpers = array('Form', 'Html', 'Js', 'Time', 'Paginator');
 

@@ -228,13 +228,15 @@ class CustomerController extends AppController {
     }
 
     //this is for the batch addition of transaction depending on the transaction type 
+    //have to recreate the object into a form in which i can understand
     function batch_transaction() {
 
-
         $transaction_object = json_decode($_POST['data']);
-        echo json_last_error(); // 4 (JSON_ERROR_SYNTAX)
-        echo json_last_error_msg(); // unexpected character 
+        $transaction_items = $transaction_object->transaction_items;
         print_r($transaction_object);
+        echo 'tt-transaction--' . $transaction_object->total_transaction;
+
+
 
         exit();
     }

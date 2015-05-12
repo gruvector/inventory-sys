@@ -56,10 +56,12 @@
 
     <div name="dialog-message" id="dialog-message" title="Message">
         <p class="messsage">
-  testing some stuff out 
         </p>
     </div>
-
+    <div name="dialog-confirm" id="dialog-confirm" title="Confirmation">
+        <p class="messsage">
+        </p>
+    </div>
     <input type="hidden" name="product_list_url" id="product_list_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'product_list')); ?>" />
     <input type="hidden" name="product_add_url" id="product_add_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_product')); ?>" />
     <input type="hidden" name="product_del_url" id="product_del_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'del_product')); ?>" />

@@ -304,6 +304,7 @@ function Item(id,unit_price,stock_avail,name){
 var product={
     
     message_diag:("#dialog-message"),
+    confirm_diag:("#dialog-confirm"),
     current_stock:0,
     item_table:("#sales_info tbody"),
     
@@ -738,10 +739,12 @@ var product={
         $(remove_link).html("Remove");
         $(remove_td).append(remove_link);      
         $(remove_td).live('click',function(e) {
-            if(confirm("Do You Want To Remove Item From Sale")){            
-                _this.remove_item(item.id);
-                    
-            }
+            
+            _this.confirmation_action=function(){
+                _this.remove_item(item.id);   
+            }  ;
+            _this.show_confirmation("Do You Want To Remove "+item.name+" ? ")
+            
         });
         
         
@@ -1087,6 +1090,48 @@ var product={
     
         diag.dialog('close');
     },
+    
+    
+    //this will be configured to perform a particular action
+    //when the confirm button is clicked
+    confirmation_action:null,
+    
+    
+    //this is for configurning the confirmation dialog
+    configure_confirmation:function(){
+     
+        _this=this;
+       
+        var diag = $(_this.confirm_diag);
+        
+        diag.dialog({
+            modal: true,
+            buttons: {
+                "Cancel":function(){
+                    $( this ).dialog( "close" ); 
+                },
+                "Ok": function() {
+                    _this.confirmation_action() ;
+                    $( this ).dialog( "close" ); 
+
+                }
+           
+              
+            }
+        });
+    
+        diag.dialog('close');
+     
+    },
+    
+    show_confirmation:function(message){
+        _this=this;
+        $(_this.confirm_diag).dialog('close');
+        //   $("#dialog-confirm").attr("title",message);
+        $("#dialog-confirm p.messsage").html(message);
+        $(_this.confirm_diag).dialog('open');
+
+    },
   
     show_message:function(message){
         _this=this;
@@ -1096,11 +1141,25 @@ var product={
 
     },
    
+    disable_okbutt_mgdialg:function(){
+    
+        $(".ui-dialog-buttonpane button:contains('Ok')").attr("disabled", true).addClass("ui-state-disabled"); 
+
+    },
+   
+    enable_okbutt_mgdialg:function(){
+    
+        $(".ui-dialog-buttonpane button:contains('Ok')").attr("disabled", false).removeClass("ui-state-disabled"); 
+
+    },
+   
+
+   
     init:function(){
         _this=this;
         
         _this.configure_message_dialog();
-        
+        _this.configure_confirmation();
         _this.load_prod(product.load_url);
 
         $("#search_item").live('change',function(){
@@ -1325,8 +1384,8 @@ var product={
                     "Save": function() {
                       
                         if (transaction.check_zero_length()=="shit"){
-                            product.show_message("Please Add Items For Transaction"
-                                +"<br>Please Remove Items With Zero Quantity .");
+                            product.show_message("Please Add Items For Transaction."
+                                +"<br>Please Remove Items With Zero Quantity.");
                         }else{
                             // alert("yes !!");
                             product.save_batch();       
@@ -1423,8 +1482,8 @@ var product={
         _this=this;
   
         var formurl=$("#product_batch_add_url").val();
-       var formdata="data="+transaction+"";
-      //  var formdata="data="+transaction+"";
+        formdata="data="+JSON.stringify(transaction);
+        // var formdata="data='"+transaction+"'";
 
         $.ajax({
             url: formurl,
@@ -1432,20 +1491,22 @@ var product={
             type: 'POST',
             dataType:'json',
             beforeSend:function(){
-                console.log(transaction);
+                _this.disable_okbutt_mgdialg() ;
                 _this.show_message("Saving...");
             },
             success:function(data) {
-               
+
                 _this.show_message("Saved.");
+                _this.enable_okbutt_mgdialg();
+          
             //product.load_prod(product.load_url);
                     
 
 
             },
             error:function(xhr){
-          
                 _this.show_message("Error<br>Please Try Again");
+                _this.enable_okbutt_mgdialg();
             }
         })
     
