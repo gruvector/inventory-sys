@@ -34,9 +34,11 @@
             <li>
                 <a name="add_recpt" type="add_recpt"  id="add_recpt" title="Receipt Management"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_recpt')); ?>" class='inlineIcon iconWebsiteAdd'>Receipts</a>
             </li>
+            <!--
             <li>
-                <a name="add_revr" type="add_revr" id="add_sales" title="Reversal"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_revr')); ?>" class='inlineIcon iconWebsiteAdd'>Reversal</a>
+                <a name="add_revr" type="add_revr" id="add_sales" title="Reversal"  href="<?php // echo $html->url(array('controller' => 'Customer', 'action' => 'add_revr')); ?>" class='inlineIcon iconWebsiteAdd'>Reversal</a>
             </li>
+            -->
             <li>
                 <input type="text" name="search_prod" id="search_prod" placeholder="Search By Name"/>
             </li>

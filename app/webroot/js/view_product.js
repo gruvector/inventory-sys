@@ -1496,15 +1496,12 @@ var product={
             },
             success:function(data) {
 
-                _this.show_message("Saved.");
+                _this.show_message("Saved");
                 _this.enable_okbutt_mgdialg();
           
             //product.load_prod(product.load_url);
-                    
-
-
-            },
-            error:function(xhr){
+             },
+            error:function(data){
                 _this.show_message("Error<br>Please Try Again");
                 _this.enable_okbutt_mgdialg();
             }

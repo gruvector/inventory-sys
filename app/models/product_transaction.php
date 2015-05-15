@@ -6,8 +6,9 @@
  */
 
 class ProductTransaction extends AppModel {
+
     var $name = 'ProductTransaction';
-   var $belongsTo = array(
+    var $belongsTo = array(
         'Product' => array(
             'className' => 'Product',
             'foreignKey' => 'product_id',
@@ -15,14 +16,29 @@ class ProductTransaction extends AppModel {
             'fields' => '',
             'order' => ''
         ),
-       'User' => array(
+        'User' => array(
             'className' => 'User',
             'foreignKey' => 'user_id',
             'conditions' => '',
             'fields' => '',
             'order' => ''
+        ),
+        'Sale' => array(
+            'className' => 'Sale',
+            'foreignKey' => 'sale_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ),
+        'Receipt' => array(
+            'className' => 'Receipt',
+            'foreignKey' => 'receipt_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
         )
     );
+
 }
 
 ?>
