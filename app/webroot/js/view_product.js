@@ -121,8 +121,10 @@ function Transaction(){
     //this is for recalculating the total to be paid
     this.recal_totl=function(amount_paid){
     
-        this.amount_paid=this.round_value(amount_paid);
-        this.amount_balance_due=this.round_value(this.rtotal_transaction-this.amount_paid);
+        if(this.transaction_type=="add_sales"){
+            this.amount_paid=this.round_value(amount_paid);
+            this.amount_balance_due=this.round_value(this.rtotal_transaction-this.amount_paid);
+        }
 
     };
     
@@ -206,7 +208,7 @@ function Item(id,unit_price,stock_avail,name){
     this.setQuant=function(quant_sale){
         
                
-        if(quant_sale < 0 || quant_sale > this.stock_avail ){
+        if(quant_sale < 1 || quant_sale > this.stock_avail ){
 	
             //alert("Please Enter Correct Quantity."+"Quantity Should Be More Than 0 And Less Than Or Equal To Quantity Available");
             return "false";
@@ -255,7 +257,7 @@ function Item(id,unit_price,stock_avail,name){
 
             transaction.vat_transaction=transaction.round_value((transaction.vat_percentage/100)*transaction.total_transaction);
             transaction.rtotal_transaction=transaction.round_value(transaction.total_transaction+transaction.vat_transaction);
-            transaction.amount_balance_due=transaction.round_value(transaction.rtotal_transaction-transaction.amount_paid);
+            //  transaction.amount_balance_due=transaction.round_value(transaction.rtotal_transaction-transaction.amount_paid);
 
             // alert(transaction.total_transaction);
             return "true";
@@ -266,8 +268,9 @@ function Item(id,unit_price,stock_avail,name){
     //this one is for invoices
     this.setQuantInv=function(quant_sale){
 
-        if(quant_sale < 0 || quant_sale > this.stock_avail ){
-	
+        //if(quant_sale < 0 || quant_sale > this.stock_avail ){
+        if(quant_sale < 1 ){
+
             //alert("Please Enter Correct Quantity."+"Quantity Should Be More Than 0 And Less Than Or Equal To Quantity Available");
             return "false";
         }
@@ -285,7 +288,7 @@ function Item(id,unit_price,stock_avail,name){
 
             transaction.vat_transaction=transaction.round_value((transaction.vat_percentage/100)*transaction.total_transaction);
             transaction.rtotal_transaction=transaction.round_value(transaction.total_transaction+transaction.vat_transaction);
-            transaction.amount_balance_due=transaction.round_value(transaction.rtotal_transaction-transaction.amount_paid);
+            // transaction.amount_balance_due=transaction.round_value(transaction.rtotal_transaction-transaction.amount_paid);
 
             // alert(transaction.total_transaction);
             return "true";
@@ -424,7 +427,7 @@ var product={
         // alert(message);
         switch(message) {
             case "error_duplicate":
-                _this.show_message("Item Aready Exists In Sale List<br>Please Edit Below");
+                _this.show_message("Item Aready Exists In  List<br>Please Edit Below");
                 break;
             default:
                 _this.show_message(message);
@@ -839,8 +842,15 @@ var product={
         if(vat!==vat){
             _this.error_interface("Incorrect Vat Value . Please Check Vat Value For Category");   
         }else{
-            transaction.vat_percentage=vat;
-        // alert(transaction.vat_transaction);
+            
+            if(transaction.transaction_type=="add_sales" || transaction.transaction_type=="add_inv"){
+                transaction.vat_percentage=vat;
+            // alert(transaction.vat_transaction);
+            }
+            else{
+                transaction.vat_percentage=0.00;
+ 
+            }
         }
     },
    
@@ -921,13 +931,13 @@ var product={
     //this is for performing basic item selection but for invoices
     perform_search_inv:function(stock,unit_price,name,itemId){
         _this=this;
-
+        /**
         if (stock==0){
             _this.error_interface(" Stock Of "+name+" Is "+stock+" Please Restock ");
 
         //   alert(" Stock is "+stock+" Please Restock ");
-        }
-        else if( stock!==stock  || unit_price!==unit_price){
+        }***/
+        if( stock!==stock  || unit_price!==unit_price){
             // else if(isNaN(stock) ||isNaN(itemId) || isNaN(unit_price)){
             _this.error_interface("error_stock");
         //alert ("Stock/Item is Unknown .Please Check Item/Stock Value");
@@ -1261,45 +1271,7 @@ var product={
             product.check_stock();
         });
         
-        $("#add_product_form").live('submit',function(event){
-            
-            event.preventDefault(); 
-            //alert("test");          
-            /**
-            if(isNaN($(".stock_available").val())==true){
-                $(".stock_available").css("border","solid #F44 2px");
-            }
-            else {
-                $(".stock_available").css("border","solid grey 1px");    
-  
-            }
-            if(isNaN($(".cost_price").val())==true){
-                $(".cost_price").css("border","solid #F44 2px");
-            }
-            else {
-                $(".cost_price").css("border","solid grey 1px");    
-  
-            }
-            if(isNaN($(".selling_price").val())==true){
-                $(".selling_price").css("border","solid #F44 2px");
-            }
-            else {
-                $(".selling_price").css("border","solid grey 1px");    
-  
-            }
-            
-            if(isNaN($(".quantity_crate").val())==true){
-                $(".quantity_crate").css("border","solid #F44 2px");
-            }
-            else {
-                $(".quantity_crate").css("border","solid grey 1px");    
-  
-            }
-             **/
-            //  stock_available,selling_price,cost_price
-            product.checkfields();
-            
-        });
+      
         
         
         //this is used for editing stock
@@ -1356,14 +1328,11 @@ var product={
             var title ="";
             title=$(this).attr("title");
             transaction.transaction_type=$(this).attr("type");
-           
-           
-			 
+ 			 
             var $dialog = $("<div></div>")
             .load($(this).attr('href'),function(rdata){
                 product.init_chosen();
                 product.setup_vat();
-
 
             })
             .dialog({
@@ -1376,9 +1345,8 @@ var product={
                 modal:false,
                 buttons: {
                     "Cancel": function() {
-                        transaction.resetSale();
-                        $( this ).dialog( "close" );
-                        $(this).dialog('destroy').remove();
+                        
+                        product.kill_batch($(this));
 
                     },
                     "Save": function() {
@@ -1388,7 +1356,7 @@ var product={
                                 +"<br>Please Remove Items With Zero Quantity.");
                         }else{
                             // alert("yes !!");
-                            product.save_batch();       
+                            product.save_batch($(this));       
                         }
                     //$( this ).dialog( "close" );
                     }
@@ -1400,9 +1368,7 @@ var product={
         });
 
 		
-		
-        
-		
+				
         //this is for adding or editing products
         $("#add_prod,.edit_prod").live('click',function(e) {
             e.preventDefault();
@@ -1426,12 +1392,15 @@ var product={
                 position:"center",
                 modal:false,
                 buttons: {
-                    "Save": function() {
-                        $("#add_product_form").submit();    
-                    },
                     "Cancel": function() {
                         $( this ).dialog( "close" );
+                        $(this).dialog('destroy').remove();
+
+                    },
+                    "Save": function() {
+                        product.checkfields($(this));
                     }
+               
                 }
             });
             $dialog.dialog('open');
@@ -1439,46 +1408,58 @@ var product={
         });     
         
      
+        $(".check").live('keyup',function(event) {
+          
+            if (! (event.target.validity.valid)){
+                product.show_message("Please Enter Correct Value");
+                $(this).css("border","solid #F44 2px"); 
+               // $(this).val($(this).data('orig'));
+
+            }else
+            {
+                $(this).css("border","solid grey 1px");       
+      
+            }
+        });
+     
+     
     } ,
-    checkfields:function()
+    checkfields:function(dail_ref)
     {
            
         var counter=0;
-        var _this=this;
-        $("#add_product_form.cmxform input[type=text],#add_product_form.cmxform  textarea,#add_product_form.cmxform input[type=email]").each(function(){
-            if($(this).val()=="")
-            {
-                $(this).css("border","solid #F44 2px");              
+        $(".check").each(function(){
+      
+            if(!(document.getElementById($(this).attr("id")).checkValidity()) || $(this).val()=="" ){
+                $(this).css("border","solid #F44 2px"); 
                 counter++;
-            }
-            else{
-               
+            }else
+            {
                 $(this).css("border","solid grey 1px");       
-            
-            } 
+
+            }
         });
         
-        /** $(".check").each(function(){
-            if(isNaN($(this).val())==true){
-                $(this).css("border","solid #F44 2px");
-                counter++;
-            }
-            else {
-                $(this).css("border","solid grey 1px");    
-  
-            }
-        })**/
-        
+            
         if(counter==0)
         {
-            product.save_data();
+            product.save_data(dail_ref);
         }
-       
+        else{
+            product.show_message("Please Enter Correct Value<br>Please No Empty Values");
+  
+        }l
     },
     
-    
+    kill_batch:function(div_ref){
+        _this=this;
+        transaction.resetSale();
+        $(div_ref).dialog( "close" );
+        $(div_ref).dialog('destroy').remove();
+        
+    },
     //this is for the batch addition of a particular transaction type
-    save_batch:function(){
+    save_batch:function(div_diag_batch){
         _this=this;
   
         var formurl=$("#product_batch_add_url").val();
@@ -1495,14 +1476,19 @@ var product={
                 _this.show_message("Saving...");
             },
             success:function(data) {
-
-                _this.show_message("Saved");
+                
+                _this.kill_batch(div_diag_batch);
+                product.load_prod(product.load_url);              
+                _this.show_message(data.message);
                 _this.enable_okbutt_mgdialg();
+                
+               
+
           
             //product.load_prod(product.load_url);
-             },
+            },
             error:function(data){
-                _this.show_message("Error<br>Please Try Again");
+                _this.show_message("Error<br>"+data.message);
                 _this.enable_okbutt_mgdialg();
             }
         })
@@ -1510,7 +1496,7 @@ var product={
     },
     
     
-    save_data:function(){
+    save_data:function(dail_ref){
         
         var _this=this;
         var formurl=$("#product_add_url").val();
@@ -1519,19 +1505,25 @@ var product={
             url: formurl,
             data:formdata,
             type: 'GET',
-            dataType:'json',
+            dataType:'json', 
+            beforeSend:function(){
+                _this.show_message("Saving...");
+            },
             success:function(data) {
                
                 if(data.status=="1")          
                 {
-                    $(".ui-dialog-content").dialog("close");
-                    product.load_prod(product.load_url);
+                    $(dail_ref).dialog( "close" );
+                    $(dail_ref).dialog('destroy').remove();
+                    _this.load_prod(product.load_url);
+                    _this.show_message("Data Saved Succesfully");
+
                     
 
                 }
             },
             error:function(data){
-          
+                _this.show_message("Error<br>"+"Please Try Again");
             }
         })
         

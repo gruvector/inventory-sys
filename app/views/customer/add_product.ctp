@@ -24,7 +24,7 @@
                 <li>
                     <input type="hidden" required name="data[Product][id]" id="data[Product][id]"  value="<?php echo isset($product) ? $product['Product']['id'] : ""; ?>" />      
 
-                    <input type="text" required name="data[Product][product_name]" id="data[Product][product_name]" value="<?php echo isset($product) ? $product['Product']['product_name'] : ""; ?>" />      
+                    <input type="text" class="check" required name="data[Product][product_name]" id="data[Product][product_name]" value="<?php echo isset($product) ? $product['Product']['product_name'] : ""; ?>" />      
                 </li>
             </ul>  
             <!--
@@ -42,7 +42,7 @@
                     <label> Quantity/Batch </label> 
                 </li>
                 <li>
-                    <input type='text' class="quantity_crate check" required name="data[Product][quantity_crate]"  value="<?php echo isset($product) ? $product['Product']['quantity_crate'] : "0"; ?>" />      
+                    <input type='number' min="1" step="1" max="10000000" class="quantity_crate check" required name="data[Product][quantity_crate]" id="quantity_crate"  data-orig="1" value="<?php echo isset($product) ? $product['Product']['quantity_crate'] : 1; ?>" />      
                 </li>
             </ul>
             <ul class='tableActions'>
@@ -62,7 +62,7 @@
                     <label> Cost Price </label> 
                 </li>
                 <li>
-                    <input type='text' class="cost_price check" required name="data[Product][cost_price]"  value="<?php echo isset($product) ? $product['Product']['cost_price'] : "0.0"; ?>" />      
+                    <input type='number' min="0" step="0.00001" max="10000000" class="cost_price check" required name="data[Product][cost_price]" id="cost_price" data-orig="0.00" value="<?php echo isset($product) ? $product['Product']['cost_price'] : "0.00"; ?>" />      
                 </li>
             </ul>
 
@@ -73,7 +73,7 @@
                     <label> Selling Price </label> 
                 </li>
                 <li>
-                    <input type='text' class='selling_price check'  required name="data[Product][selling_price]" id="data[Product][selling_price]" value="<?php echo isset($product) ? $product['Product']['selling_price'] : "0.0"; ?>" />      
+                    <input  type='number' min="0" step="0.00001" max="10000000" class='selling_price check'  required name="data[Product][selling_price]" id="selling_price" data-orig="0.00" value="<?php echo isset($product) ? $product['Product']['selling_price'] : "0.00"; ?>" />      
                 </li>
             </ul>
 
