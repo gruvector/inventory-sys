@@ -9,7 +9,7 @@ class CustomerController extends AppController {
 
     var $name = 'Customer';
     var $components = array('RequestHandler', 'Session');
-    var $uses = array("Invoice", "Reversal", "Receive", "Sale", "Receipt", "Taxe", "Supplier", "Category", 'Site', 'Product', 'ProductTransaction');
+    var $uses = array("ReverseReason","Invoice", "Reversal", "Receive", "Sale", "Receipt", "Taxe", "Supplier", "Category", 'Site', 'Product', 'ProductTransaction');
     var $layout = 'dashboard_layout';
 
     //var $transaction_timestamp = ;
@@ -111,7 +111,10 @@ class CustomerController extends AppController {
         } else {
             $products = $this->Product->find('all', array('recursive' => '-1', 'fields' => array('selling_price', 'id', 'product_name', 'category_product', 'stock_available')));
             $vat = $this->Taxe->find('first', array('recursive', 'conditions' => array('Taxe.vat_category' => 'sales')));
-            $this->set(compact('categories', 'products', 'vat'));
+            $reverse=$this->ReverseReason->find('list',array('fields' => array('id', 'reason')));
+           // print_r($reverse);
+           // exit();
+            $this->set(compact('reverse','categories', 'products', 'vat'));
         }
     }
 
@@ -243,7 +246,8 @@ class CustomerController extends AppController {
     //rec--   no receipt(invoince),increase rather than decrease in stock, precalculated effect on sale record
     //invoince --no receipt,no effect on stock ,no effect stock, precalculated normal effect on sales record 
   ///total sale  rcord  shouldent be calculated from client 
-  //sidde but should be  calculated from d from server side 
+  //reversal is similar tosales but  is a combination of 
+  //should be  calculated from d from server side 
 //ideally corect costs for each  for each of the items should be recalculated
     function batch_transaction() {
 
@@ -311,13 +315,14 @@ class CustomerController extends AppController {
         ///sale=stock_available >=quant_transact
         //receivalbe=just calculate current stock and use
         //invoince =same as receivable but no  increase in stock
+        //reversal.calculate current stock and use add_revr
         foreach ($products_data as $val) {
             $quant_transact = mysql_real_escape_string($val->quant_sale);
             $id = mysql_real_escape_string($val->id);
 
             if ($transaction_type == "add_sales") {
                 $array_query [] = " (id = '$id' and stock_available >= '$quant_transact')";
-            } else if ($transaction_type == "add_recv" || $transaction_type == "add_inv") {
+            } else if ($transaction_type == "add_recv" || $transaction_type == "add_inv" || $transaction_type == "add_revr"  ) {
                 $array_query [] = "(id = '$id')";
             } else {
                 
@@ -348,7 +353,11 @@ class CustomerController extends AppController {
                             $new_stock = $val_new['products']['stock_available'];
                             $insert_product_query[] = "WHEN id = '$bval->id' THEN '$new_stock'";
                         }
+                         else if ($transaction_type == "add_revr") {
 
+                            $new_stock = $val_new['products']['stock_available'] - $bval->quant_sale;
+                            $insert_product_query[] = "WHEN id = '$bval->id' THEN '$new_stock'";
+                        }
 
                         $query_end_test[] = $bval->id;
                     }
@@ -385,6 +394,8 @@ class CustomerController extends AppController {
         $sale_array['transaction_type'] = $transaction_object->transaction_type;
         $sale_array['transaction_timestamp'] = date('Y-m-d H:i:s');
         $sale_array['user_id'] = $memberdata['User']['id'];
+        $sale_array['reverse_reason'] = $transaction_object->reverse_reason;
+     
         $this->Sale->set($sale_array);
         if ($this->Sale->save()) {
             return array('status' => true, 'sale_id' => $this->Sale->id);

@@ -28,7 +28,7 @@ function Transaction(){
     this.vat_transaction=0.00;
     this.vat_percentage=0;
     this.rtotal_transaction=0.00;
-
+    this.reverse_reason="";
 
     //this is for resetting transaction  items
     this.resetSale=function(){
@@ -42,7 +42,7 @@ function Transaction(){
         this.vat_transaction=0.00;
         this.vat_percentage=0;
         this.rtotal_transaction=0.00;
-
+        this.reverse_reason="";
 
                      	
     };
@@ -93,7 +93,7 @@ function Transaction(){
                 {
                     this.amount_paid=0.00;  
                 }
-           **/    
+                 **/    
                 this.recal_totl(this.amount_paid);
 
                 return "true";
@@ -265,6 +265,39 @@ function Item(id,unit_price,stock_avail,name){
        
     };
  
+    //this is for reversals
+    this.setQuantRevr=function(quant_sale){
+     
+        if(quant_sale < 1 ){
+	
+            //alert("Please Enter Correct Quantity."+"Quantity Should Be More Than 0 And Less Than Or Equal To Quantity Available");
+            return "false";
+        }
+        else{          
+            
+            transaction.total_quantity_items=transaction.calculate_quan()-(this.quant_sale);
+            transaction.total_transaction=transaction.calculate_money()-(this.cost);
+          
+            this.quant_sale=parseInt(quant_sale,10);     
+            this.cost=this.unit_price*this.quant_sale;
+            this.new_stock=this.stock_avail-this.quant_sale;  
+            
+                     
+            transaction.total_transaction=transaction.round_value(transaction.total_transaction+(this.cost));              
+            transaction.total_quantity_items=transaction.total_quantity_items+(this.quant_sale);
+
+            transaction.vat_transaction=transaction.round_value((transaction.vat_percentage/100)*transaction.total_transaction);
+            transaction.rtotal_transaction=transaction.round_value(transaction.total_transaction+transaction.vat_transaction);
+            //  transaction.amount_balance_due=transaction.round_value(transaction.rtotal_transaction-transaction.amount_paid);
+
+            // alert(transaction.total_transaction);
+            return "true";
+        }  
+       
+    };
+ 
+ 
+ 
     //this one is for invoices
     this.setQuantInv=function(quant_sale){
 
@@ -378,6 +411,22 @@ var product={
 
     },
     
+    
+    
+    //this is for  showing the reason dialog based on tran type
+    //
+    product_setup_reason:function(){
+        
+        if(transaction.transaction_type=="add_revr")
+        {
+            $("#reverse_reason_chzn").show() ;  
+        }
+        else{
+            $("#reverse_reason_chzn").hide();  
+   
+        }
+    },
+    //
     //this is for initializing the chosen jquery variable
     
     
@@ -385,6 +434,8 @@ var product={
 			
         
         $("#search_item").chosen();
+        $("#reverse_reason").chosen();
+
     /**
 		 var config = {
       '.chosen-select'           : {},
@@ -890,8 +941,8 @@ var product={
               
     },
     
-    //this is for performing basic item selection but for receivables
-    perform_search_recv:function(stock,unit_price,name,itemId){
+    //this is for performing basic item selection but for receivables/reversals
+    perform_search_recv_revr:function(stock,unit_price,name,itemId){
         _this=this;
          
         /**
@@ -1002,9 +1053,10 @@ var product={
         }
     },
     
-    //this one is for receivables
-    perfrom_itemMod_recv:function(item,old_quant,event,val_item){
+    //this one is for receivables/reversals
+    perfrom_itemMod_recv_revr:function(item,old_quant,event,val_item){
         _this=this;
+        var return_msg ;
         
         if(item=="not_found")
         {
@@ -1020,7 +1072,14 @@ var product={
             else{ 
                 
               
-                var return_msg=item.setQuantRecv( $(val_item).val());
+                if(transaction.transaction_type=="add_recv"){
+                    return_msg=item.setQuantRecv( $(val_item).val());
+                }
+                else  if(transaction.transaction_type=="add_revr"){
+                
+                    return_msg=item.setQuantRevr( $(val_item).val()); 
+                }
+                
                 if(return_msg=="false"){  
                     _this.error_model("Please Enter Correct Value");
                     $(val_item).val(old_quant);
@@ -1172,6 +1231,12 @@ var product={
         _this.configure_confirmation();
         _this.load_prod(product.load_url);
 
+
+        $("#reverse_reason").live('change',function(){
+            transaction.reverse_reason=$('option:selected', this).val(); 
+           
+        });
+
         $("#search_item").live('change',function(){
             
             var stock      = parseInt($('option:selected', this).data('stock'));
@@ -1186,13 +1251,16 @@ var product={
                 _this.perform_search_sale(stock,unit_price,name,itemId);
             }	     
             else if(transaction.transaction_type=="add_recv"){
-                _this.perform_search_recv(stock,unit_price,name,itemId);
+                _this.perform_search_recv_revr(stock,unit_price,name,itemId);
             }
             
             else if(transaction.transaction_type=="add_inv"){
                 _this.perform_search_inv(stock,unit_price,name,itemId);
             }
-         
+            else if(transaction.transaction_type=="add_revr"){
+                _this.perform_search_recv_revr(stock,unit_price,name,itemId);
+            }
+            
 
 
         // var stock = parseInt($('#search_item option:selected').data('stock'));
@@ -1211,13 +1279,15 @@ var product={
                 _this.perfrom_itemMod_sale(item,old_quant,event,$(this));
             }	     
             else if(transaction.transaction_type=="add_recv"){
-                _this.perfrom_itemMod_recv(item,old_quant,event,$(this));
+                _this.perfrom_itemMod_recv_revr(item,old_quant,event,$(this));
             }
             
             else if(transaction.transaction_type=="add_inv"){
                 _this.perfrom_itemMod_inv(item,old_quant,event,$(this));
             }
-            
+            else if(transaction.transaction_type=="add_revr"){
+                _this.perfrom_itemMod_recv_revr(item,old_quant,event,$(this));
+            }
             
             
         });
@@ -1327,13 +1397,14 @@ var product={
             e.preventDefault();
             var title ="";
             title=$(this).attr("title");
+       
             transaction.transaction_type=$(this).attr("type");
  			 
             var $dialog = $("<div></div>")
             .load($(this).attr('href'),function(rdata){
                 product.init_chosen();
                 product.setup_vat();
-
+                product.product_setup_reason();
             })
             .dialog({
                 autoOpen: false,
@@ -1356,16 +1427,22 @@ var product={
                                 +"<br>Please Remove Items With Zero Quantity.");
                         }else{
                             // alert("yes !!");
-                            product.save_batch($(this));       
+                            if(transaction.transaction_type=="add_revr" && transaction.reverse_reason=="" ){
+                            product.show_message("Please Select Reversal Reason.");
+                                }else{
+                                    product.save_batch($(this));       
+    
+                                }
+                            
+                            }
+                        //$( this ).dialog( "close" );
                         }
-                    //$( this ).dialog( "close" );
-                    }
                    
-                }
-            });	
+                    }
+                });	
             $dialog.dialog('open');
 
-        });
+            });
 
 		
 				
@@ -1413,7 +1490,7 @@ var product={
             if (! (event.target.validity.valid)){
                 product.show_message("Please Enter Correct Value");
                 $(this).css("border","solid #F44 2px"); 
-               // $(this).val($(this).data('orig'));
+            // $(this).val($(this).data('orig'));
 
             }else
             {
@@ -1423,143 +1500,144 @@ var product={
         });
      
      
-    } ,
-    checkfields:function(dail_ref)
-    {
+        } ,
+        checkfields:function(dail_ref)
+        {
            
-        var counter=0;
-        $(".check").each(function(){
+            var counter=0;
+            $(".check").each(function(){
       
-            if(!(document.getElementById($(this).attr("id")).checkValidity()) || $(this).val()=="" ){
-                $(this).css("border","solid #F44 2px"); 
-                counter++;
-            }else
-            {
-                $(this).css("border","solid grey 1px");       
+                if(!(document.getElementById($(this).attr("id")).checkValidity()) || $(this).val()=="" ){
+                    $(this).css("border","solid #F44 2px"); 
+                    counter++;
+                }else
+                {
+                    $(this).css("border","solid grey 1px");       
 
-            }
-        });
+                }
+            });
         
             
-        if(counter==0)
-        {
-            product.save_data(dail_ref);
-        }
-        else{
-            product.show_message("Please Enter Correct Value<br>Please No Empty Values");
+            if(counter==0)
+            {
+                product.save_data(dail_ref);
+            }
+            else{
+                product.show_message("Please Enter Correct Value<br>Please No Empty Values");
   
-        }l
-    },
-    
-    kill_batch:function(div_ref){
-        _this=this;
-        transaction.resetSale();
-        $(div_ref).dialog( "close" );
-        $(div_ref).dialog('destroy').remove();
-        
-    },
-    //this is for the batch addition of a particular transaction type
-    save_batch:function(div_diag_batch){
-        _this=this;
-  
-        var formurl=$("#product_batch_add_url").val();
-        formdata="data="+JSON.stringify(transaction);
-        // var formdata="data='"+transaction+"'";
+            }
 
-        $.ajax({
-            url: formurl,
-            data:formdata,
-            type: 'POST',
-            dataType:'json',
-            beforeSend:function(){
-                _this.disable_okbutt_mgdialg() ;
-                _this.show_message("Saving...");
-            },
-            success:function(data) {
+        },
+    
+        kill_batch:function(div_ref){
+            _this=this;
+            transaction.resetSale();
+            $(div_ref).dialog( "close" );
+            $(div_ref).dialog('destroy').remove();
+        
+        },
+        //this is for the batch addition of a particular transaction type
+        save_batch:function(div_diag_batch){
+            _this=this;
+  
+            var formurl=$("#product_batch_add_url").val();
+            formdata="data="+JSON.stringify(transaction);
+            // var formdata="data='"+transaction+"'";
+
+            $.ajax({
+                url: formurl,
+                data:formdata,
+                type: 'POST',
+                dataType:'json',
+                beforeSend:function(){
+                    _this.disable_okbutt_mgdialg() ;
+                    _this.show_message("Saving...");
+                },
+                success:function(data) {
                 
-                _this.kill_batch(div_diag_batch);
-                product.load_prod(product.load_url);              
-                _this.show_message(data.message);
-                _this.enable_okbutt_mgdialg();
+                    _this.kill_batch(div_diag_batch);
+                    product.load_prod(product.load_url);              
+                    _this.show_message(data.message);
+                    _this.enable_okbutt_mgdialg();
                 
                
 
           
-            //product.load_prod(product.load_url);
-            },
-            error:function(data){
-                _this.show_message("Error<br>"+data.message);
-                _this.enable_okbutt_mgdialg();
-            }
-        })
+                //product.load_prod(product.load_url);
+                },
+                error:function(data){
+                    _this.show_message("Error<br>"+data.message);
+                    _this.enable_okbutt_mgdialg();
+                }
+            })
     
-    },
+        },
     
     
-    save_data:function(dail_ref){
+        save_data:function(dail_ref){
         
-        var _this=this;
-        var formurl=$("#product_add_url").val();
-        var formdata=$("#add_product_form.cmxform").serialize()+"&save_prod=true";      
-        $.ajax({
-            url: formurl,
-            data:formdata,
-            type: 'GET',
-            dataType:'json', 
-            beforeSend:function(){
-                _this.show_message("Saving...");
-            },
-            success:function(data) {
+            var _this=this;
+            var formurl=$("#product_add_url").val();
+            var formdata=$("#add_product_form.cmxform").serialize()+"&save_prod=true";      
+            $.ajax({
+                url: formurl,
+                data:formdata,
+                type: 'GET',
+                dataType:'json', 
+                beforeSend:function(){
+                    _this.show_message("Saving...");
+                },
+                success:function(data) {
                
-                if(data.status=="1")          
-                {
-                    $(dail_ref).dialog( "close" );
-                    $(dail_ref).dialog('destroy').remove();
-                    _this.load_prod(product.load_url);
-                    _this.show_message("Data Saved Succesfully");
+                    if(data.status=="1")          
+                    {
+                        $(dail_ref).dialog( "close" );
+                        $(dail_ref).dialog('destroy').remove();
+                        _this.load_prod(product.load_url);
+                        _this.show_message("Data Saved Succesfully");
 
                     
 
+                    }
+                },
+                error:function(data){
+                    _this.show_message("Error<br>"+"Please Try Again");
                 }
-            },
-            error:function(data){
-                _this.show_message("Error<br>"+"Please Try Again");
-            }
-        })
+            })
         
-    },
+        },
     
     
-    save_stock:function(){
+        save_stock:function(){
         
-        var _this=this;
-        var formurl=$("#stock_edit_url").val();
-        var formdata=$("#add_stock_form.cmxform").serialize()+"&save_stock=true";      
-        $.ajax({
-            url: formurl,
-            data:formdata,
-            type: 'GET',
-            dataType:'json',
-            success:function(data) {
+            var _this=this;
+            var formurl=$("#stock_edit_url").val();
+            var formdata=$("#add_stock_form.cmxform").serialize()+"&save_stock=true";      
+            $.ajax({
+                url: formurl,
+                data:formdata,
+                type: 'GET',
+                dataType:'json',
+                success:function(data) {
                
-                if(data.status=="1")          
-                {
-                    $(".ui-dialog-content").dialog("close");
-                    // $(".ui-dialog-content").dialog("destroy");
+                    if(data.status=="1")          
+                    {
+                        $(".ui-dialog-content").dialog("close");
+                        // $(".ui-dialog-content").dialog("destroy");
 
-                    product.load_prod(product.load_url);
+                        product.load_prod(product.load_url);
                    
 
-                }
-            },
-            error:function(data){
+                    }
+                },
+                error:function(data){
           
-            }
-        })
+                }
+            })
         
-    }
+        }
 
-}
+    }
 
 /*   
  *            below is for building the item interface 

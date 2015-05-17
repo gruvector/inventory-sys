@@ -8,13 +8,22 @@
 class Sale extends AppModel {
     var $name = 'Sale';
     var $hasMany = array( 'ProductTransaction' => array(
-    'className' => 'ProductTransaction',
-    'foreignKey' => 'sale_id',
-    'conditions' => '',
-    'order' => '',
-    'limit' => '',
-    'dependent' => true
-    ));
+            'className' => 'ProductTransaction',
+            'foreignKey' => 'sale_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+            ));
+      var $belongsTo = array(
+        'ReverseReason' => array(
+            'className' => 'ReverseReason',
+            'foreignKey' => 'reverse_reason',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        )
+    );
 }
 
 ?>

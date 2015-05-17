@@ -25,7 +25,7 @@ Selling Pr
             </th>
             <th class='last alignRight'>
 
-            </th>
+            </th><th></th><th></th><th></th>
         </tr>
     </thead>
 
@@ -101,7 +101,7 @@ Selling Pr
 
 
                           <li>
-                            <a href='#' class='inlineIcon preferences edit_stock'>Add/Remove Stock</a>
+                           <!-- <a href='#' class='inlineIcon preferences edit_stock'>Add/Remove Stock</a>-->
                            <!-- <a href='#' class='inlineIcon preferences edit_stock'>Make Sales</a>-->
 
                         </li>

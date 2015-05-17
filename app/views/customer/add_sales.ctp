@@ -17,7 +17,7 @@
 
 <style>
     <!--
-    #search_item {
+    #search_item,#reverse_reason {
         border: 1px solid #bfbfbf;
         border-radius: 2px;
         box-sizing: border-box;
@@ -48,14 +48,14 @@
         <div class='tableHeader' style="border: 0px !important;">
 
 
-            <ul class="tableActions search_ul" style="margin-bottom: 15px;">
+            <ul class="tableActions search_ul" style="margin-bottom: 20px;">
                 <li>
                     <label> </label> 
                 </li>
-                <li>
+
                 <li>
 
-                    <select placeholder="Please Select An Item" name="search_item" id="search_item" data-placeholder="Search Sales Item/s ..." style="display:none;" class="chosen-select"  tabindex="-1"> 
+                    <select placeholder="Please Select An Item" name="search_item" id="search_item" data-placeholder="Search  Item/s ..." style="display:none;" class="chosen-select"  tabindex="-1"> 
                         <option></option> 
                         <?php foreach ($products as $cat_prod) { ?>
                             <option
@@ -68,6 +68,18 @@
 
 
                 </li>
+                </li>
+            </ul>
+            <ul></ul>
+            <ul class=".reason_ul">
+                <li> <label> </label></li>  
+                <li style="margin-left: 140px !important;">
+                    <select placeholder="Please Select Reason" id="reverse_reason" name="reverse_reason" data-placeholder="Please Select Reason ..." style="display:none;" class="chosen-select"  tabindex="-1">         
+                        <option></option>                   
+                        <?php foreach ($reverse as $key => $val) { ?>
+                            <option value="<?php echo $key; ?>"><?php echo $val; ?></option>
+                        <?php } ?>
+                    </select>
                 </li>
             </ul>
 
