@@ -33,8 +33,13 @@
         font-family: sans-serif;
         height: 40px;
     }-->
-    .search_ul{
-
+    .ul_chz{
+        text-align:center;
+        margin-left: 120px !important;
+        margin-bottom: 5px !important ;
+    }
+    .chzn-container{
+        340px !important;
     }
 </style>
 
@@ -48,11 +53,7 @@
         <div class='tableHeader' style="border: 0px !important;">
 
 
-            <ul class="tableActions search_ul" style="margin-bottom: 20px;">
-                <li>
-                    <label> </label> 
-                </li>
-
+            <ul class="tableActions ul_chz">
                 <li>
 
                     <select placeholder="Please Select An Item" name="search_item" id="search_item" data-placeholder="Search  Item/s ..." style="display:none;" class="chosen-select"  tabindex="-1"> 
@@ -68,26 +69,41 @@
 
 
                 </li>
-                </li>
-            </ul>
-            <ul></ul>
-            <ul class=".reason_ul">
-                <li> <label> </label></li>  
-                <li style="margin-left: 140px !important;">
-                    <select placeholder="Please Select Reason" id="reverse_reason" name="reverse_reason" data-placeholder="Please Select Reason ..." style="display:none;" class="chosen-select"  tabindex="-1">         
-                        <option></option>                   
-                        <?php foreach ($reverse as $key => $val) { ?>
-                            <option value="<?php echo $key; ?>"><?php echo $val; ?></option>
-                        <?php } ?>
-                    </select>
-                </li>
             </ul>
 
             <ul class='tableActions'>
 
             </ul>
 
-            <ul class='tableActions ' style="width: 100%;">
+            <ul class="tableActions ul_chz sp_ul">
+                <li >
+                    <select placeholder="Please Select Supplier" id="supplier" name="supplier" data-placeholder="Please Select Supplier ..." style="display:none;" class="chosen-select"  tabindex="-1">         
+                        <option></option>  
+                        <option value="0">Other</option>
+                        <?php foreach ($suppliers as $val) { ?>
+                            <option value="<?php echo $val['Supplier']['id']; ?>"><?php echo $val['Supplier']['fname'] . " (" . $val['Category']['long_name'] . ")"; ?></option>
+                        <?php } ?>
+                    </select>
+                </li>
+
+            </ul>
+
+
+            <ul class="tableActions ul_chz rs_ul">
+                <li>
+                    <select placeholder="Please Select Reason" id="reverse_reason" name="reverse_reason" data-placeholder="Please Select Reason ..." style="display:none;" class="chosen-select"  tabindex="-1">         
+                        <option></option>  
+                        <option value="">Other</option>                   
+                        <?php foreach ($reverse as $key => $val) { ?>
+                            <option value="<?php echo $key; ?>"><?php echo $val; ?></option>
+                        <?php } ?>
+                    </select>
+                </li>
+
+            </ul>
+
+
+            <ul class='tableActions' style="width: 100%;">
 
 
                 <div name="sales_info" id="sales_info" style="width: 100%;">

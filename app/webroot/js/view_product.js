@@ -29,6 +29,7 @@ function Transaction(){
     this.vat_percentage=0;
     this.rtotal_transaction=0.00;
     this.reverse_reason="";
+    this.supplier=0;
 
     //this is for resetting transaction  items
     this.resetSale=function(){
@@ -43,6 +44,7 @@ function Transaction(){
         this.vat_percentage=0;
         this.rtotal_transaction=0.00;
         this.reverse_reason="";
+        this.supplier=0;
 
                      	
     };
@@ -343,11 +345,12 @@ var product={
     confirm_diag:("#dialog-confirm"),
     current_stock:0,
     item_table:("#sales_info tbody"),
-    
+    load_search_status:"false",
+    save_prod_start:"false",
     load_url:$("#product_list_url").val(),
     
     load_prod:function(page_link){
-        
+        _this=this;
         var val = $("#search_prod").val();
 
         
@@ -355,13 +358,32 @@ var product={
             url: page_link,
             dataType:'html',
             data: val!="" ? "filter="+val : "filter=null",
+            beforeSend:function(){
+                
+                if(_this.load_search_status=="true"){
+                    _this.disable_okbutt_mgdialg();
+                    _this.show_message("Searching...");  
+                }
+            },
             success:function(data) {
                 //  console.log(data);
                 //  alert("data has been loaded");
+                if(_this.load_search_status=="true"){
+
+                    _this.close_message_diag();
+                    _this.enable_okbutt_mgdialg();
+                    _this.load_search_status="false";
+                }
                 $("#table_info").html(data);
             },
             error:function(data){
-          
+                if(_this.load_search_status=="true"){
+                    _this.enable_okbutt_mgdialg();
+                    _this.load_search_status="false";
+                }
+                _this.show_message("Error<br>"+"Please Try Again");
+               
+
             }
         }) 
         
@@ -413,18 +435,26 @@ var product={
     
     
     
-    //this is for  showing the reason dialog based on tran type
+    //this is for  showing the reason/supplier  dialog based on tran type
     //
-    product_setup_reason:function(){
+    product_setup_tran_stuff:function(){
         
         if(transaction.transaction_type=="add_revr")
         {
-            $("#reverse_reason_chzn").show() ;  
+            $("ul.sp_ul").remove() ;
+            $("#reverse_reason_chzn").show() ;
+        }
+        else  if(transaction.transaction_type=="add_recv")
+        {
+            $("ul.rs_ul").remove() ;
+            $("#supplier_chzn").show() ;  
+
         }
         else{
-            $("#reverse_reason_chzn").hide();  
-   
+            $("ul.sp_ul").remove() ;
+            $("ul.rs_ul").remove() ;
         }
+      
     },
     //
     //this is for initializing the chosen jquery variable
@@ -435,6 +465,10 @@ var product={
         
         $("#search_item").chosen();
         $("#reverse_reason").chosen();
+        $("#supplier").chosen();
+        $("#reverse_reason_chzn").hide();
+        $("#supplier_chzn").hide() ;  
+
 
     /**
 		 var config = {
@@ -891,7 +925,7 @@ var product={
         
         var vat=parseFloat($("#vat_deduction").data('tvalue'));
         if(vat!==vat){
-            _this.error_interface("Incorrect Vat Value . Please Check Vat Value For Category");   
+        //   _this.error_interface("Incorrect Vat Value . Please Check Vat Value For Category");   
         }else{
             
             if(transaction.transaction_type=="add_sales" || transaction.transaction_type=="add_inv"){
@@ -1152,6 +1186,7 @@ var product={
             modal: true,
             buttons: {
                 Ok: function() {
+                    _this.perfrom_message_close_action();
                     $( this ).dialog( "close" );
                 }
             }
@@ -1210,6 +1245,15 @@ var product={
 
     },
    
+    perfrom_message_close_action:function(){
+       
+    },
+    close_message_diag:function(){
+        _this=this;
+        $(_this.message_diag).dialog('close');
+    },
+   
+   
     disable_okbutt_mgdialg:function(){
     
         $(".ui-dialog-buttonpane button:contains('Ok')").attr("disabled", true).addClass("ui-state-disabled"); 
@@ -1236,6 +1280,13 @@ var product={
             transaction.reverse_reason=$('option:selected', this).val(); 
            
         });
+        
+        
+        $("#supplier").live('change',function(){
+            transaction.supplier=$('option:selected', this).val(); 
+           
+        });
+        
 
         $("#search_item").live('change',function(){
             
@@ -1318,6 +1369,7 @@ var product={
         });
        
         $("#search_prod").keyup(function(e) {
+            _this.load_search_status="true";
             if(e.which==13){
                 product.load_prod(_this.load_url);
                 
@@ -1404,7 +1456,7 @@ var product={
             .load($(this).attr('href'),function(rdata){
                 product.init_chosen();
                 product.setup_vat();
-                product.product_setup_reason();
+                product.product_setup_tran_stuff();
             })
             .dialog({
                 autoOpen: false,
@@ -1428,21 +1480,21 @@ var product={
                         }else{
                             // alert("yes !!");
                             if(transaction.transaction_type=="add_revr" && transaction.reverse_reason=="" ){
-                            product.show_message("Please Select Reversal Reason.");
-                                }else{
-                                    product.save_batch($(this));       
+                                product.show_message("Please Select Reversal Reason.");
+                            }else{
+                                product.save_batch($(this));       
     
-                                }
-                            
                             }
-                        //$( this ).dialog( "close" );
+                            
                         }
-                   
+                    //$( this ).dialog( "close" );
                     }
-                });	
+                   
+                }
+            });	
             $dialog.dialog('open');
 
-            });
+        });
 
 		
 				
@@ -1460,7 +1512,8 @@ var product={
             var title="Add/Edit Product";
             var $dialog = $("<div></div>")
             .load($("#add_prod").attr('href'),data,function(rdata){
-                })
+                product.save_prod_start="true";
+            })
             .dialog({
                 autoOpen: false,
                 title:title,
@@ -1468,10 +1521,12 @@ var product={
                 height: 300,
                 position:"center",
                 modal:false,
+                closeOnEscape: false,
                 buttons: {
                     "Cancel": function() {
                         $( this ).dialog( "close" );
                         $(this).dialog('destroy').remove();
+                        product.save_prod_start="false";
 
                     },
                     "Save": function() {
@@ -1500,144 +1555,151 @@ var product={
         });
      
      
-        } ,
-        checkfields:function(dail_ref)
+    } ,
+    checkfields:function(dail_ref)
+    {
+        
+        if(product.save_prod_start=="false")
         {
+            product.show_message("Please Enter Correct Value<br>Please No Empty Values");
+            return;
+        }
            
-            var counter=0;
-            $(".check").each(function(){
+        var counter=0;
+        $(".check").each(function(){
       
-                if(!(document.getElementById($(this).attr("id")).checkValidity()) || $(this).val()=="" ){
-                    $(this).css("border","solid #F44 2px"); 
-                    counter++;
-                }else
-                {
-                    $(this).css("border","solid grey 1px");       
+            if(!(document.getElementById($(this).attr("id")).checkValidity()) || $(this).val()=="" ){
+                $(this).css("border","solid #F44 2px"); 
+                counter++;
+            }else
+            {
+                $(this).css("border","solid grey 1px");       
 
-                }
-            });
+            }
+        });
         
             
-            if(counter==0)
-            {
-                product.save_data(dail_ref);
-            }
-            else{
-                product.show_message("Please Enter Correct Value<br>Please No Empty Values");
+        if(counter==0)
+        {
+            product.save_data(dail_ref);
+        }
+        else{
+            product.show_message("Please Enter Correct Value<br>Please No Empty Values");
   
-            }
+        }
 
-        },
+    },
     
-        kill_batch:function(div_ref){
-            _this=this;
-            transaction.resetSale();
-            $(div_ref).dialog( "close" );
-            $(div_ref).dialog('destroy').remove();
+    kill_batch:function(div_ref){
+        _this=this;
+        transaction.resetSale();
+        $(div_ref).dialog( "close" );
+        $(div_ref).dialog('destroy').remove();
         
-        },
-        //this is for the batch addition of a particular transaction type
-        save_batch:function(div_diag_batch){
-            _this=this;
+    },
+    //this is for the batch addition of a particular transaction type
+    save_batch:function(div_diag_batch){
+        _this=this;
   
-            var formurl=$("#product_batch_add_url").val();
-            formdata="data="+JSON.stringify(transaction);
-            // var formdata="data='"+transaction+"'";
+        var formurl=$("#product_batch_add_url").val();
+        formdata="data="+JSON.stringify(transaction);
+        // var formdata="data='"+transaction+"'";
 
-            $.ajax({
-                url: formurl,
-                data:formdata,
-                type: 'POST',
-                dataType:'json',
-                beforeSend:function(){
-                    _this.disable_okbutt_mgdialg() ;
-                    _this.show_message("Saving...");
-                },
-                success:function(data) {
+        $.ajax({
+            url: formurl,
+            data:formdata,
+            type: 'POST',
+            dataType:'json',
+            beforeSend:function(){
+                _this.disable_okbutt_mgdialg() ;
+                _this.show_message("Saving...");
+            },
+            success:function(data) {
                 
-                    _this.kill_batch(div_diag_batch);
-                    product.load_prod(product.load_url);              
-                    _this.show_message(data.message);
-                    _this.enable_okbutt_mgdialg();
+                _this.kill_batch(div_diag_batch);
+                product.load_prod(product.load_url);              
+                _this.show_message(data.message);
+                _this.enable_okbutt_mgdialg();
                 
                
 
           
-                //product.load_prod(product.load_url);
-                },
-                error:function(data){
-                    _this.show_message("Error<br>"+data.message);
-                    _this.enable_okbutt_mgdialg();
-                }
-            })
+            //product.load_prod(product.load_url);
+            },
+            error:function(data){
+                _this.show_message("Error<br>"+data.message);
+                _this.enable_okbutt_mgdialg();
+            }
+        })
     
-        },
+    },
     
     
-        save_data:function(dail_ref){
+    save_data:function(dail_ref){
         
-            var _this=this;
-            var formurl=$("#product_add_url").val();
-            var formdata=$("#add_product_form.cmxform").serialize()+"&save_prod=true";      
-            $.ajax({
-                url: formurl,
-                data:formdata,
-                type: 'GET',
-                dataType:'json', 
-                beforeSend:function(){
-                    _this.show_message("Saving...");
-                },
-                success:function(data) {
+        var _this=this;
+        var formurl=$("#product_add_url").val();
+        var formdata=$("#add_product_form.cmxform").serialize()+"&save_prod=true";      
+        $.ajax({
+            url: formurl,
+            data:formdata,
+            type: 'GET',
+            dataType:'json', 
+            beforeSend:function(){
+                _this.show_message("Saving...");
+            },
+            success:function(data) {
                
-                    if(data.status=="1")          
-                    {
-                        $(dail_ref).dialog( "close" );
-                        $(dail_ref).dialog('destroy').remove();
-                        _this.load_prod(product.load_url);
-                        _this.show_message("Data Saved Succesfully");
+                if(data.status=="1")          
+                {
+                    $(dail_ref).dialog( "close" );
+                    $(dail_ref).dialog('destroy').remove();
+                    _this.load_prod(product.load_url);
+                    _this.show_message("Data Saved Succesfully");
+                    product.save_prod_start="false";
 
                     
 
-                    }
-                },
-                error:function(data){
-                    _this.show_message("Error<br>"+"Please Try Again");
                 }
-            })
+            },
+            error:function(data){
+                _this.show_message("Error<br>"+"Please Try Again");
+            }
+        })
         
-        },
+    },
     
     
-        save_stock:function(){
+    save_stock:function(){
         
-            var _this=this;
-            var formurl=$("#stock_edit_url").val();
-            var formdata=$("#add_stock_form.cmxform").serialize()+"&save_stock=true";      
-            $.ajax({
-                url: formurl,
-                data:formdata,
-                type: 'GET',
-                dataType:'json',
-                success:function(data) {
+        var _this=this;
+        var formurl=$("#stock_edit_url").val();
+        var formdata=$("#add_stock_form.cmxform").serialize()+"&save_stock=true";      
+        $.ajax({
+            url: formurl,
+            data:formdata,
+            type: 'GET',
+            dataType:'json',
+            success:function(data) {
                
-                    if(data.status=="1")          
-                    {
-                        $(".ui-dialog-content").dialog("close");
-                        // $(".ui-dialog-content").dialog("destroy");
+                if(data.status=="1")          
+                {
+                    $(".ui-dialog-content").dialog("close");
+                    // $(".ui-dialog-content").dialog("destroy");
 
-                        product.load_prod(product.load_url);
+                    product.load_prod(product.load_url);
                    
 
-                    }
-                },
-                error:function(data){
-          
                 }
-            })
+            },
+            error:function(data){
+          
+            }
+        })
         
-        }
-
     }
+
+}
 
 /*   
  *            below is for building the item interface 

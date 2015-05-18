@@ -9,7 +9,7 @@ class CustomerController extends AppController {
 
     var $name = 'Customer';
     var $components = array('RequestHandler', 'Session');
-    var $uses = array("ReverseReason","Invoice", "Reversal", "Receive", "Sale", "Receipt", "Taxe", "Supplier", "Category", 'Site', 'Product', 'ProductTransaction');
+    var $uses = array("ReverseReason", "Invoice", "Reversal", "Receive", "Sale", "Receipt", "Taxe", "Supplier", "Category", 'Site', 'Product', 'ProductTransaction');
     var $layout = 'dashboard_layout';
 
     //var $transaction_timestamp = ;
@@ -111,10 +111,10 @@ class CustomerController extends AppController {
         } else {
             $products = $this->Product->find('all', array('recursive' => '-1', 'fields' => array('selling_price', 'id', 'product_name', 'category_product', 'stock_available')));
             $vat = $this->Taxe->find('first', array('recursive', 'conditions' => array('Taxe.vat_category' => 'sales')));
-            $reverse=$this->ReverseReason->find('list',array('fields' => array('id', 'reason')));
-           // print_r($reverse);
-           // exit();
-            $this->set(compact('reverse','categories', 'products', 'vat'));
+            $reverse = $this->ReverseReason->find('list', array('fields' => array('id', 'reason')));
+            $suppliers = $this->Supplier->find('all');
+
+            $this->set(compact('categ', 'suppliers', 'reverse', 'categories', 'products', 'vat'));
         }
     }
 
@@ -245,9 +245,9 @@ class CustomerController extends AppController {
    //sales-- receipt,decrease in stock,precalculated effect on sales record
     //rec--   no receipt(invoince),increase rather than decrease in stock, precalculated effect on sale record
     //invoince --no receipt,no effect on stock ,no effect stock, precalculated normal effect on sales record 
-  ///total sale  rcord  shouldent be calculated from client 
-  //reversal is similar tosales but  is a combination of 
-  //should be  calculated from d from server side 
+    ///total sale  rcord  shouldent be calculated from client 
+    //reversal is similar tosales but  is a combination of 
+    //should be  calculated from d from server side 
 //ideally corect costs for each  for each of the items should be recalculated
     function batch_transaction() {
 
@@ -322,7 +322,7 @@ class CustomerController extends AppController {
 
             if ($transaction_type == "add_sales") {
                 $array_query [] = " (id = '$id' and stock_available >= '$quant_transact')";
-            } else if ($transaction_type == "add_recv" || $transaction_type == "add_inv" || $transaction_type == "add_revr"  ) {
+            } else if ($transaction_type == "add_recv" || $transaction_type == "add_inv" || $transaction_type == "add_revr") {
                 $array_query [] = "(id = '$id')";
             } else {
                 
@@ -352,8 +352,7 @@ class CustomerController extends AppController {
                         } else if ($transaction_type == "add_inv") {
                             $new_stock = $val_new['products']['stock_available'];
                             $insert_product_query[] = "WHEN id = '$bval->id' THEN '$new_stock'";
-                        }
-                         else if ($transaction_type == "add_revr") {
+                        } else if ($transaction_type == "add_revr") {
 
                             $new_stock = $val_new['products']['stock_available'] - $bval->quant_sale;
                             $insert_product_query[] = "WHEN id = '$bval->id' THEN '$new_stock'";
@@ -395,7 +394,9 @@ class CustomerController extends AppController {
         $sale_array['transaction_timestamp'] = date('Y-m-d H:i:s');
         $sale_array['user_id'] = $memberdata['User']['id'];
         $sale_array['reverse_reason'] = $transaction_object->reverse_reason;
-     
+        $sale_array['supplier_id'] = $transaction_object->supplier;
+
+
         $this->Sale->set($sale_array);
         if ($this->Sale->save()) {
             return array('status' => true, 'sale_id' => $this->Sale->id);
