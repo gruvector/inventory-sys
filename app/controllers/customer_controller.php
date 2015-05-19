@@ -260,7 +260,7 @@ class CustomerController extends AppController {
         $dataSourceProduct = $this->Product->getDataSource();
         $dataSourceSale = $this->Sale->getDataSource();
         $dataSourceProductsTransaction = $this->ProductTransaction->getDataSource();
-
+        //$dataSurceReceipt = $this->Receipt->getDataSource();
 
         $dataSourceProduct->begin($this->Product);
 
@@ -269,6 +269,10 @@ class CustomerController extends AppController {
             $dataSourceSale->begin($this->Sale);
             $status = $this->save_sale($transaction_object);
             if ($status['status']) {
+                
+                
+                
+                
 
                 $dataSourceProductsTransaction->begin($this->ProductTransaction);
                 $sale_status = $this->save_product_tran($status['sale_id'], $transaction_items, $transaction_object->transaction_type);
@@ -285,7 +289,11 @@ class CustomerController extends AppController {
                     echo json_encode(array('status' => 'shit', 'message' => 'Please Check Quantity Of Items'));
                     exit();
                 }
-            } else {
+          
+                
+                
+                
+                } else {
 
                 $dataSourceProduct->rollback($this->Product);
                 $dataSourceSale->rollback($this->Sale);
@@ -299,6 +307,11 @@ class CustomerController extends AppController {
         }
     }
 
+    //parse input_data
+    
+    
+    
+    
     ///this is for updating a product when a sale is made;
     function prepare_product($products_data, $transaction_type) {
 
