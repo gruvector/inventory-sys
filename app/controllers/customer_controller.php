@@ -216,8 +216,9 @@ class CustomerController extends AppController {
             $prod_data = $_GET['data']['Product'];
             $prod_data['inst_id'] = $this->Session->read('inst_id');
             $prod_data['site_id'] = $this->Session->read('site_id');
-
-            // print_r($prod_data);
+            if ($prod_data['id'] == "") {
+                $prod_data['date_created'] = date('Y-m-d H:i:s');
+            }
             $this->Product->save($prod_data);
             echo json_encode(array('status' => 1));
             exit();
@@ -256,11 +257,10 @@ class CustomerController extends AppController {
         $transaction_object = json_decode($_POST['data']);
         $transaction_items = $transaction_object->transaction_items;
 
-
         $dataSourceProduct = $this->Product->getDataSource();
         $dataSourceSale = $this->Sale->getDataSource();
         $dataSourceProductsTransaction = $this->ProductTransaction->getDataSource();
-        //$dataSurceReceipt = $this->Receipt->getDataSource();
+        $dataSurceReceipt = $this->Receipt->getDataSource();
 
         $dataSourceProduct->begin($this->Product);
 
@@ -269,31 +269,52 @@ class CustomerController extends AppController {
             $dataSourceSale->begin($this->Sale);
             $status = $this->save_sale($transaction_object);
             if ($status['status']) {
-                
-                
-                
-                
 
-                $dataSourceProductsTransaction->begin($this->ProductTransaction);
-                $sale_status = $this->save_product_tran($status['sale_id'], $transaction_items, $transaction_object->transaction_type);
-                if ($sale_status) {
-                    $dataSourceProduct->commit($this->Product);
-                    $dataSourceSale->commit($this->Sale);
-                    $dataSourceProductsTransaction->commit($this->ProductTransaction);
-                    echo json_encode(array('status' => 'fuck_yeah', 'message' => 'Data Saved Succesfully'));
-                    exit();
+                //if transaction is a sale a receipt is created is made based on the item type before commit is made
+                //if transaction isnt a receipt the transactin is commited at once without the receipt type
+                if ($transaction_object->transaction_type == "add_sales") {
+                    $dataSurceReceipt->begin($this->Receipt);
+                    //    function prepare_receipt($receipt_type,$amount_paid,$amount_paid_prev, $sale_id, $balance_due) {
+                    $rec_status = $this->prepare_receipt("other", $transaction_object->amount_paid, $transaction_object->amount_paid, $status['sale_id'], $transaction_object->amount_balance_due);
+                    if ($rec_status['status']) {
+
+                        $dataSourceProductsTransaction->begin($this->ProductTransaction);
+                        $sale_status = $this->save_product_tran($status['sale_id'], $transaction_items, $transaction_object->transaction_type, $rec_status['rec_id']);
+                        if ($sale_status) {
+                            $dataSourceProduct->commit($this->Product);
+                            $dataSourceSale->commit($this->Sale);
+                            $dataSurceReceipt->commit($this->Receipt);
+                            $dataSourceProductsTransaction->commit($this->ProductTransaction);
+                            echo json_encode(array('status' => 'fuck_yeah', 'message' => 'Data Saved Succesfully'));
+                            exit();
+                        }
+                    } else {
+                        $dataSourceProduct->rollback($this->Product);
+                        $dataSourceProductsTransaction->rollback($this->ProductTransaction);
+                        $dataSourceSale->rollback($this->Sale);
+                        $dataSurceReceipt->rollback($this->Receipt);
+                        echo json_encode(array('status' => 'shit', 'message' => 'Please Check Quantity Of Items'));
+                        exit();
+                    }
                 } else {
-                    $dataSourceProduct->rollback($this->Product);
-                    $dataSourceProductsTransaction->rollback($this->ProductTransaction);
-                    $dataSourceSale->rollback($this->Sale);
-                    echo json_encode(array('status' => 'shit', 'message' => 'Please Check Quantity Of Items'));
-                    exit();
+
+                    $dataSourceProductsTransaction->begin($this->ProductTransaction);
+                    $sale_status = $this->save_product_tran($status['sale_id'], $transaction_items, $transaction_object->transaction_type);
+                    if ($sale_status) {
+                        $dataSourceProduct->commit($this->Product);
+                        $dataSourceSale->commit($this->Sale);
+                        $dataSourceProductsTransaction->commit($this->ProductTransaction);
+                        echo json_encode(array('status' => 'fuck_yeah', 'message' => 'Data Saved Succesfully'));
+                        exit();
+                    } else {
+                        $dataSourceProduct->rollback($this->Product);
+                        $dataSourceProductsTransaction->rollback($this->ProductTransaction);
+                        $dataSourceSale->rollback($this->Sale);
+                        echo json_encode(array('status' => 'shit', 'message' => 'Please Check Quantity Of Items'));
+                        exit();
+                    }
                 }
-          
-                
-                
-                
-                } else {
+            } else {
 
                 $dataSourceProduct->rollback($this->Product);
                 $dataSourceSale->rollback($this->Sale);
@@ -307,17 +328,43 @@ class CustomerController extends AppController {
         }
     }
 
-    //parse input_data
-    
-    
-    
-    
+    //prepare receipt to be used for the transaction
+    ////receipt type is also based on the amount the customer has paid
+    ##sale_id
+    ##staff_id
+    ##transaction_timestamp
+    ##paid_status
+    ##amount_paid
+    ##comment_cancelled
+    ##balance_due
+    ##total_amount_paid
+    function prepare_receipt($receipt_type, $amount_paid, $amount_paid_prev, $sale_id, $balance_due) {
+
+
+        $receipt_data = array();
+        $memberdata = $this->Session->read('memberData');
+        $receipt_data['sale_id'] = $sale_id;
+        $receipt_data['staff_id'] = $memberdata['User']['id'];
+        $receipt_data['transaction_timestamp'] = date('Y-m-d H:i:s');
+        $receipt_data['paid_status'] = $receipt_type;
+        $receipt_data['amount_paid'] = $amount_paid;
+        $receipt_data['balance_due'] = $balance_due;
+        $receipt_data['total_amount_paid_prev'] = $amount_paid_prev;
+        $this->Receipt->set($receipt_data);
+        if ($this->Receipt->save()) {
+            return array('status' => true, 'rec_id' => $this->Receipt->id);
+        } else {
+            return array('status' => false);
+        }
+    }
+
+    //parse input_data .everything is recalculated 
+    //unit price as well as products in stock before the transction is made
     ///this is for updating a product when a sale is made;
     function prepare_product($products_data, $transaction_type) {
 
         $array_query = array();
         $prequery = "SELECT id,stock_available FROM products WHERE ";
-        $data = array();
         $insert_product = "UPDATE products SET stock_available = CASE ";
         $query_end = " END WHERE id IN ";
         $query_end_test = array();
@@ -342,7 +389,7 @@ class CustomerController extends AppController {
             }
         }
 
-        $prequery = $prequery . implode($array_query, 'or') . " LOCK IN SHARE MODE;";
+        $prequery = $prequery . implode($array_query, 'or') . " FOR UPDATE;";
         $response = $this->Product->query($prequery);
 
 
@@ -359,16 +406,19 @@ class CustomerController extends AppController {
 
                             $new_stock = $val_new['products']['stock_available'] - $bval->quant_sale;
                             $insert_product_query[] = "WHEN id = '$bval->id' THEN '$new_stock'";
+                            $bval->new_stock_product = $new_stock;
                         } else if ($transaction_type == "add_recv") {
                             $new_stock = $val_new['products']['stock_available'] + $bval->quant_sale;
                             $insert_product_query[] = "WHEN id = '$bval->id' THEN '$new_stock'";
+                            $bval->new_stock_product = $new_stock;
                         } else if ($transaction_type == "add_inv") {
                             $new_stock = $val_new['products']['stock_available'];
                             $insert_product_query[] = "WHEN id = '$bval->id' THEN '$new_stock'";
+                            $bval->new_stock_product = $new_stock;
                         } else if ($transaction_type == "add_revr") {
-
                             $new_stock = $val_new['products']['stock_available'] - $bval->quant_sale;
                             $insert_product_query[] = "WHEN id = '$bval->id' THEN '$new_stock'";
+                            $bval->new_stock_product = $new_stock;
                         }
 
                         $query_end_test[] = $bval->id;
@@ -419,31 +469,39 @@ class CustomerController extends AppController {
     }
 
     //this is for saving the product data
-    function save_product_tran($sale_id, $transaction_items, $transaction_type) {
-        //$array_items = array();
-        $data = array();
+    function save_product_tran($sale_id, $transaction_items, $transaction_type, $receipt_id = NULL) {
+
+
         $memberdata = $this->Session->read('memberData');
-        $saleProd = new ProductTransaction();
+        $null_stuff = is_null($receipt_id) ? "" : ",receipt_id";
+        // $saleProd = new ProductTransaction();
         $rquery = "INSERT into product_transactions(product_id,quantity,price,transaction_type,
-            transaction_timestamp,user_id,inst_id,sale_id) VALUES";
-        $query = array();
+                   transaction_timestamp,user_id,inst_id,sale_id,new_stock_product" . $null_stuff . ")VALUES";
 
         foreach ($transaction_items as $val) {
             $val_id = "'" . mysql_real_escape_string($val->id) . "'";
             $sale_q = "'" . mysql_real_escape_string($val->quant_sale) . "'";
             $unit_p = "'" . mysql_real_escape_string($val->unit_price) . "'";
+            $new_stock_pr = "'" . mysql_real_escape_string($val->new_stock_product) . "'";
             $date_trans = "'" . mysql_real_escape_string(date('Y-m-d H:i:s')) . "'";
             $mem_data = "'" . mysql_real_escape_string($memberdata['User']['id']) . "'";
             $session_inst_id = "'" . mysql_real_escape_string($this->Session->read('inst_id')) . "'";
             $sale_data = "'" . mysql_real_escape_string($sale_id) . "'";
             $tran_type = "'" . mysql_real_escape_string($transaction_type) . "'";
-            $subarray = array($val_id, $sale_q, $unit_p, $tran_type, $date_trans, $mem_data, $session_inst_id, $sale_data);
+            // $rec_data = ;
+            //  echo "rec---".is_null($rec_data)."/n";
+
+            $subarray = array($val_id, $sale_q, $unit_p, $tran_type, $date_trans, $mem_data, $session_inst_id, $sale_data, $new_stock_pr);
+            if (!is_null($receipt_id)) {
+                $subarray[] = $receipt_id;
+            }
             $query[] = '(' . implode(",", $subarray) . ")";
         };
         // if ($this->ProductTransaction->query($data, array('atomic' => true))) {
         $rquery = $rquery . implode(",", $query) . ";";
         // exit();
-
+        ///  echo $rquery;
+        //   exit();
         if ($this->ProductTransaction->query($rquery)) {
 
             return true;
