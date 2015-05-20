@@ -28,6 +28,14 @@ class User extends AppModel {
             'limit' => '',
             'dependent' => true
         ),
+        'Receipt' => array(
+            'className' => 'Receipt',
+            'foreignKey' => 'staff_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
+        ),
         'ProductTransaction' => array(
             'className' => 'ProductTransaction',
             'foreignKey' => 'user_id',
@@ -53,10 +61,10 @@ class User extends AppModel {
         return $users;
     }
 
-    function getdefPass(){
-     return $this->$def_pass();   
+    function getdefPass() {
+        return $this->$def_pass();
     }
-    
+
     function addUser($data) {
         $this->save($data);
         $pass = $this->generatePass();

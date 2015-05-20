@@ -8,6 +8,7 @@
 class ProductTransaction extends AppModel {
 
     var $name = 'ProductTransaction';
+    var $actsAs = array('Containable');
     var $belongsTo = array(
         'Product' => array(
             'className' => 'Product',

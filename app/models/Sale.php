@@ -6,16 +6,26 @@
  */
 
 class Sale extends AppModel {
+
     var $name = 'Sale';
-    var $hasMany = array( 'ProductTransaction' => array(
+    var $hasMany = array(
+        'ProductTransaction' => array(
             'className' => 'ProductTransaction',
             'foreignKey' => 'sale_id',
             'conditions' => '',
             'order' => '',
             'limit' => '',
             'dependent' => true
+        ),
+        'Receipt' => array(
+            'className' => 'Receipt',
+            'foreignKey' => 'sale_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
             ));
-      var $belongsTo = array(
+    var $belongsTo = array(
         'ReverseReason' => array(
             'className' => 'ReverseReason',
             'foreignKey' => 'reverse_reason',
@@ -24,6 +34,7 @@ class Sale extends AppModel {
             'order' => ''
         )
     );
+
 }
 
 ?>

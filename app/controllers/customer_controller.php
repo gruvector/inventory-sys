@@ -285,7 +285,11 @@ class CustomerController extends AppController {
                             $dataSourceSale->commit($this->Sale);
                             $dataSurceReceipt->commit($this->Receipt);
                             $dataSourceProductsTransaction->commit($this->ProductTransaction);
-                            echo json_encode(array('status' => 'fuck_yeah', 'message' => 'Data Saved Succesfully'));
+
+                            /*                             * , 
+                              'ProductTransaction'=>array('price','quantity',''),* */
+                            $receipt_data = $this->get_receipt_print($rec_status['rec_id']);
+                            echo json_encode(array('status' => 'fuck_yeah', 'message' => 'Data Saved Succesfully', 'rec_data' => $receipt_data));
                             exit();
                         }
                     } else {
@@ -326,6 +330,20 @@ class CustomerController extends AppController {
             echo json_encode(array('status' => 'shit', 'message' => 'Please Check Quantity Of Items'));
             exit();
         }
+    }
+
+    function get_receipt_print($receipt_id) {
+
+        if (isset($_GET['get_rec_data'])) {
+            $receipt_id = $_GET['rec_id'];
+        }
+        return $this->Receipt->find('all', array(
+                    'conditions' => array('Receipt.id' => $receipt_id), 'contain' => array
+                        ('User' => array('User.fname', 'User.lname'),
+                        'ProductTransaction' => array('fields' => array('ProductTransaction.price', 'ProductTransaction.quantity'), 'Product' => array('product_name')),
+                        'Sale',
+                        /* 'Sale' => array('Sale.transaction_timestamp', 'Sale.vat_per', 'Sale.total_transaction', 'Sale.vat_transaction', 'Sale.total_items', 'Sale.total_bvat', 'Sale.comment', 'Sale.total_amount_paid', 'Sale.total_balance_due'),
+                         * */'User' => array('fields' => array('User.fname', 'User.lname')))));
     }
 
     //prepare receipt to be used for the transaction
