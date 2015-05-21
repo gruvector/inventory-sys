@@ -569,6 +569,78 @@ class CustomerController extends AppController {
         };
     }
 
+    //this function will enable you to view your main transactions
+
+    function view_real_trans() {
+
+        $layout_title = "View Summary Transactions";
+        $this->set(compact('layout_title'));
+    }
+
+    //this is for finding the real transaction history
+    //this side is using the sales table
+    //have to filter out the data first .shit very important!!!!
+    function real_transaction_history($paginate_link = null) {
+
+        $this->autoLayout = false;
+
+
+        $search_trans_type = isset($_GET['search_trans_type']) && $_GET['search_trans_type'] != "null" ? mysql_real_escape_string($_GET['search_trans_type']) : "";
+        $search_trans_date = isset($_GET['search_trans_date']) && $_GET['search_trans_date'] != "null" ? mysql_real_escape_string($_GET['search_trans_date']) : "";
+        $search_trans_quan = isset($_GET['search_trans_quan']) && $_GET['search_trans_quan'] != "null" ? mysql_real_escape_string($_GET['search_trans_quan']) : "";
+        $search_trans_amount = isset($_GET['search_trans_amount']) && $_GET['search_trans_amount'] != "null" ? mysql_real_escape_string($_GET['search_trans_amount']) : "";
+        $search_trans_user = isset($_GET['search_trans_user']) && $_GET['search_trans_user'] != "null" ? mysql_real_escape_string($_GET['search_trans_user']) : "";
+
+        $search_key = ($search_trans_quan == "") ? "LIKE" : "<=";
+        $amount_key = ($search_trans_amount == "") ? "LIKE" : "<=";
+        $search_value=($search_trans_quan == "") ? "%".$search_trans_quan."%" : $search_trans_quan;
+        $amount_value = ($search_trans_amount == "") ? "%".$search_trans_amount."%" : $search_trans_amount;
+        // echo $search_trans_quan . " -- " . $search_trans_amount."/n";;
+        // echo $search_key . " -- "  . $amount_key;exit();
+
+        $conditions_array = array(
+            'Sale.inst_id' => $this->Session->read('inst_id'),
+            'AND' => array(
+                'Sale.transaction_type LIKE' => "%" . $search_trans_type . "%",
+                'Sale.transaction_timestamp LIKE' => "%" . $search_trans_date . "%",
+                "Sale.total_items $search_key" =>   $search_value,
+                "Sale.total_transaction $amount_key" =>  $amount_value,
+                'User.fname LIKE' => "%" . $search_trans_user . "%"
+            )
+        );
+
+       //print_r($conditions_array);
+       // exit();
+
+        if ($paginate_link != null) {
+
+            $page_array = explode($paginate_link, ":");
+            $this->paginate = array(
+                'Sale' => array(
+                    'conditions' => $conditions_array,
+                    'order' => array('Sale.transaction_timestamp' => 'desc'),
+                    'contain' => array('Product' => array('product_name')),
+                    'page' => $page_array[1],
+                    'limit' => 5000));
+
+
+            $transactions = $this->paginate('Sale');
+        } else {
+            $this->paginate = array(
+                'Sale' => array(
+                    'conditions' => $conditions_array,
+                    'contain' => array('Product' => array('product_name')),
+                    'order' => array('Sale.transaction_timestamp' => 'desc'),
+                    'limit' => 5000));
+            $transactions = $this->paginate('Sale');
+        }
+
+        // print_r($transactions);
+        // exit();
+
+        $this->set(compact('transactions'));
+    }
+
     function view_transaction() {
         $layout_title = "View Transactions";
         $this->set(compact('layout_title'));

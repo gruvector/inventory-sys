@@ -43,6 +43,14 @@ class User extends AppModel {
             'order' => '',
             'limit' => '',
             'dependent' => true
+        ),
+        'Sale' => array(
+            'className' => 'Sale',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'order' => '',
+            'limit' => '',
+            'dependent' => true
         )
     );
 
