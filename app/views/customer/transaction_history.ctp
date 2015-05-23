@@ -43,24 +43,8 @@
         foreach ($transactions as $val) {
             $quantity = $val['ProductTransaction']['quantity'];
             $total_quantity = $total_quantity + $val['ProductTransaction']['quantity'];
-/**
-            if ($val['ProductTransaction']['transaction_type'] == 'sale' || $val['ProductTransaction']['transaction_type'] == 'removal') {
-                $total_quantity = $total_quantity + $val['ProductTransaction']['quantity'];
-              //  $total_cost = $total_cost - ($val['ProductTransaction']['price'] * $val['ProductTransaction']['quantity']);
-            }
- else {
-                $total_quantity = $total_quantity + $val['ProductTransaction']['quantity'];
-              //  $total_cost = $total_cost + ($val['ProductTransaction']['price'] * $val['ProductTransaction']['quantity']);
-            }
-**/
+            $total_cost = $total_cost + ($val['ProductTransaction']['price'] * $val['ProductTransaction']['quantity']);
 
-           if ($val['ProductTransaction']['transaction_type'] == 'sale') {
-                $total_cost = $total_cost + ($val['ProductTransaction']['price'] * $val['ProductTransaction']['quantity']);
-}else{
-                $total_cost = $total_cost - ($val['ProductTransaction']['price'] * $val['ProductTransaction']['quantity']);
-				
-
-}
 
             ?>
 
@@ -80,12 +64,27 @@
 
                 </td>
                 <td style="font-weight: bolder">
-   <?php echo $val['ProductTransaction']['price'] * $val['ProductTransaction']['quantity']*(($val['ProductTransaction']['transaction_type'] == 'sale') ? 1: -1); ?>
-
+   <?php echo $val['ProductTransaction']['price'] * $val['ProductTransaction']['quantity'];
+///(($val['ProductTransaction']['transaction_type'] == 'sale') ? 1: -1); 
+?>
+          
                 </td>
                 <td>
-                    <?php echo $val['ProductTransaction']['transaction_type']; ?>
+                <?php 
 
+  if($val['ProductTransaction']['transaction_type']=="add_sales"){
+echo "Sale"; 
+}
+ else if($val['ProductTransaction']['transaction_type']=="add_inv"){
+echo "Invoice"; 
+}
+ else if($val['ProductTransaction']['transaction_type']=="add_recv"){
+echo "Receivable"; 
+}
+ else if($val['ProductTransaction']['transaction_type']=="add_revr"){
+echo "Reversal"; 
+}
+?>
                 </td>
                 <td>
                     <?php echo date('D, d M Y H:i:s', strtotime($val['ProductTransaction']['transaction_timestamp'])); ?>

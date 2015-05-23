@@ -5,7 +5,89 @@
 
 
 var settings={
+    message_diag:("#setting_dialog-message"),
+    confirm_diag:("#setting_dialog-confirm"),
     
+    configure_message_dialog:function(){
+        _this=this;
+        var diag = $(_this.message_diag);
+        
+        diag.dialog({
+            modal: true,
+            buttons: {
+                Ok: function() {
+                    _this.perfrom_message_close_action();
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    
+        diag.dialog('close');
+    },
+    
+    configure_confirmation:function(){
+     
+        _this=this;
+       
+        var diag = $(_this.confirm_diag);
+        
+        diag.dialog({
+            modal: true,
+            buttons: {
+                "Cancel":function(){
+                    $( this ).dialog( "close" ); 
+                },
+                "Ok": function() {
+                    _this.confirmation_action() ;
+                    $( this ).dialog( "close" ); 
+
+                }
+           
+              
+            }
+        });
+    
+        diag.dialog('close');
+     
+    },
+    show_confirmation:function(message){
+        _this=this;
+        $(_this.confirm_diag).dialog('close');
+        //   $("#dialog-confirm").attr("title",message);
+        $("#setting_dialog-confirm p.messsage").html(message);
+        $(_this.confirm_diag).dialog('open');
+
+    },
+  
+    show_message:function(message){
+        _this=this;
+        $(_this.message_diag).dialog('close');
+        $("#setting_dialog-message p.messsage").html(message);
+        $(_this.message_diag).dialog('open');
+
+    },
+   
+    perfrom_message_close_action:function(){
+       
+    },
+    close_message_diag:function(){
+        _this=this;
+        $(_this.message_diag).dialog('close');
+    },
+   
+   
+    disable_okbutt_mgdialg:function(){
+    
+        $(".ui-dialog-buttonpane button:contains('Ok')").attr("disabled", true).addClass("ui-state-disabled"); 
+
+    },
+   
+    enable_okbutt_mgdialg:function(){
+    
+        $(".ui-dialog-buttonpane button:contains('Ok')").attr("disabled", false).removeClass("ui-state-disabled"); 
+
+    },
+   
     change_inst:function(site_id,inst_id){
         
         var _this=this;
@@ -50,7 +132,7 @@ var settings={
     init:function(){
         _this=this;
 
-/**
+        /**
  *global ajax behaviour for the whole application
         $(document).bind("ajaxSend",function(){
             $(".ui-dialog-buttonpane button:contains('Save')").attr("disabled",true).addClass("ui-state-disabled");
@@ -64,6 +146,10 @@ var settings={
              
         });
 **/
+
+        _this.configure_message_dialog();
+        _this.configure_confirmation();
+        
         $(".change_inst").live('click',function(e){
             e.preventDefault();
             var title="Change Site"

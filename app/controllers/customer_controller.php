@@ -332,18 +332,37 @@ class CustomerController extends AppController {
         }
     }
 
+    //this is the generic function for getting summary of sales data given a sales id 
+    function get_sales_info($sale_id) {
+
+
+
+        return $this->Sale->find('first', array('conditions' => array('Sale.id' => $sale_id),
+                    'contain' => array(
+                        'User' => array('fields' => array('User.fname', 'User.lname')),
+                        'ProductTransaction' => array('fields' => array('ProductTransaction.price', 'ProductTransaction.quantity'), 'Product' => array('product_name'))
+                        )));
+    }
+
+    function get_sales_info_list() {
+
+        $this->autoLayout = false;
+        if (isset($_GET['id'])) {
+            $sale_id = $_GET['id'];
+        }
+        $data = $this->get_sales_info($sale_id);
+        $this->set(compact('data'));
+    }
+
+    //this  is for getting the information needed for printing given a receipt
     function get_receipt_print($receipt_id) {
 
-        if (isset($_GET['get_rec_data'])) {
-            $receipt_id = $_GET['rec_id'];
-        }
         return $this->Receipt->find('all', array(
-                    'conditions' => array('Receipt.id' => $receipt_id), 'contain' => array
-                        ('User' => array('User.fname', 'User.lname'),
+                    'conditions' => array('Receipt.id' => $receipt_id), 'contain' => array(
                         'ProductTransaction' => array('fields' => array('ProductTransaction.price', 'ProductTransaction.quantity'), 'Product' => array('product_name')),
                         'Sale',
                         /* 'Sale' => array('Sale.transaction_timestamp', 'Sale.vat_per', 'Sale.total_transaction', 'Sale.vat_transaction', 'Sale.total_items', 'Sale.total_bvat', 'Sale.comment', 'Sale.total_amount_paid', 'Sale.total_balance_due'),
-                         * */'User' => array('fields' => array('User.fname', 'User.lname')))));
+                        **/ 'User' => array('fields' => array('User.fname', 'User.lname')))));
     }
 
     //prepare receipt to be used for the transaction
@@ -593,8 +612,8 @@ class CustomerController extends AppController {
 
         $search_key = ($search_trans_quan == "") ? "LIKE" : "<=";
         $amount_key = ($search_trans_amount == "") ? "LIKE" : "<=";
-        $search_value=($search_trans_quan == "") ? "%".$search_trans_quan."%" : $search_trans_quan;
-        $amount_value = ($search_trans_amount == "") ? "%".$search_trans_amount."%" : $search_trans_amount;
+        $search_value = ($search_trans_quan == "") ? "%" . $search_trans_quan . "%" : $search_trans_quan;
+        $amount_value = ($search_trans_amount == "") ? "%" . $search_trans_amount . "%" : $search_trans_amount;
         // echo $search_trans_quan . " -- " . $search_trans_amount."/n";;
         // echo $search_key . " -- "  . $amount_key;exit();
 
@@ -603,14 +622,14 @@ class CustomerController extends AppController {
             'AND' => array(
                 'Sale.transaction_type LIKE' => "%" . $search_trans_type . "%",
                 'Sale.transaction_timestamp LIKE' => "%" . $search_trans_date . "%",
-                "Sale.total_items $search_key" =>   $search_value,
-                "Sale.total_transaction $amount_key" =>  $amount_value,
+                "Sale.total_items $search_key" => $search_value,
+                "Sale.total_transaction $amount_key" => $amount_value,
                 'User.fname LIKE' => "%" . $search_trans_user . "%"
             )
         );
 
-       //print_r($conditions_array);
-       // exit();
+        //print_r($conditions_array);
+        // exit();
 
         if ($paginate_link != null) {
 
@@ -619,7 +638,7 @@ class CustomerController extends AppController {
                 'Sale' => array(
                     'conditions' => $conditions_array,
                     'order' => array('Sale.transaction_timestamp' => 'desc'),
-                    'contain' => array('Product' => array('product_name')),
+                    //'contain' => array('Product' => array('product_name')),
                     'page' => $page_array[1],
                     'limit' => 5000));
 
@@ -629,7 +648,7 @@ class CustomerController extends AppController {
             $this->paginate = array(
                 'Sale' => array(
                     'conditions' => $conditions_array,
-                    'contain' => array('Product' => array('product_name')),
+                    //'contain' => array('Product' => array('product_name')),
                     'order' => array('Sale.transaction_timestamp' => 'desc'),
                     'limit' => 5000));
             $transactions = $this->paginate('Sale');

@@ -175,5 +175,13 @@ $categories = array_keys($links_array);
                 </div>
             </div>
         </div>
+         <div name="setting_dialog-message" id="setting_dialog-message" title="Message">
+        <p class="messsage">
+        </p>
+    </div>
+    <div name="setting_dialog-confirm" id="setting_dialog-confirm  title="Confirmation">
+        <p class="messsage">
+        </p>
+    </div>
     </body>
 </html>

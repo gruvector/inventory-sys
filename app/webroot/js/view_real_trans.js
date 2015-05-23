@@ -11,6 +11,7 @@ $(document).ready(function(){
 
 var transaction={
     current_stock:0,
+    select_row :0,
     
     load_url:$("#transaction_real_list_url").val(),
     
@@ -36,21 +37,37 @@ var transaction={
             url: page_link,
             dataType:'html',
             data: get_filter,
+            beforeSend:function(){
+                $("#summary_info").html("");
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Retrieving Details...");
+
+            },
             success:function(data) {
                 //  console.log(data);
                 //  alert("data has been loaded");
+                settings.close_message_diag();
+                settings.enable_okbutt_mgdialg();
                 $("#table_info").html(data);
             },
             error:function(data){
-          
+                settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();
             }
         }) 
         
     }, 
+    
+    
+    //this is used for displaying the data which will arrive
+    display_data:function(){
+      
+    },
     //this is for setting up the initial function
     init:function(){
+        _this=this;
         
-        transaction.load_prod(transaction.load_url);
+        _this.load_prod(_this.load_url);
         
         $( "#search_trans_date" ).datepicker({
             'dateFormat': 'yy-mm-dd',
@@ -66,15 +83,45 @@ var transaction={
         $("a.pglink").live('click',function(e) {
             e.preventDefault();
             var link=$(this).attr('href');
-            transaction.load_prod(link);  
+            _this.load_prod(link);  
         });
        
-        $("#search_butt").click(function(e) {
+       
+        $(".get_details_trans").live('click',function(e){
+            e.preventDefault();
+            var id= $(this).closest("tr").attr("id");
+            
+            var url= $("#transaction_sub_list_url").val();
+            data="id="+id;
+            $.ajax({
+                url: url,
+                data:data,
+                type: 'GET',
+                dataType:'html',
+                beforeSend:function(){
+                    $("#summary_info").html("");
+                    settings.disable_okbutt_mgdialg() ;
+                    settings.show_message("Retrieving Details...");
+
+                },
+                success:function(data) {
+                    settings.close_message_diag();
+                    settings.enable_okbutt_mgdialg();
+                    //  alert("data has been loaded");
+                    $("#summary_info").html(data);
+                },
+                error:function(data){
+                    settings.show_message("Error<br>"+"Please Try Again");
+                    settings.enable_okbutt_mgdialg();
+                }
+            })
+           
+        });
+       
+        $("#search_butt").live('click',function(e) {
             e.preventDefault();
             var counter=0;
-            var old_val;
             $(".ca").each(function(){
-                console.log("vall--"+$(this).val()+"\n");
                 if(!(document.getElementById($(this).attr("id")).checkValidity())){
                     $(this).css("border","solid #F44 2px"); 
                     counter++;
@@ -89,7 +136,7 @@ var transaction={
             
             if(counter==0)
             {
-             transaction.load_prod(transaction.load_url);
+                transaction.load_prod(transaction.load_url);
             }
          
  
@@ -109,7 +156,7 @@ var transaction={
                 
             }
         }); 
-        **/
+         **/
         
         
     }

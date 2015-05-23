@@ -8,6 +8,7 @@
 class Sale extends AppModel {
 
     var $name = 'Sale';
+    var $actsAs = array('Containable');
     var $hasMany = array(
         'ProductTransaction' => array(
             'className' => 'ProductTransaction',
@@ -33,7 +34,7 @@ class Sale extends AppModel {
             'fields' => '',
             'order' => ''
         ),
-         'User' => array(
+        'User' => array(
             'className' => 'User',
             'foreignKey' => 'user_id',
             'conditions' => '',

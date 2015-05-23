@@ -20,21 +20,6 @@
                 User
             </th>
             <th ></th>
-
-            <th class='last alignRight'>
-
-            </th>
-            <th >
-
-            </th><th >
-
-            </th><th >
-
-            </th><th >
-
-            </th><th >
-
-            </th>
         </tr>
     </thead>
 
@@ -89,18 +74,10 @@ echo "Reversal";
 
                 </td>
                 <td>
-
+               
+                            <a href='#' class='inlineIcon preferences iconActivate get_details_trans'>View Details</a>
+                      
                 </td>
-
-                <td>
-                
-                </td>
-                <td>
-                    <ul class='rowActions'>
-
-
-                    </ul>
-                </td> <td></td><td></td><td></td><td></td>
             </tr>
             <?php
             $row_color++;
@@ -109,8 +86,6 @@ echo "Reversal";
         <tr style="background-color: yellow;color: blue;font-size:5em!important;" >
             <td>TOTAL</td> <td></td> <td><?php echo $total_quantity; ?></td>
             <td><?php echo $total_amount; ?></td> <td></td> <td></td>
-            <td></td> <td></td> <td></td>
-            <td></td> <td></td> <td></td>
         </tr>
 
 

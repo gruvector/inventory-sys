@@ -10,7 +10,13 @@
             </li>
 
              <li>
-                <input type="text" style="width: 200px;" maxlength="25" name="search_trans_second" id="search_trans_second" placeholder="Search By Type"/>
+            <select name="search_trans_second" id="search_trans_second">
+        <option value="">Select Tran Type</option>
+        <option value="add_sales">Sales</option>
+        <option value="add_inv">Invoice</option>
+        <option value="add_recv">Receivables</option>
+        <option value="add_revr">Reversals</option>
+            <select>
             </li>
              <li>
                 <input type="text" style="width: 200px;" maxlength="25" name="search_trans_third" id="search_trans_third" placeholder="Search By Date"/>

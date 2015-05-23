@@ -1395,7 +1395,7 @@ var product={
         
       
         
-        
+        /**
         //this is used for editing stock
         $(".edit_stock").live('click',function(e){
             e.preventDefault();
@@ -1440,7 +1440,7 @@ var product={
             });
             $dialog.dialog('open');
         });
-        
+        **/
         
 		
 		
@@ -1646,6 +1646,7 @@ var product={
             type: 'GET',
             dataType:'json', 
             beforeSend:function(){
+                _this.disable_okbutt_mgdialg() ;
                 _this.show_message("Saving...");
             },
             success:function(data) {
@@ -1656,6 +1657,7 @@ var product={
                     $(dail_ref).dialog('destroy').remove();
                     _this.load_prod(product.load_url);
                     _this.show_message("Data Saved Succesfully");
+                    _this.enable_okbutt_mgdialg();
                     product.save_prod_start="false";
 
                     
@@ -1664,6 +1666,7 @@ var product={
             },
             error:function(data){
                 _this.show_message("Error<br>"+"Please Try Again");
+                _this.enable_okbutt_mgdialg();
             }
         })
         
