@@ -3,8 +3,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-//print_r($data['ProductTransaction']);
-//exit();
+
 ?>
 
 <table cellspacing="0" summary="">
@@ -35,7 +34,7 @@
             <td><?php echo htmlspecialchars($data['Sale']['total_items']); ?></td>
             <td ></td>
             <td class=" mbold total_trans_for_sale"><?php echo htmlspecialchars($data['Sale']['total_bvat']); ?></td>
-            
+
         </tr>
         <tr class="total_vat_tr">
             <td>VAT 2.5 %</td>
@@ -50,16 +49,23 @@
             <td  class="mbold rtotal_sale"><?php echo htmlspecialchars($data['Sale']['total_transaction']); ?></td>
         </tr>
         <tr class="rtotal_amt_tr">
-            <td>TOTAL AMOUNT PAID</td>
+            <td> AMOUNT PAID</td>
             <td></td>
             <td ></td>
-            <td class="mbold"><?php echo htmlspecialchars($data['Sale']['total_amount_paid']); ?></td>
+            <td class="mbold"><?php
+            $amount_out = isset($rec_id) ? $data['Receipt'][0]['amount_paid'] : $data['Sale']['total_amount_paid'];
+            echo htmlspecialchars($amount_out);
+            ?></td>
         </tr>
         <tr>
-            <td>TOTAL AMOUNT DUE</td>
+            <td> AMOUNT DUE</td>
             <td></td>
             <td></td>
-            <td class=" mbold amount_due_for_sale"><?php echo htmlspecialchars($data['Sale']['total_balance_due']); ?></td>
+            <td class=" mbold amount_due_for_sale">
+                <?php
+                $amount_due = isset($rec_id) ? $data['Receipt'][0]['balance_due'] : $data['Sale']['total_balance_due'];
+                echo htmlspecialchars($amount_due);
+                ?></td>
         </tr>
     </tbody>
 </table>

@@ -17,20 +17,23 @@ var transaction={
     
     load_prod:function(page_link){
 
-        var val = $("#search_trans_type").val();
+        var val = $("#search_rec_type").val();
         var sval = $("#search_trans_date").val();
-        var tval = $("#search_trans_quant").val();
         var fval =$("#search_trans_amount").val();
         var uval=$("#search_trans_user").val();
+        var vval =$("#search_rec_ref").val();
+        var wval =$("#search_sale_ref").val();
         filter=(val!="")? "search_trans_type="+val :"search_trans_type=null";
         sfilter=(sval!="")? "search_trans_date="+sval : "search_trans_date=null";
-        tfilter=(tval!="")? "search_trans_quan="+tval : "search_trans_quan=null";
         ufilter=(fval!="")? "search_trans_amount="+fval : "search_trans_amount=null";
         rfilter=(uval!="")? "search_trans_user="+uval : "search_trans_user=null";
+        vfilter=(vval!="")? "search_rec_ref="+vval : "search_rec_ref=null";
+        wfilter=(wval!="")? "search_sale_ref="+wval : "search_sale_ref=null";
+
 
         
 
-        get_filter=filter+"&"+sfilter+"&"+tfilter+"&"+ufilter+"&"+rfilter;
+        get_filter=filter+"&"+sfilter+"&"+ufilter+"&"+rfilter+"&"+vfilter+"&"+wfilter;
         
 
         $.ajax({
@@ -65,9 +68,9 @@ var transaction={
     },
     //this is for setting up the initial function
     init:function(){
-       var  _this=this;
+        _this=this;
         
-        transaction.load_prod(transaction.load_url);
+        _this.load_prod(_this.load_url);
         
         $( "#search_trans_date" ).datepicker({
             'dateFormat': 'yy-mm-dd',
@@ -90,9 +93,10 @@ var transaction={
         $(".get_details_trans").live('click',function(e){
             e.preventDefault();
             var id= $(this).closest("tr").attr("id");
+            var rec_id=$(this).closest("tr").data("receipt");
             
             var url= $("#transaction_sub_list_url").val();
-            data="id="+id;
+            data="id="+id+"&rec_id="+rec_id;
             $.ajax({
                 url: url,
                 data:data,

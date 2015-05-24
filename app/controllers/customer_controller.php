@@ -57,7 +57,7 @@ class CustomerController extends AppController {
                     'contain' => array('Category', 'Site'),
                     'order' => array('Supplier.id' => 'desc'),
                     'page' => $page_array[1],
-                    'limit' => 5));
+                    'limit' => 10));
 
 
             $Suppliers = $this->paginate('Supplier');
@@ -67,7 +67,7 @@ class CustomerController extends AppController {
                     'conditions' => $conditions_array,
                     'contain' => array('Category', 'Site'),
                     'order' => array('Supplier.id' => 'desc'),
-                    'limit' => 5));
+                    'limit' => 10));
             $Suppliers = $this->paginate('Supplier');
         }
 
@@ -183,7 +183,7 @@ class CustomerController extends AppController {
                     'conditions' => $conditions_array,
                     'order' => array('Category.id' => 'desc'),
                     'page' => $page_array[1],
-                    'limit' => 5));
+                    'limit' => 10));
 
 
             $cats = $this->paginate('Category');
@@ -192,7 +192,7 @@ class CustomerController extends AppController {
                 'Category' => array(
                     'conditions' => $conditions_array,
                     'order' => array('Category.id' => 'desc'),
-                    'limit' => 5));
+                    'limit' => 10));
             $cats = $this->paginate('Category');
         }
 
@@ -275,7 +275,18 @@ class CustomerController extends AppController {
                 if ($transaction_object->transaction_type == "add_sales") {
                     $dataSurceReceipt->begin($this->Receipt);
                     //    function prepare_receipt($receipt_type,$amount_paid,$amount_paid_prev, $sale_id, $balance_due) {
-                    $rec_status = $this->prepare_receipt("other", $transaction_object->amount_paid, $transaction_object->amount_paid, $status['sale_id'], $transaction_object->amount_balance_due);
+                    //$recpt_type = "other";
+
+                    if ($transaction_object->amount_paid > 0 && $transaction_object->amount_paid < $transaction_object->rtotal_transaction) {
+                        $recpt_type = "part_pay";
+                    } else if ($transaction_object->amount_paid > 0 && $transaction_object->amount_paid == $transaction_object->rtotal_transaction) {
+                        $recpt_type = "full_pay";
+                    } else if ($transaction_object->amount_paid > 0 && $transaction_object->amount_paid > $transaction_object->rtotal_transaction) {
+                        $recpt_type = "excess";
+                    } else if ($transaction_object->amount_paid == 0) {
+                        $recpt_type = "pending";
+                    }
+                    $rec_status = $this->prepare_receipt($recpt_type, $transaction_object->amount_paid, $transaction_object->amount_paid, $status['sale_id'], $transaction_object->amount_balance_due);
                     if ($rec_status['status']) {
 
                         $dataSourceProductsTransaction->begin($this->ProductTransaction);
@@ -333,13 +344,18 @@ class CustomerController extends AppController {
     }
 
     //this is the generic function for getting summary of sales data given a sales id 
-    function get_sales_info($sale_id) {
+    function get_sales_info($sale_id, $rec_id = null) {
 
-
+        if ($rec_id !== null) {
+            $conditions_array = array('Receipt.id' => $rec_id);
+        } else {
+            $conditions_array = array();
+        }
 
         return $this->Sale->find('first', array('conditions' => array('Sale.id' => $sale_id),
                     'contain' => array(
                         'User' => array('fields' => array('User.fname', 'User.lname')),
+                        'Receipt' => array('fields' => array('amount_paid', 'balance_due'), 'conditions' => $conditions_array),
                         'ProductTransaction' => array('fields' => array('ProductTransaction.price', 'ProductTransaction.quantity'), 'Product' => array('product_name'))
                         )));
     }
@@ -347,11 +363,16 @@ class CustomerController extends AppController {
     function get_sales_info_list() {
 
         $this->autoLayout = false;
-        if (isset($_GET['id'])) {
-            $sale_id = $_GET['id'];
+        $rec_id;
+        if (isset($_GET['rec_id'])) {
+            $sale_id = mysql_real_escape_string($_GET['id']);
+            $rec_id = mysql_real_escape_string($_GET['rec_id']);
+        } else if (isset($_GET['id'])) {
+            $sale_id = mysql_real_escape_string($_GET['id']);
+            $rec_id = null;
         }
-        $data = $this->get_sales_info($sale_id);
-        $this->set(compact('data'));
+        $data = $this->get_sales_info($sale_id, $rec_id);
+        $this->set(compact('rec_id', 'data'));
     }
 
     //this  is for getting the information needed for printing given a receipt
@@ -362,7 +383,7 @@ class CustomerController extends AppController {
                         'ProductTransaction' => array('fields' => array('ProductTransaction.price', 'ProductTransaction.quantity'), 'Product' => array('product_name')),
                         'Sale',
                         /* 'Sale' => array('Sale.transaction_timestamp', 'Sale.vat_per', 'Sale.total_transaction', 'Sale.vat_transaction', 'Sale.total_items', 'Sale.total_bvat', 'Sale.comment', 'Sale.total_amount_paid', 'Sale.total_balance_due'),
-                        **/ 'User' => array('fields' => array('User.fname', 'User.lname')))));
+                         * */ 'User' => array('fields' => array('User.fname', 'User.lname')))));
     }
 
     //prepare receipt to be used for the transaction
@@ -380,6 +401,7 @@ class CustomerController extends AppController {
 
         $receipt_data = array();
         $memberdata = $this->Session->read('memberData');
+
         $receipt_data['sale_id'] = $sale_id;
         $receipt_data['staff_id'] = $memberdata['User']['id'];
         $receipt_data['transaction_timestamp'] = date('Y-m-d H:i:s');
@@ -387,6 +409,8 @@ class CustomerController extends AppController {
         $receipt_data['amount_paid'] = $amount_paid;
         $receipt_data['balance_due'] = $balance_due;
         $receipt_data['total_amount_paid_prev'] = $amount_paid_prev;
+        $receipt_data['inst_id'] = $this->Session->read('inst_id');
+        $receipt_data['site_id'] = $this->Session->read('site_id');
         $this->Receipt->set($receipt_data);
         if ($this->Receipt->save()) {
             return array('status' => true, 'rec_id' => $this->Receipt->id);
@@ -495,7 +519,8 @@ class CustomerController extends AppController {
         $sale_array['user_id'] = $memberdata['User']['id'];
         $sale_array['reverse_reason'] = $transaction_object->reverse_reason;
         $sale_array['supplier_id'] = $transaction_object->supplier;
-
+        $sale_array['inst_id'] = $this->Session->read('inst_id');
+        $sale_array['site_id'] = $this->Session->read('site_id');
 
         $this->Sale->set($sale_array);
         if ($this->Sale->save()) {
@@ -513,7 +538,7 @@ class CustomerController extends AppController {
         $null_stuff = is_null($receipt_id) ? "" : ",receipt_id";
         // $saleProd = new ProductTransaction();
         $rquery = "INSERT into product_transactions(product_id,quantity,price,transaction_type,
-                   transaction_timestamp,user_id,inst_id,sale_id,new_stock_product" . $null_stuff . ")VALUES";
+                   transaction_timestamp,user_id,inst_id,sale_id,site_id,new_stock_product" . $null_stuff . ")VALUES";
 
         foreach ($transaction_items as $val) {
             $val_id = "'" . mysql_real_escape_string($val->id) . "'";
@@ -523,12 +548,13 @@ class CustomerController extends AppController {
             $date_trans = "'" . mysql_real_escape_string(date('Y-m-d H:i:s')) . "'";
             $mem_data = "'" . mysql_real_escape_string($memberdata['User']['id']) . "'";
             $session_inst_id = "'" . mysql_real_escape_string($this->Session->read('inst_id')) . "'";
+            $session_site_id = "'" . mysql_real_escape_string($this->Session->read('site_id')) . "'";
             $sale_data = "'" . mysql_real_escape_string($sale_id) . "'";
             $tran_type = "'" . mysql_real_escape_string($transaction_type) . "'";
             // $rec_data = ;
             //  echo "rec---".is_null($rec_data)."/n";
 
-            $subarray = array($val_id, $sale_q, $unit_p, $tran_type, $date_trans, $mem_data, $session_inst_id, $sale_data, $new_stock_pr);
+            $subarray = array($val_id, $sale_q, $unit_p, $tran_type, $date_trans, $mem_data, $session_inst_id, $sale_data, $session_site_id, $new_stock_pr);
             if (!is_null($receipt_id)) {
                 $subarray[] = $receipt_id;
             }
@@ -555,8 +581,6 @@ class CustomerController extends AppController {
     //this is for editing stock
     //this will affect the product/product_transactions table
     function edit_stock() {
-
-
 
 
         $this->autoLayout = false;
@@ -586,6 +610,77 @@ class CustomerController extends AppController {
             echo json_encode(array('status' => 1));
             exit;
         };
+    }
+
+    //this function will enable you to see the receips and the various transactions tied to those receipts
+
+    function view_receipt_trans() {
+
+        $layout_title = "View Summary Receipt";
+        $this->set(compact('layout_title'));
+    }
+
+    //this is for viewing receipt list 
+    function receipt_history($paginate_link = null) {
+
+        $this->autoLayout = false;
+
+        $search_trans_type = isset($_GET['search_trans_type']) && $_GET['search_trans_type'] != "null" ? mysql_real_escape_string($_GET['search_trans_type']) : "";
+        $search_trans_date = isset($_GET['search_trans_date']) && $_GET['search_trans_date'] != "null" ? mysql_real_escape_string($_GET['search_trans_date']) : "";
+        $search_trans_amount = isset($_GET['search_trans_amount']) && $_GET['search_trans_amount'] != "null" ? mysql_real_escape_string($_GET['search_trans_amount']) : "";
+        $search_trans_user = isset($_GET['search_trans_user']) && $_GET['search_trans_user'] != "null" ? mysql_real_escape_string($_GET['search_trans_user']) : "";
+        $search_trans_rec = isset($_GET['search_rec_ref']) && $_GET['search_rec_ref'] != "null" ? mysql_real_escape_string($_GET['search_rec_ref']) : "";
+        $search_trans_sale = isset($_GET['search_sale_ref']) && $_GET['search_sale_ref'] != "null" ? mysql_real_escape_string($_GET['search_sale_ref']) : "";
+
+
+
+        $amount_key = ($search_trans_amount == "") ? "LIKE" : "<=";
+        $amount_value = ($search_trans_amount == "") ? "%" . $search_trans_amount . "%" : $search_trans_amount;
+        $rec_key = ($search_trans_rec == "") ? "LIKE" : "";
+        $rec_value = ($search_trans_rec == "") ? "%" . $search_trans_rec . "%" : $search_trans_rec;
+        $sale_key = ($search_trans_sale == "") ? "LIKE" : "";
+        $sale_val = ($search_trans_sale == "") ? "%" . $search_trans_sale . "%" : $search_trans_sale;
+
+        // echo $search_trans_quan . " -- " . $search_trans_amount."/n";;
+        // echo $search_key . " -- "  . $amount_key;exit();
+
+        $conditions_array = array(
+            'Receipt.inst_id' => $this->Session->read('inst_id'),
+            'AND' => array(
+                'Receipt.paid_status LIKE' => "%" . $search_trans_type . "%",
+                'Receipt.transaction_timestamp LIKE' => "%" . $search_trans_date . "%",
+                "Receipt.amount_paid $amount_key" => $amount_value,
+                "Receipt.id $rec_key" => $rec_value,
+                "Sale.id $sale_key" => $sale_val,
+                'User.fname LIKE' => "%" . $search_trans_user . "%"
+            )
+        );
+
+
+
+        if ($paginate_link != null) {
+
+            $page_array = explode($paginate_link, ":");
+            $this->paginate = array(
+                'Receipt' => array(
+                    'conditions' => $conditions_array,
+                    'order' => array('Receipt.transaction_timestamp' => 'desc'),
+                    //   'contain' => array('Sale'),
+                    'page' => $page_array[1],
+                    'limit' => 10));
+
+            $transactions = $this->paginate('Receipt');
+        } else {
+            $this->paginate = array(
+                'Receipt' => array(
+                    'conditions' => $conditions_array,
+                    //   'contain' => array('Sale'),
+                    'order' => array('Receipt.transaction_timestamp' => 'desc'),
+                    'limit' => 10));
+            $transactions = $this->paginate('Receipt');
+        }
+
+        $this->set(compact('transactions'));
     }
 
     //this function will enable you to view your main transactions
@@ -640,7 +735,7 @@ class CustomerController extends AppController {
                     'order' => array('Sale.transaction_timestamp' => 'desc'),
                     //'contain' => array('Product' => array('product_name')),
                     'page' => $page_array[1],
-                    'limit' => 5000));
+                    'limit' => 10));
 
 
             $transactions = $this->paginate('Sale');
@@ -650,7 +745,7 @@ class CustomerController extends AppController {
                     'conditions' => $conditions_array,
                     //'contain' => array('Product' => array('product_name')),
                     'order' => array('Sale.transaction_timestamp' => 'desc'),
-                    'limit' => 5000));
+                    'limit' => 10));
             $transactions = $this->paginate('Sale');
         }
 
@@ -699,7 +794,7 @@ class CustomerController extends AppController {
                     'conditions' => $conditions_array,
                     'order' => array('ProductTransaction.transaction_timestamp' => 'desc'),
                     'page' => $page_array[1],
-                    'limit' => 5000));
+                    'limit' => 10));
 
 
             $transactions = $this->paginate('ProductTransaction');
@@ -708,7 +803,7 @@ class CustomerController extends AppController {
                 'ProductTransaction' => array(
                     'conditions' => $conditions_array,
                     'order' => array('ProductTransaction.transaction_timestamp' => 'desc'),
-                    'limit' => 5000));
+                    'limit' => 10));
             $transactions = $this->paginate('ProductTransaction');
         }
 
@@ -736,7 +831,7 @@ class CustomerController extends AppController {
                     'conditions' => $conditions_array,
                     'order' => array('Product.id' => 'desc'),
                     'page' => $page_array[1],
-                    'limit' => 5000));
+                    'limit' => 10));
 
 
             $prods = $this->paginate('Product');
@@ -745,7 +840,7 @@ class CustomerController extends AppController {
                 'Product' => array(
                     'conditions' => $conditions_array,
                     'order' => array('Product.id' => 'desc'),
-                    'limit' => 5000));
+                    'limit' => 10));
             $prods = $this->paginate('Product');
         }
 
