@@ -79,7 +79,8 @@
     $row_color++;
 }
 ?>
-        <tr style="background-color: yellow;color: blue;font-size:5em!important;" >
+<!--style="background-color: yellow;color: blue;font-size:5em!important;" >-->
+        <tr class ="ui-widget-header" >
             <td>TOTAL</td> <td></td> <td><?php echo $total_amount; ?></td>
             <td></td> <td></td> <td></td>
         </tr>

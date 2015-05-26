@@ -250,6 +250,8 @@ class CustomerController extends AppController {
     //reversal is similar tosales but  is a combination of 
     //should be  calculated from d from server side 
 //ideally corect costs for each  for each of the items should be recalculated
+    /**
+     */
     function batch_transaction() {
 
         $this->autoLayout = false;
@@ -574,8 +576,64 @@ class CustomerController extends AppController {
     }
 
     //this is for creating a receipt object
-    function save_receipt($data) {
-        
+    // ($receipt_type, $amount_paid, $amount_paid_prev, $sale_id, $balance_due) {
+    function save_receipt() {
+
+        $transaction_object = $_POST;
+        $dataSourceSale = $this->Sale->getDataSource();
+        $dataSourceRecipt = $this->Receipt->getDataSource();
+        $dataSourceSale->begin($this->Sale);
+        $response = $this->check_save($transaction_object);
+
+
+        if ($response) {
+            $recp_type = ($transaction_object['tran_type'] == "part_pay") ? "part_pay" : "refund";
+            $dataSourceRecipt->begin($this->Sale);
+            $rec_status = $this->prepare_receipt($recp_type, $transaction_object['amount_paid'], $transaction_object['total_paid'], $transaction_object['sale_id'], $transaction_object['total_due_new']);
+            if ($rec_status['status']) {
+                $dataSourceSale->commit($this->Sale);
+                $dataSourceRecipt->commit($this->Receipt);
+                $receipt_data = $this->get_receipt_print($rec_status['rec_id']);
+                echo json_encode(array('status' => 'fuck_yeah', 'message' => 'Data Saved Succesfully', 'rec_data' => $receipt_data));
+                exit();
+            } else {
+                $dataSourceSale->rollback($this->Sale);
+                $dataSourceRecipt->rollback($this->Receipt);
+                echo json_encode(array('status' => 'shit', 'message' => 'Please Check If Changes Were Made To Old Transaction'));
+                exit();
+            }
+        } else {
+            $dataSourceSale->rollback($this->Sale);
+            echo json_encode(array('status' => 'shit', 'message' => 'Please Check If Changes Were Made To Old Transaction'));
+            exit();
+        }
+    }
+
+    function check_save($sale_data) {
+
+        $sale_id = "'" . mysql_real_escape_string($sale_data['sale_id']) . "'";
+        $total_transaction = "'" . mysql_real_escape_string($sale_data['total_amount']) . "'";
+        $total_amount_paid = "'" . mysql_real_escape_string($sale_data['total_paid']) . "'";
+        $total_balance_due = "'" . mysql_real_escape_string($sale_data['total_due']) . "'";
+        $total_balance_due_new = "'" . mysql_real_escape_string($sale_data['total_due_new']) . "'";
+        $total_amount_paid_new = "'" . mysql_real_escape_string($sale_data['total_pay_new']) . "'";
+
+
+        $prequery = "SELECT id,total_transaction FROM sales WHERE ID=" . $sale_id . " AND total_transaction=" . $total_transaction;
+        $prequery = $prequery . " AND total_amount_paid=" . $total_amount_paid . " AND total_balance_due=" . $total_balance_due . "
+                                  AND transaction_type='add_sales' FOR UPDATE";
+        $response = $this->Sale->query($prequery);
+
+        if (sizeof($response) == 1) {
+            $query = "update sales set total_amount_paid=" . $total_amount_paid_new . ",total_balance_due=" . $total_balance_due_new . " WHERE id=" . $sale_id;
+            if ($this->Sale->query($query)) {
+                return true;
+            } else {
+                return false;
+            }
+        } {
+            return false;
+        }
     }
 
     //this is for editing stock
@@ -809,6 +867,11 @@ class CustomerController extends AppController {
 
 
         $this->set(compact('transactions'));
+    }
+
+    //this is for printing various stuff
+    function print_stuff() {
+        $this->autoLayout = "print_layout";
     }
 
     function product_list($paginate_link = null) {

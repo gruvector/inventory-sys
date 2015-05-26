@@ -12,6 +12,15 @@ $(document).ready(function(){
 var transaction={
     current_stock:0,
     select_row :0,
+    sale_id:0,
+    total_amount:0,
+    total_paid:0,
+    total_due:0,
+    total_pay_new:0,
+    total_due_new:0,
+    amount_paid:0,
+    pay_info:$("#pay_info"),
+    tran_type:"other",
     
     load_url:$("#transaction_real_list_url").val(),
     
@@ -60,13 +69,97 @@ var transaction={
     
     
     //this is used for displaying the data which will arrive
-    display_data:function(){
-      
+    configure_payment:function(){
+        _this=this;
+       
+        var diag = $(_this.pay_info);
+        
+        diag.dialog({
+            modal: false,
+            width: 656,
+            height: 322,
+            title:"New Payment",
+            buttons: {
+                "Cancel":function(){
+
+                    transaction.total_pay_new=0;
+                    transaction.total_due_new=0;
+                    transaction.amount_paid=0;                    
+                    $( this ).dialog( "close" ); 
+                },
+                "Ok": function() {
+            
+            
+                    if(transaction.amount_paid==0){
+                        settings.show_message("Please Amount Should Be Greater Than Zero.");
+                    }else{
+                        transaction.save_payment( $( this ));    
+                    }
+                // $( this ).dialog( "close" ); 
+
+                }
+           
+              
+            }
+        });
+    
+        diag.dialog('close');
+    },
+    
+    save_payment:function(diag_ref){
+        _this=this;
+            
+        var formurl=$("#transaction_rec_url").val();
+  
+        var sale_id ="sale_id="+transaction.sale_id;
+        var total_amount="total_amount="+transaction.total_amount;
+        var total_paid="total_paid="+transaction.total_paid;
+        var total_due="total_due="+transaction.total_due;
+        var total_pay_new="total_pay_new="+transaction.total_pay_new;
+        var total_due_new="total_due_new="+transaction.total_due_new;
+        var amount_paid="amount_paid="+transaction.amount_paid;
+        var tran_type="tran_type="+transaction.tran_type;       
+        data_send=sale_id+"&"+total_amount+"&"+total_paid+"&"+total_due+"&"+total_pay_new+"&"+total_due_new+"&"+amount_paid+"&"+tran_type;
+        formdata=data_send;
+        
+        $.ajax({
+            url: formurl,
+            data:formdata,
+            type: 'POST',
+            dataType:'json',
+            beforeSend:function(){
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Saving...");
+            },
+            success:function(data) {       
+                transaction.total_pay_new=0;
+                transaction.total_due_new=0;
+                transaction.amount_paid=0; 
+                $(diag_ref).dialog( "close" );
+                transaction.load_prod(transaction.load_url);              
+                settings.show_message(data.message);
+                settings.enable_okbutt_mgdialg();
+            //product.load_prod(product.load_url);
+            },
+            error:function(data){
+                settings.show_message("Error<br>"+data.message);
+                settings.enable_okbutt_mgdialg();
+            }
+        })    
+        
+    }
+    ,
+    
+    round_value:function(num){
+        
+        //   return num;
+        return  Math.round(num * 100) / 100
     },
     //this is for setting up the initial function
     init:function(){
-       var  _this=this;
+        var  _this=this;
         
+        transaction.configure_payment();
         transaction.load_prod(transaction.load_url);
         
         $( "#search_trans_date" ).datepicker({
@@ -109,6 +202,11 @@ var transaction={
                     settings.enable_okbutt_mgdialg();
                     //  alert("data has been loaded");
                     $("#summary_info").html(data);
+                    transaction.sale_id=id;
+                    transaction.total_amount=parseFloat($("#total_trans").val());
+                    transaction.total_due=parseFloat($("#total_due").val());
+                    transaction.total_paid=parseFloat($("#total_paid").val());
+                    transaction.amount_paid=parseFloat($(".amount_paid_in").val());
                 },
                 error:function(data){
                     settings.show_message("Error<br>"+"Please Try Again");
@@ -117,6 +215,63 @@ var transaction={
             })
            
         });
+       
+       
+        $(".amount_paid_in").live('keyup',function(e){
+            e.preventDefault();
+            
+            var  amount_paid =$(this).val();
+            if(amount_paid < 0 || ! (event.target.validity.valid)  /**parseFloat(amount_paid)!==parseFloat(amount_paid)**/){
+                settings.show_message("Amount Is Invalid");
+                $(this).val(transaction.amount_paid);
+            }
+            else{
+                amount_paid=parseFloat($(this).val());
+                if(transaction.tran_type=="refund"){
+                    amount_paid=amount_paid *-1;
+                }
+                
+                transaction.total_pay_new=transaction.round_value(transaction.total_paid+parseFloat(amount_paid));
+                transaction.total_due_new=transaction.round_value(transaction.total_amount-transaction.total_pay_new);
+                transaction.amount_paid=amount_paid;
+                //$(".amount_paid_in").val(transaction.amount_paid);
+                $("#pay_info .amount_due_for_sale").html(transaction.total_due_new);
+                $("#pay_info .total_amount_paid").html(transaction.total_pay_new);
+
+              
+              
+            }
+        });
+       
+        //this is for printing the refunds
+        $("#refund").live('click',function(e) {
+            
+            $("#pay_info .title_action").html("New Refund");
+            $("#pay_info .rtotal_transaction").html(transaction.total_amount);
+            $("#pay_info .total_amount_paid").html(transaction.total_paid);
+
+            $("#pay_info .amount_due_for_sale").html(transaction.total_due);
+            $("#pay_info .amount_paid_in").val(0);
+            transaction.tran_type="refund";
+            $(_this.pay_info).dialog('open');
+        });
+        //this is for printing the part_payments
+        $("#pay_part").live('click',function(e) {
+            $("#pay_info .title_action").html("New Part Payment");
+            $("#pay_info .rtotal_transaction").html(transaction.total_amount);
+            $("#pay_info .total_amount_paid").html(transaction.total_paid);
+            $("#pay_info .amount_due_for_sale").html(transaction.total_due);
+            $("#pay_info .amount_paid_in").val(0);
+            transaction.tran_type="part_pay";
+            $(_this.pay_info).dialog('open');
+
+        });
+        $("#print_stuff").live('click',function(e) {
+            
+            alert("sale_id"+transaction.sale_id);
+  
+        });
+       
        
         $("#search_butt").live('click',function(e) {
             e.preventDefault();

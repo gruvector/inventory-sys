@@ -3,7 +3,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 ?>
 
 <table cellspacing="0" summary="">
@@ -67,5 +66,21 @@
                 echo htmlspecialchars($amount_due);
                 ?></td>
         </tr>
+        <tr>
+            <td></td>
+            <td> <?php if (!isset($rec_id) && $data['Sale']['transaction_type']=="add_sales") { ?> <input type="button" value="New Refund" name="refund" id="refund">  
+                <?php } ?></td>
+            <td> <?php if (!isset($rec_id) && $data['Sale']['transaction_type']=="add_sales") { ?>  
+                    <input type="button" value="New Payment" name="pay_part" id="pay_part">  
+                <?php } ?>
+            </td>
+            <td>
+
+                <input type="button" value="Print Transaction" name="print_stuff" id="print_stuff">
+            </td>
+        </tr>
     </tbody>
 </table>
+<input type="hidden" name="total_trans" id="total_trans" value="<?php echo htmlspecialchars($data['Sale']['total_transaction']); ?>" />
+<input type="hidden" name="total_paid" id="total_paid" value="<?php echo htmlspecialchars($data['Sale']['total_amount_paid']); ?>" />
+<input type="hidden" name="total_due" id="total_due" value="<?php echo htmlspecialchars($data['Sale']['total_balance_due']); ?>" />

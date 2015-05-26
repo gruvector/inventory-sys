@@ -25,6 +25,12 @@ margin-top:5px !important;
 .mbold{
 font-weight: bold;
 }
+#pay_info table{
+width:100%;
+margin:10px;
+border-spacing: 10px;
+border-collapse: separate;
+}
 </style>
 
 
@@ -76,8 +82,59 @@ font-weight: bold;
                    
     </div>
 
+
+ <div name="pay_info" id="pay_info">
+                    <table width="100%" cellspacing="2" style summary="">
+
+                        <thead>
+                        <tr>
+    <th class=""></th>
+    <th class=""></th>
+    <th class="title_action"></th>
+    <th class=""></th>
+    <th class=""></th>
+    <th class=""></th>
+    <th class=""></th>
+    <th class=""></th>
+                        </tr></thead>
+                        <tbody>
+<tr class="total_rtotal_tr">
+<td></td>
+<td></td>
+<td style="font-weight: bold;">Total Transaction Amount</td>
+<td class="rtotal_sale"></td>
+<td ></td>
+<td></td>
+<td></td>
+<td class="rtotal_transaction"></td>
+</tr>
+<tr class="total_rtotal_tr">
+<td></td>
+<td></td>
+<td style="font-weight: bold;">Total Amount Paid(Total Amount Paid+Current Trans)</td>
+<td class="rtotal_sale"></td>
+<td ></td>
+<td></td>
+<td></td>
+<td class="total_amount_paid"></td>
+</tr>
+<tr class="rtotal_amt_tr">
+<td></td>
+<td></td>
+<td style="font-weight: bold;">Amount(Current Trans.)</td>
+<td><input type="number" step="0.00001" min="0" class="amount_paid_in" value="0"></td>
+<td class="amount_paid"></td>
+<td>Amount Due </td>
+<td></td>
+<td class="amount_due_for_sale"></td>
+</tr>
+</tbody>
+            </table>
+    </div>
+
     <input type="hidden" name="transaction_real_list_url" id="transaction_real_list_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'real_transaction_history')); ?>" />
     <input type="hidden" name="transaction_sub_list_url" id="transaction_sub_list_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'get_sales_info_list')); ?>" />
+    <input type="hidden" name="transaction_rec_url" id="transaction_rec_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'save_receipt')); ?>" />
 
 </div>
 

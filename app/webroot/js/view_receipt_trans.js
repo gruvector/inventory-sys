@@ -12,6 +12,7 @@ $(document).ready(function(){
 var transaction={
     current_stock:0,
     select_row :0,
+    rec_id:0,
     
     load_url:$("#transaction_real_list_url").val(),
     
@@ -62,10 +63,7 @@ var transaction={
     }, 
     
     
-    //this is used for displaying the data which will arrive
-    display_data:function(){
-      
-    },
+
     //this is for setting up the initial function
     init:function(){
         _this=this;
@@ -94,7 +92,7 @@ var transaction={
             e.preventDefault();
             var id= $(this).closest("tr").attr("id");
             var rec_id=$(this).closest("tr").data("receipt");
-            
+
             var url= $("#transaction_sub_list_url").val();
             data="id="+id+"&rec_id="+rec_id;
             $.ajax({
@@ -112,6 +110,8 @@ var transaction={
                     settings.close_message_diag();
                     settings.enable_okbutt_mgdialg();
                     //  alert("data has been loaded");
+                    transaction.rec_id=rec_id;
+
                     $("#summary_info").html(data);
                 },
                 error:function(data){
@@ -121,6 +121,14 @@ var transaction={
             })
            
         });
+       
+  //this is for general printing of stuff
+        $("#print_stuff").live('click',function(e) {
+            
+            alert("rec_id"+transaction.rec_id);
+  
+        });
+       
        
         $("#search_butt").live('click',function(e) {
             e.preventDefault();
