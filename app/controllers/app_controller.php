@@ -51,34 +51,33 @@ class AppController extends Controller {
 
         $user_links = $this->Session->read('user_links');
         $user_roles = $this->Session->read('role_short_array');
-        $mem_data=$this->Session->read('memberData');
+        $mem_data = $this->Session->read('memberData');
 
-        
-        
+
+
         ///this is a genral chech for sessions
-          if (!$mem_data) {
-                //$this->redirect('/');
-                $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
-            }
-
-        
-        
-       if ($this->action == 'landing_page'  && !$this->RequestHandler->isAjax()) {
-           $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+        if (!$mem_data) {
+            //$this->redirect('/');
+            $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
         }
 
 
 
-        if ($this->action != 'display' && $this->name != 'Pages' && $this->action != 'unauth_page'
+        if ($this->action == 'landing_page' && !$this->RequestHandler->isAjax()) {
+            $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+        }
+
+
+
+        if ($this->action != 'display' 
+                && $this->name != 'Pages' 
+                && $this->action != 'unauth_page' 
+                && $this->action != 'get_sales_info_list'
                 && $this->action != 'landing_page'
                 && !$this->RequestHandler->isAjax()) {
 
 ///this is fore redirectiong to login page if user isnt logged in 
-
-          
-
-
-            $status_link = false;
+           $status_link = false;
             //this is fore checking if the user has the correct roles to be able to access page 
             foreach ($user_links as $val) {
 

@@ -13,6 +13,7 @@ var transaction={
     current_stock:0,
     select_row :0,
     rec_id:0,
+    sale_id:0,
     
     load_url:$("#transaction_real_list_url").val(),
     
@@ -111,6 +112,7 @@ var transaction={
                     settings.enable_okbutt_mgdialg();
                     //  alert("data has been loaded");
                     transaction.rec_id=rec_id;
+                    transaction.sale_id=id;
 
                     $("#summary_info").html(data);
                 },
@@ -122,10 +124,12 @@ var transaction={
            
         });
        
-  //this is for general printing of stuff
+        //this is for general printing of stuff
         $("#print_stuff").live('click',function(e) {
             
-            alert("rec_id"+transaction.rec_id);
+            var  parameters="?id="+transaction.sale_id+"&print=true"+"&rec_id="+transaction.rec_id;
+            real_trans=$("#transaction_sub_list_url").val()+parameters;
+            window.open(real_trans);
   
         });
        

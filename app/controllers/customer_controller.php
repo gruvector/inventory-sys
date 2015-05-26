@@ -363,9 +363,15 @@ class CustomerController extends AppController {
     }
 
     function get_sales_info_list() {
+        $print_layout = "false";
+        if (isset($_GET['print']) && $_GET['print'] == 'true') {
+            $this->layout = "print_layout";
+            $print_layout = "true";
+        } else {
+            $this->autoLayout = false;
+        }
 
-        $this->autoLayout = false;
-        $rec_id;
+        $rec_id = null;
         if (isset($_GET['rec_id'])) {
             $sale_id = mysql_real_escape_string($_GET['id']);
             $rec_id = mysql_real_escape_string($_GET['rec_id']);
@@ -374,7 +380,7 @@ class CustomerController extends AppController {
             $rec_id = null;
         }
         $data = $this->get_sales_info($sale_id, $rec_id);
-        $this->set(compact('rec_id', 'data'));
+        $this->set(compact('rec_id', 'data', 'print_layout'));
     }
 
     //this  is for getting the information needed for printing given a receipt

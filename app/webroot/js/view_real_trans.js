@@ -268,7 +268,10 @@ var transaction={
         });
         $("#print_stuff").live('click',function(e) {
             
-            alert("sale_id"+transaction.sale_id);
+            
+            var  parameters="?id="+transaction.sale_id+"&print=true";
+            real_trans=$("#transaction_sub_list_url").val()+parameters;
+            window.open(real_trans);
   
         });
        

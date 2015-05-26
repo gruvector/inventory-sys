@@ -68,16 +68,18 @@
         </tr>
         <tr>
             <td></td>
-            <td> <?php if (!isset($rec_id) && $data['Sale']['transaction_type']=="add_sales") { ?> <input type="button" value="New Refund" name="refund" id="refund">  
+            <td> <?php if (!isset($rec_id) && $data['Sale']['transaction_type'] == "add_sales") { ?> <input type="button" value="New Refund" name="refund" id="refund">  
                 <?php } ?></td>
-            <td> <?php if (!isset($rec_id) && $data['Sale']['transaction_type']=="add_sales") { ?>  
+            <td> <?php if (!isset($rec_id) && $data['Sale']['transaction_type'] == "add_sales") { ?>  
                     <input type="button" value="New Payment" name="pay_part" id="pay_part">  
                 <?php } ?>
             </td>
-            <td>
+            <?php if ($print_layout == "false") { ?>  
+                <td>
 
-                <input type="button" value="Print Transaction" name="print_stuff" id="print_stuff">
-            </td>
+                    <input type="button" value="Print Transaction" name="print_stuff" id="print_stuff">
+                </td>
+            <?php } ?>
         </tr>
     </tbody>
 </table>
