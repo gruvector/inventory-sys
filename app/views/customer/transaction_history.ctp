@@ -26,9 +26,8 @@
             <th class='last alignRight'>
 
             </th>
-            <th >
+            <th></th><th></th><th></th><th></th>
 
-            </th>
         </tr>
     </thead>
 
@@ -103,13 +102,13 @@ echo "Reversal";
 
                     </ul>
                 </td>
-                <td></td> <td></td> <td></td>
+                <td></td> <td></td> <td></td> <td></td>
             </tr>
             <?php
             $row_color++;
         }
         ?>
-        <tr style="background-color: yellow;color: blue;font-size:5em!important;" >
+        <tr class ="ui-widget-header" >
             <td>TOTAL</td> <td><?php echo $total_quantity; ?></td> <td></td>
             <td><?php echo $total_cost; ?></td> <td></td> <td></td>
             <td></td> <td></td> <td></td>

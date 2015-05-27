@@ -363,22 +363,26 @@ var product={
                 if(_this.load_search_status=="true"){
                     _this.disable_okbutt_mgdialg();
                     _this.show_message("Searching...");  
+                }else{
+                    _this.disable_okbutt_mgdialg() ;
+                    _this.show_message("Retrieving Details...");    
                 }
             },
             success:function(data) {
                 //  console.log(data);
                 //  alert("data has been loaded");
+                
+                _this.close_message_diag();
+                _this.enable_okbutt_mgdialg();
                 if(_this.load_search_status=="true"){
-
-                    _this.close_message_diag();
-                    _this.enable_okbutt_mgdialg();
                     _this.load_search_status="false";
                 }
                 $("#table_info").html(data);
             },
             error:function(data){
+                _this.enable_okbutt_mgdialg();
                 if(_this.load_search_status=="true"){
-                    _this.enable_okbutt_mgdialg();
+               
                     _this.load_search_status="false";
                 }
                 _this.show_message("Error<br>"+"Please Try Again");
@@ -1617,9 +1621,14 @@ var product={
             success:function(data) {
                 
                 _this.kill_batch(div_diag_batch);
-                product.load_prod(product.load_url);              
+            
                 _this.show_message(data.message);
-                _this.enable_okbutt_mgdialg();
+                setTimeout(function() {
+                    
+                    product.load_prod(product.load_url); 
+                    //_this.enable_okbutt_mgdialg();
+                }, 2000);
+              
                 
                
 
@@ -1627,7 +1636,7 @@ var product={
             //product.load_prod(product.load_url);
             },
             error:function(data){
-                _this.show_message("Error<br>"+data.message);
+                _this.show_message("Error<br>"+"Please Consult Administrator");
                 _this.enable_okbutt_mgdialg();
             }
         })

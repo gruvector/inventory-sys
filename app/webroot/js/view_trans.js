@@ -32,13 +32,21 @@ var transaction={
             url: page_link,
             dataType:'html',
             data: get_filter,
+            beforeSend:function(){
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Retrieving Details...");
+
+            },
             success:function(data) {
                 //  console.log(data);
                 //  alert("data has been loaded");
+                settings.close_message_diag();
+                settings.enable_okbutt_mgdialg();
                 $("#table_info").html(data);
             },
             error:function(data){
-          
+                settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();
             }
         }) 
         
@@ -69,7 +77,7 @@ var transaction={
             }
         }); 
      
-     /**
+    /**
         $("#search_trans_second").keyup(function(e) {
             if(e.which==13){
                 transaction.load_prod(transaction.load_url);

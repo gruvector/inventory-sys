@@ -12,7 +12,9 @@
     <input type="hidden" name="oa_cookiecheck" value="f945ece3f107bdada06d197c97b5af3f" />
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-            <td width="80"><img src="/mticket/img/login-welcome.gif">&nbsp;&nbsp;</td>
+            <td width="80">
+                <img src="/inventory_sys/img/login-welcome.gif">&nbsp;&nbsp;
+            </td>
             <td width="100%" >
                 <span class="tab-s">&nbsp;</span><br/>
 
@@ -24,7 +26,7 @@
 } ?>"><?php echo $msg; ?></span><br />
 
 
-                <img class="break" src="<?php echo $html->url('/mticket/img/login-welcome.gif') ?>" width="400" height="1" vspace="8" />
+           <!--     <img class="break" src="<?php echo $html->url('/mticket/img/login-welcome.gif') ?>" width="400" height="1" vspace="8" />-->
             </td>
         </tr>
         <tr>

@@ -77,7 +77,7 @@
             <?php if ($print_layout == "false") { ?>  
                 <td>
 
-                    <input type="button" value="Print Transaction" name="print_stuff" id="print_stuff">
+                    <input type="button" disabled="disabled" value="Print Transaction" name="print_stuff" id="print_stuff">
                 </td>
             <?php } ?>
         </tr>
