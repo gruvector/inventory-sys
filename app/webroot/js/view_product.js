@@ -1364,8 +1364,16 @@ var product={
         
         //this is for archiving items
         $(".iconlock").live('click',function(e){
+                   
             var data="id="+$(this).closest("tr").attr("id")+"&archive=archive_prod";
-            _this.setup_archive(data);
+            _this.confirmation_action=function(){
+                _this.setup_archive(data); 
+            }  ;
+            _this.show_confirmation("Do You Want To Archive Item.<br>You Wont Be Able To Make Transactions With Item.")
+            
+            
+            
+
             
 
         });
@@ -1373,7 +1381,13 @@ var product={
         //this is for unarchiving items
         $(".iconopen").live('click',function(e){
             var data="id="+$(this).closest("tr").attr("id")+"&archive=unarchive_prod";
-            _this.setup_archive(data);
+            
+            _this.confirmation_action=function(){
+                _this.setup_archive(data); 
+            }  ;
+            _this.show_confirmation("Do You Want To UnArchive Item.<br>You Will Be Able To Make Transactions With Item.")
+            
+            
 
 
         });
