@@ -31,7 +31,7 @@
         $(document).ready(function() {
             window.print();
             
-            setTimeout(function() {window.close()}, 20000);
+            setTimeout(function() {window.close()}, 5000);
         });
     </script>
 </html>

@@ -1425,52 +1425,7 @@ var product={
         
       
         
-        /**
-        //this is used for editing stock
-        $(".edit_stock").live('click',function(e){
-            e.preventDefault();
-            var data="id="+$(this).closest("tr").attr("id")+"&edit_stock=true";  
-            var title="Edit Stock";
-            $("body").find("#edit_stock_product").remove();
-            var $dialog = $("<div id='edit_stock_product' ></div>")
-            .load($("#stock_edit_url").val(),data,function(rdata){
-                })
-            .dialog({
-                autoOpen: false,
-                title:title,
-                width: 500,
-                height: 400,
-                position:"center",
-                modal:false,
-                buttons: {
-                    "Save": function() {
-                        var counter=0;
-                        var _this=this;
-                        $("#add_stock_form.cmxform input[type=text]").each(function(){
-                            if($(this).val()=="")
-                            {
-                                $(this).css("border","solid #F44 2px");              
-                                counter++;
-                            }
-                            else{
-               
-                                $(this).css("border","solid grey 1px");       
-            
-                            } 
-                        });
-                        if(counter==0)
-                        {
-                            product.save_stock();
-                        }                     
-                    },
-                    "Cancel": function() {
-                        $( this ).dialog( "close" );
-                    }
-                }
-            });
-            $dialog.dialog('open');
-        });
-        **/
+
         
 		
 		

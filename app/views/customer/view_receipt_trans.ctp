@@ -85,6 +85,7 @@
 
                         <input type="hidden" name="transaction_real_list_url" id="transaction_real_list_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'receipt_history')); ?>" />
                         <input type="hidden" name="transaction_sub_list_url" id="transaction_sub_list_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'get_sales_info_list')); ?>" />
+                        <input type="hidden" name="transaction_print_list_url" id="transaction_print_list_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'get_print_info_list')); ?>" />
 
                         </div>
 

@@ -128,7 +128,7 @@ var transaction={
         $("#print_stuff").live('click',function(e) {
             
             var  parameters="?id="+transaction.sale_id+"&print=true"+"&rec_id="+transaction.rec_id;
-            real_trans=$("#transaction_sub_list_url").val()+parameters;
+            real_trans=$("#transaction_print_list_url").val()+parameters;
             window.open(real_trans);
   
         });

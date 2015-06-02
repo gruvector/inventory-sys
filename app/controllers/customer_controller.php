@@ -211,11 +211,15 @@ class CustomerController extends AppController {
         $this->autoLayout = false;
         $inst_id = $this->Session->read('inst_id');
         $site_id = $this->Session->read('site_id');
+        $memberdata = $this->Session->read('memberData');
 
         if (isset($_GET['save_prod'])) {
             $prod_data = $_GET['data']['Product'];
             $prod_data['inst_id'] = $this->Session->read('inst_id');
             $prod_data['site_id'] = $this->Session->read('site_id');
+            $prod_data['user_id'] = $memberdata['User']['id'];
+
+
             if ($prod_data['id'] == "") {
                 $prod_data['date_created'] = date('Y-m-d H:i:s');
             }
@@ -370,6 +374,23 @@ class CustomerController extends AppController {
         } else {
             $this->autoLayout = false;
         }
+
+        $rec_id = null;
+        if (isset($_GET['rec_id'])) {
+            $sale_id = mysql_real_escape_string($_GET['id']);
+            $rec_id = mysql_real_escape_string($_GET['rec_id']);
+        } else if (isset($_GET['id'])) {
+            $sale_id = mysql_real_escape_string($_GET['id']);
+            $rec_id = null;
+        }
+        $data = $this->get_sales_info($sale_id, $rec_id);
+        $this->set(compact('rec_id', 'data', 'print_layout'));
+    }
+
+    function get_print_info_list() {
+
+        $this->layout = "print_layout";
+        $print_layout = "true";
 
         $rec_id = null;
         if (isset($_GET['rec_id'])) {
@@ -906,7 +927,7 @@ class CustomerController extends AppController {
     //this is for viewing the percentage of stock 
     function min_stock_notif() {
 
-        
+
         $this->autoLayout = false;
 
         $stock_data = $this->Product->find('all', array('recursive' => -1,

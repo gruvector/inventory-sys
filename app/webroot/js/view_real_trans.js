@@ -270,7 +270,7 @@ var transaction={
             
             
             var  parameters="?id="+transaction.sale_id+"&print=true";
-            real_trans=$("#transaction_sub_list_url").val()+parameters;
+            real_trans=$("#transaction_print_list_url").val()+parameters;
             window.open(real_trans);
   
         });

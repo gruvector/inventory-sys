@@ -138,7 +138,7 @@ var settings={
             dataType:'html',
             beforeSend:function(){
                 $(".notif_div").hide();
-                $("#LI_77").html("");
+               // $("#LI_77").html("");
             },
             success:function(data) {
                 $("#LI_77").html(data);

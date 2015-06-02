@@ -2,8 +2,8 @@
 $links_array = array();
 $roles_array = array();
 foreach ($_SESSION['user_links'] as $val) {
-    $links_array[$val['Link']['link_category']][] = array('link_controller' => $val['Link']['link_controller'], 'link_action' => $val['Link']['link_action'], 'link_name' => $val['Link']['link_name']);
-}
+        $links_array[$val['Link']['link_category']][] = array('link_controller' => $val['Link']['link_controller'], 'link_action' => $val['Link']['link_action'], 'link_name' => $val['Link']['link_name']);
+    }
 $categories = array_keys($links_array);
 ?>
 
@@ -974,7 +974,7 @@ $categories = array_keys($links_array);
                 background: rgba(0, 0, 0, 0) none repeat scroll 0px 0px / auto padding-box border-box;
                 border-top: 0px none rgb(94, 94, 94);
                 border-right: 0px none rgb(94, 94, 94);
-              /**  border-bottom: 1px solid rgb(240, 240, 240);**/
+                /**  border-bottom: 1px solid rgb(240, 240, 240);**/
                 border-left: 0px none rgb(94, 94, 94);
                 font: normal normal normal normal 14px/20px 'open sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
                 list-style: none outside none;
@@ -1416,7 +1416,7 @@ $categories = array_keys($links_array);
                         <a href="#" id="A_116" ><span id="SPAN_118">                              
                                 <?php
                                 echo $_SESSION['memberData']['User']['fname'];
-                                // ." ".$_SESSION['memberData']['User']['lname']; 
+// ." ".$_SESSION['memberData']['User']['lname']; 
                                 ?> </span>
                             <i id="I_119" class="fa fa-cog"></i>
                         </a>

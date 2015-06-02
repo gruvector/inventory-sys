@@ -66,21 +66,7 @@
                 echo htmlspecialchars($amount_due);
                 ?></td>
         </tr>
-        <tr>
-            <td></td>
-            <td> <?php if (!isset($rec_id) && $data['Sale']['transaction_type'] == "add_sales") { ?> <input type="button" value="New Refund" name="refund" id="refund">  
-                <?php } ?></td>
-            <td> <?php if (!isset($rec_id) && $data['Sale']['transaction_type'] == "add_sales") { ?>  
-                    <input type="button" value="New Payment" name="pay_part" id="pay_part">  
-                <?php } ?>
-            </td>
-            <?php if ($print_layout == "false") { ?>  
-                <td>
 
-                    <input type="button"  value="Print Transaction" name="print_stuff" id="print_stuff">
-                </td>
-            <?php } ?>
-        </tr>
     </tbody>
 </table>
 <input type="hidden" name="total_trans" id="total_trans" value="<?php echo htmlspecialchars($data['Sale']['total_transaction']); ?>" />
