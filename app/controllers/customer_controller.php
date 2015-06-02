@@ -906,6 +906,7 @@ class CustomerController extends AppController {
     //this is for viewing the percentage of stock 
     function min_stock_notif() {
 
+        
         $this->autoLayout = false;
 
         $stock_data = $this->Product->find('all', array('recursive' => -1,
