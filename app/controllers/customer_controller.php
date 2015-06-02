@@ -9,7 +9,7 @@ class CustomerController extends AppController {
 
     var $name = 'Customer';
     var $components = array('RequestHandler', 'Session');
-    var $uses = array("ReverseReason", "Invoice", "Reversal", "Receive", "Sale", "Receipt", "Taxe", "Supplier", "Category", 'Site', 'Product', 'ProductTransaction');
+    var $uses = array("ReverseReason", "Invoice", "Sale", "Receipt", "Taxe", "Supplier", "Category", 'Site', 'Product', 'ProductTransaction');
     var $layout = 'dashboard_layout';
 
     //var $transaction_timestamp = ;
@@ -109,7 +109,7 @@ class CustomerController extends AppController {
         if (isset($_GET['perform_sales'])) {
             
         } else {
-            $products = $this->Product->find('all', array('recursive' => '-1', 'fields' => array('selling_price', 'id', 'product_name', 'category_product', 'stock_available')));
+            $products = $this->Product->find('all', array('recursive' => '-1', 'conditions' => array('Product.archive_status' => '0'), 'fields' => array('selling_price', 'id', 'product_name', 'category_product', 'stock_available')));
             $vat = $this->Taxe->find('first', array('recursive', 'conditions' => array('Taxe.vat_category' => 'sales')));
             $reverse = $this->ReverseReason->find('list', array('fields' => array('id', 'reason')));
             $suppliers = $this->Supplier->find('all');
@@ -880,14 +880,51 @@ class CustomerController extends AppController {
         $this->autoLayout = "print_layout";
     }
 
+    //this is for archiving products
+    function archive_product() {
+
+        $this->autoLayout = false;
+
+        if (isset($_GET['archive']) && isset($_GET['id'])) {
+
+            if ($_GET['archive']) {
+                $this->Product->set(array(
+                    'id' => $_GET['id'],
+                    'archive_status' => ($_GET['archive'] && $_GET['archive'] == "archive_prod") ? "1" : "0"
+                ));
+                if ($this->Product->save()) {
+                    echo json_encode(array('status' => "1", 'message' => "Data Saved Successfully"));
+                    exit();
+                } else {
+                    echo json_encode(array('status' => "0", 'message' => "Error Saving . Please Try Again"));
+                    exit();
+                }
+            }
+        }
+    }
+
+    //this is for viewing the percentage of stock 
+    function min_stock_notif() {
+
+        $this->autoLayout = false;
+
+        $stock_data = $this->Product->find('all', array('recursive' => -1,
+            'fields' => array('id', 'product_name', 'stock_available', 'max_stock_notif', 'min_stock_notif'),
+            'conditions' => array('Product.stock_available < Product.min_stock_notif')));
+        $this->set(compact('stock_data'));
+    }
+
     function product_list($paginate_link = null) {
 
         $this->autoLayout = false;
         $categories = $this->Category->find('list', array('fields' => array('id', 'long_name')));
         $filter = isset($_GET['filter']) && $_GET['filter'] != "null" ? $_GET['filter'] : "";
+        $arch_stat = isset($_GET['arch_stat']) && $_GET['arch_stat'] != "" ? $_GET['arch_stat'] : "";
+
 
         $conditions_array = array(
             'Product.inst_id' => $this->Session->read('inst_id'),
+            'Product.archive_status LIKE' => "%" . $arch_stat . "%",
             'OR' => array(
                 'Product.product_name LIKE' => "%" . $filter . "%"
                 ));
@@ -901,9 +938,8 @@ class CustomerController extends AppController {
                     'order' => array('Product.id' => 'desc'),
                     'page' => $page_array[1],
                     'limit' => 10));
-
-
             $prods = $this->paginate('Product');
+            echo ($paginate_link);
         } else {
             $this->paginate = array(
                 'Product' => array(
@@ -911,6 +947,7 @@ class CustomerController extends AppController {
                     'order' => array('Product.id' => 'desc'),
                     'limit' => 10));
             $prods = $this->paginate('Product');
+            echo ($paginate_link);
         }
 
 

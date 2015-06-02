@@ -5,14 +5,14 @@
  * 
 
 
-<style>
-    div.tableWrapper li {
-        width: 150px !important;
-    }   
-</style>
+  <style>
+  div.tableWrapper li {
+  width: 150px !important;
+  }
+  </style>
  */
- ?>
- 
+?>
+
 <?php //print_r($categories); ?>
 <form name="add_product_form" id="add_product_form" class="cmxform" action="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_product')); ?>">
     <div class='tableWrapper'>
@@ -33,10 +33,10 @@
                     <label> Stock Available  </label> 
                 </li>
                 <li>
-                  <input type='text'  class="stock_available check" required name="data[Product][stock_available]" id="data[Product][stock_available]" value="<?php echo isset($product) ? $product['Product']['stock_available'] : "0";?>" />   
+                  <input type='text'  class="stock_available check" required name="data[Product][stock_available]" id="data[Product][stock_available]" value="<?php echo isset($product) ? $product['Product']['stock_available'] : "0"; ?>" />   
                 </li>
             </ul>
-             -->  
+            -->  
             <ul class='tableActions'>
                 <li>
                     <label> Quantity/Batch </label> 
@@ -78,6 +78,23 @@
             </ul>
 
 
+            <ul class='tableActions'>
+                <li>
+                    <label> Minimum Stock  </label> 
+                </li>
+                <li>
+                    <input  type='number' min="1" step="1" max="10000000" class='min_stock_notif check'  required name="data[Product][min_stock_notif]" id="min_stock_notif" data-orig="0.00" value="<?php echo isset($product) ? $product['Product']['min_stock_notif'] : "1"; ?>" />      
+                </li>
+            </ul>
+
+            <ul class='tableActions'>
+                <li>
+                    <label> Maximum Stock  </label> 
+                </li>
+                <li>
+                    <input  type='number' min="1" step="1" max="10000000" class='max_stock_notif check'  required name="data[Product][max_stock_notif]" id="min_stock_notif" data-orig="0.00" value="<?php echo isset($product) ? $product['Product']['max_stock_notif'] : "10000"; ?>" />      
+                </li>
+            </ul>
             <ul class='tableActions'>
                 <li>
                 </li>

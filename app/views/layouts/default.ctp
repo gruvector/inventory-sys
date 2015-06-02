@@ -1,8 +1,8 @@
 <?php
-/* 
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
-*/
+ */
 //$controllerObj = new AppController();
 //if ($this->Session->check('memberData')) {
 //  $controllerObj->redirect(array('controller' => 'Reception', 'action' => 'dashboard'));
@@ -18,6 +18,11 @@
         <?php
         echo $html->css('login.css');
         echo $html->css('main.css');
+
+        //  echo $html->css('bootstrap.min.css');
+       // echo $html->css('font-awesome.min.css');
+       // echo $html->css('animate.min.css');
+       // echo $html->css('style.css');
         echo $html->script('jquery-1.4.4.min.js');
         echo $html->script('jquery.main.js');
         echo $html->script('jquery-ui.js');

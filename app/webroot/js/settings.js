@@ -129,11 +129,38 @@ var settings={
         });
     },
 	
+    configure_stock_notif:function(){
+        $(".notif_div").hide();
+        formurl=$("#stock_notif_url").val();
+        $.ajax({
+            url: formurl,
+            type: 'GET',
+            dataType:'html',
+            beforeSend:function(){
+                $(".notif_div").hide();
+                $("#LI_77").html("");
+            },
+            success:function(data) {
+                $("#LI_77").html(data);
+                $(".notif_div").hide();
+            },
+            error:function(data){
+                
+            }
+        })
+    //checks to see stock notfications every 10 seconds
+
+
+
+    },
+            
+            
+            
     init:function(){
         _this=this;
 
         /**
- *global ajax behaviour for the whole application
+                 *global ajax behaviour for the whole application
         $(document).bind("ajaxSend",function(){
             $(".ui-dialog-buttonpane button:contains('Save')").attr("disabled",true).addClass("ui-state-disabled");
 
@@ -145,10 +172,29 @@ var settings={
 
              
         });
-**/
+                 **/
 
+           
+
+
+        _this.configure_stock_notif();
+        setInterval(function() { 
+            settings.configure_stock_notif();
+            }, 10000);
+        
         _this.configure_message_dialog();
         _this.configure_confirmation();
+        
+        $("#A_116").live('click',function(e){
+            $("#UL_120").toggle(); 
+            $("#UL_81").hide(); 
+        });
+        
+        $("#A_78").live('click',function(e){
+            $("#UL_120").hide(); 
+            $("#UL_81").toggle(); 
+        });
+        
         
         $(".change_inst").live('click',function(e){
             e.preventDefault();
@@ -210,8 +256,7 @@ var settings={
             e.preventDefault();
             var data="";
             var title="Edit "+$(this).attr("name");
-            data="id="+$(this).attr("id")+"&edit_user="+"true";
-                
+            data="id="+$(this).data("id")+"&edit_user="+"true";
             _this.edit_user_status=true;
             
             var $dialog = $("<div></div>")
@@ -225,12 +270,13 @@ var settings={
                 position:"center",
                 modal:false,
                 buttons: {
-                    "Save": function() {
-                        settings.checkfields();
-                    },
                     "Cancel": function() {
                         $( this ).dialog( "close" );
+                    },
+                    "Save": function() {
+                        settings.checkfields();
                     }
+                  
                 }
             });
             $dialog.dialog('open');

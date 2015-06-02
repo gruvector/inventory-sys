@@ -349,17 +349,18 @@ var product={
     save_prod_start:"false",
     load_url:$("#product_list_url").val(),
     
+    
     load_prod:function(page_link){
         _this=this;
         var val = $("#search_prod").val();
-
+        var archive_status=$("#enable_archive_status").val();
         
         $.ajax({
             url: page_link,
             dataType:'html',
-            data: val!="" ? "filter="+val : "filter=null",
+            data: val!="" ? "filter="+val+"&arch_stat="+archive_status : "filter=null"+"&arch_stat="+archive_status,
             beforeSend:function(){
-                
+                settings.configure_stock_notif();
                 if(_this.load_search_status=="true"){
                     _this.disable_okbutt_mgdialg();
                     _this.show_message("Searching...");  
@@ -1176,10 +1177,7 @@ var product={
     },
 
 
-    ///this is for modifying the amount paid based on the transaction type 
-    perform_amount_paid_sale:function(){},
-    perform_amount_paid_recv:function(){},
-    perform_amount_paid_inv:function(){},
+
 
     //this  is for configuring the message dialog
     configure_message_dialog:function(){
@@ -1271,14 +1269,13 @@ var product={
     },
    
 
-   
+
     init:function(){
         _this=this;
         
         _this.configure_message_dialog();
         _this.configure_confirmation();
         _this.load_prod(product.load_url);
-
 
         $("#reverse_reason").live('change',function(){
             transaction.reverse_reason=$('option:selected', this).val(); 
@@ -1365,6 +1362,22 @@ var product={
         });
         
         
+        //this is for archiving items
+        $(".iconlock").live('click',function(e){
+            var data="id="+$(this).closest("tr").attr("id")+"&archive=archive_prod";
+            _this.setup_archive(data);
+            
+
+        });
+        
+        //this is for unarchiving items
+        $(".iconopen").live('click',function(e){
+            var data="id="+$(this).closest("tr").attr("id")+"&archive=unarchive_prod";
+            _this.setup_archive(data);
+
+
+        });
+        
         
         $("a.pglink").live('click',function(e) {
             e.preventDefault();
@@ -1372,12 +1385,11 @@ var product={
             product.load_prod(link);  
         });
        
-        $("#search_prod").keyup(function(e) {
-            _this.load_search_status="true";
-            if(e.which==13){
-                product.load_prod(_this.load_url);
+        $("#search_butt").live('click',function(e) {
+            e.preventDefault();
+            _this.load_search_status="true";     
+            product.load_prod(_this.load_url);
                 
-            }
         }); 
        
         $(".astock").live('keyup',function(e) {
@@ -1626,7 +1638,7 @@ var product={
                 setTimeout(function() {
                     
                     product.load_prod(product.load_url); 
-                    //_this.enable_okbutt_mgdialg();
+                //_this.enable_okbutt_mgdialg();
                 }, 2000);
               
                 
@@ -1708,6 +1720,41 @@ var product={
           
             }
         })
+        
+    },
+    
+    setup_archive:function(data){
+        _this=this;
+        var formurl=$("#product_archive_url").val();
+        $.ajax({
+            url: formurl,
+            data:data,
+            type: 'GET',
+            dataType:'json', 
+            beforeSend:function(){
+                _this.disable_okbutt_mgdialg() ;
+                _this.show_message("Saving...");
+            },
+            success:function(data) {
+               
+                if(data.status=="1")          
+                {
+                    _this.load_prod(product.load_url);
+                    _this.show_message(data.message);
+                    _this.enable_okbutt_mgdialg();
+
+                }
+                else  if(data.status=="0") {
+                    _this.show_message("Error<br>"+data.message);
+                    _this.enable_okbutt_mgdialg(); 
+                }
+            },
+            error:function(data){
+                _this.show_message("Error<br>"+data.message);
+                _this.enable_okbutt_mgdialg();
+            }
+        })
+        
         
     }
 

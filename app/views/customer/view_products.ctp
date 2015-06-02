@@ -7,7 +7,11 @@
 
  */
 ?>
-
+<style>
+    .tableWrapper{
+        width:100% !important;
+    }
+</style>
 
 <div class='tableWrapper'>
     <div class='tableHeader'>
@@ -31,18 +35,30 @@
             <li>
                 <a name="add_inv" type="add_inv" id="add_inv" title="New Invoice"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>New Invoices</a>
             </li>
-            
-             <li>
-                <a name="add_revr" type="add_revr" id="add_sales" title="Reversals"  href="<?php  echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>Reversals</a>
-            </li>
+
             <li>
-                <a name="add_recpt" type="add_recpt"  id="add_recpt" title="Receipt Management"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_recpt')); ?>" class='inlineIcon iconWebsiteAdd'>Receipts</a>
+                <a name="add_revr" type="add_revr" id="add_sales" title="Reversals"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_sales')); ?>" class='inlineIcon iconWebsiteAdd tran_type'>Reversals</a>
             </li>
-         
-           
+            <!--
+              <li>
+                  <a name="add_recpt" type="add_recpt"  id="add_recpt" title="Receipt Management"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_recpt')); ?>" class='inlineIcon iconWebsiteAdd'>Receipts</a>
+              </li>
+            -->
+            <li>
+                <select id="enable_archive_status" name="enable_archive_status">
+                    <option value="">Select Archive Status</option>
+                    <option value="1">Show Archived Items</option>
+                    <option value="0">Hide Archived Items</option>
+                </select>
+            </li>
+
             <li>
                 <input type="text" name="search_prod" id="search_prod" placeholder="Search By Name"/>
             </li>
+            <li>
+                <input type="button" name="search_butt" id="search_butt" value="Search"/>
+            </li>
+
         </ul>
 
 
@@ -71,6 +87,7 @@
     <input type="hidden" name="stock_edit_url" id="stock_edit_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'edit_stock')); ?>" />
     <input type="hidden" name="stock_edit_url" id="stock_edit_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'edit_stock')); ?>" />
     <input type="hidden" name="product_batch_add_url" id="product_batch_add_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'batch_transaction')); ?>" />
+    <input type="hidden" name="product_archive_url" id="product_archive_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'archive_product')); ?>" />
 
 </div>
 

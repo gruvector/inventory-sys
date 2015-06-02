@@ -17,6 +17,12 @@
  <th class="sortup">
              Rmd
             </th>
+ <th class="sortup">
+             Stock Notification
+            </th>
+ <th class="sortup">
+             Max Stock
+            </th>
             <th> Category </th>
 
             <th > Cost Pr</th>
@@ -60,6 +66,12 @@ Selling Pr
  <?php echo $val['Product']['stock_available']%$val['Product']['quantity_crate']; ?>
 </td>
 
+<td>
+ <?php echo $val['Product']['min_stock_notif']; ?>
+</td>
+<td>
+ <?php echo $val['Product']['max_stock_notif']; ?>
+</td>
   <td>
                     <?php echo $categories[$val['Product']['category_product']]; ?>
 
@@ -91,7 +103,6 @@ Selling Pr
          <li>
 
                             <a href='#' class='inlineIcon preferences edit_prod'>Edit</a>
-
                        
  </li>
 <?php
@@ -99,9 +110,14 @@ Selling Pr
 
 ?>
 
+                          <li> 
+                         <?php  if($val['Product']['archive_status']=="0") { ?>
+                          <a href='#' class='inlineIcon preferences iconlock'>Archive</a>
+<?php }else if($val['Product']['archive_status']=="1") { ?>
+    <a href='#' class='inlineIcon preferences iconopen'>UnArchive</a>             
 
-                          <li>
-                           <!-- <a href='#' class='inlineIcon preferences edit_stock'>Add/Remove Stock</a>-->
+<?php } ?>
+          <?php   ?>
                            <!-- <a href='#' class='inlineIcon preferences edit_stock'>Make Sales</a>-->
 
                         </li>
