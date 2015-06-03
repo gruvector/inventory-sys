@@ -361,7 +361,7 @@ class CustomerController extends AppController {
         return $this->Sale->find('first', array('conditions' => array('Sale.id' => $sale_id),
                     'contain' => array(
                         'User' => array('fields' => array('User.fname', 'User.lname')),
-                        'Receipt' => array('fields' => array('amount_paid', 'balance_due'), 'conditions' => $conditions_array),
+                        'Receipt' => array('fields' => array('id','amount_paid', 'balance_due'), 'conditions' => $conditions_array),
                         'ProductTransaction' => array('fields' => array('ProductTransaction.price', 'ProductTransaction.quantity'), 'Product' => array('product_name'))
                         )));
     }
@@ -391,7 +391,9 @@ class CustomerController extends AppController {
 
         $this->layout = "print_layout";
         $print_layout = "true";
-
+        $layout_title = "Transaction Copy";
+        $site_info = $this->Session->read('memberData');
+        $rsite_info = $site_info['Site'];
         $rec_id = null;
         if (isset($_GET['rec_id'])) {
             $sale_id = mysql_real_escape_string($_GET['id']);
@@ -401,7 +403,7 @@ class CustomerController extends AppController {
             $rec_id = null;
         }
         $data = $this->get_sales_info($sale_id, $rec_id);
-        $this->set(compact('rec_id', 'data', 'print_layout'));
+        $this->set(compact('rec_id', 'data', 'print_layout', 'layout_title','rsite_info'));
     }
 
     //this  is for getting the information needed for printing given a receipt

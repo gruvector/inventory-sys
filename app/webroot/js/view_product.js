@@ -1600,15 +1600,23 @@ var product={
                 _this.show_message("Saving...");
             },
             success:function(data) {
-                
-                _this.kill_batch(div_diag_batch);
-            
                 _this.show_message(data.message);
-                setTimeout(function() {
-                    
+                
+                if(transaction.transaction_type=="add_sales"){             
+                    _this.show_message("Printing...");               
+                    var sale_id=data.rec_data[0].Sale.id;
+                    var rec_id=data.rec_data[0].Receipt.id;
+                    var  parameters="?id="+sale_id+"&rec_id="+rec_id+"&print=true";
+                    real_trans=$("#transaction_print_list_url").val()+parameters;  
+                    window.open(real_trans);                
+              
+                }
+                _this.kill_batch(div_diag_batch);
+        
+                setTimeout(function() {                   
                     product.load_prod(product.load_url); 
                 //_this.enable_okbutt_mgdialg();
-                }, 2000);
+                }, 1000);
               
                 
                

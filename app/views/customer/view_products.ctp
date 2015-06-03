@@ -88,6 +88,7 @@
     <input type="hidden" name="stock_edit_url" id="stock_edit_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'edit_stock')); ?>" />
     <input type="hidden" name="product_batch_add_url" id="product_batch_add_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'batch_transaction')); ?>" />
     <input type="hidden" name="product_archive_url" id="product_archive_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'archive_product')); ?>" />
+    <input type="hidden" name="transaction_print_list_url" id="transaction_print_list_url" value="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'get_print_info_list')); ?>" />
 
 </div>
 
