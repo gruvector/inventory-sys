@@ -53,14 +53,14 @@
                             <input type="number" class="ca" min="1" style="width: 105px;" maxlength="5" name="search_rec_ref" id="search_rec_ref" placeholder="Receipt #"/>
                         </li>  
                         <li>
-                            <input type="number" class="ca" min="0" style="width: 105px;" maxlength="5" name="search_sale_ref" id="search_sale_ref" placeholder="Sale #"/>
+                            <input type="number" class="ca" min="1" style="width: 105px;" maxlength="5" name="search_sale_ref" id="search_sale_ref" placeholder="Sale #"/>
 
                         </li>   
                         <li>
                             <input class="ca" type="number" min="0" step="0.001" style="width: 105px;" maxlength="5" name="search_trans_amount" id="search_trans_amount" placeholder="<=Amount Paid"/>
                         </li>
                         <li>
-                            <input type="text" style="width: 105px;" maxlength="10" name="search_trans_user" id="search_trans_user" placeholder="Search By User"/>
+                            <input type="text" class="ca" style="width: 105px;" maxlength="10" name="search_trans_user" id="search_trans_user" placeholder="Search By User"/>
                         </li>
                         <li>
                             <input type="button" name="search_butt" id="search_butt" value="Search"/>

@@ -1405,6 +1405,15 @@ var product={
             product.load_prod(_this.load_url);
                 
         }); 
+        
+        $("#search_prod").keyup(function(e) {
+            e.preventDefault();
+            if(e.which==13){
+                _this.load_search_status="true";     
+                product.load_prod(_this.load_url); 
+            }
+        }); 
+        
        
         $(".astock").live('keyup',function(e) {
             //  alert("checking");

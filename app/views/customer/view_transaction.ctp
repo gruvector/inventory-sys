@@ -6,7 +6,7 @@
             <li class='inactive activeIfSelected'>
 
             <li>
-                <input type="text" style="width: 200px;" maxlength="25" name="search_trans" id="search_trans" placeholder="Search By Product"/>
+                <input type="text" class="ca" style="width: 200px;" maxlength="25" name="search_trans" id="search_trans" placeholder="Search By Product"/>
             </li>
 
              <li>
@@ -19,11 +19,14 @@
             <select>
             </li>
              <li>
-                <input type="text" style="width: 200px;" maxlength="25" name="search_trans_third" id="search_trans_third" placeholder="Search By Date"/>
+                <input type="text" class="ca" style="width: 200px;" maxlength="25" name="search_trans_third" id="search_trans_third" placeholder="Search By Date"/>
             </li>
             <li>
-                <input type="text" style="width: 100px;" maxlength="25" name="search_trans_fourth" id="search_trans_fourth" placeholder="Search By Name"/>
-            </li>
+                <input type="text" class="ca" style="width: 100px;" maxlength="25" name="search_trans_fourth" id="search_trans_fourth" placeholder="Search By Name"/>
+                        <li>
+                            <input type="button" name="search_butt" id="search_butt" value="Search"/>
+                        </li>            
+</li>
             </li>
         </ul>
 

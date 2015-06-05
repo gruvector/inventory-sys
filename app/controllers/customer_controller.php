@@ -44,6 +44,7 @@ class CustomerController extends AppController {
             'OR' => array(
                 'Supplier.email LIKE' => "%" . $filter . "%",
                 'Supplier.cell_number LIKE' => "%" . $filter . "%",
+                'Supplier.fname LIKE' => "%" . $filter . "%",
                 'Site.site_name LIKE' => "%" . $filter . "%",
                 'Category.long_name LIKE' => "%" . $filter . "%"
                 ));
@@ -167,7 +168,9 @@ class CustomerController extends AppController {
 
         $this->autoLayout = false;
 
-        $filter = isset($_GET['filter']) && $_GET['filter'] != "null" ? $_GET['filter'] : "";
+        $filter = isset($_GET['filter']) && $_GET['filter'] != "null" ? mysql_real_escape_string($_GET['filter']) : "";
+
+
 
         $conditions_array = array(
             'Category.inst_id' => $this->Session->read('inst_id'),
@@ -361,7 +364,7 @@ class CustomerController extends AppController {
         return $this->Sale->find('first', array('conditions' => array('Sale.id' => $sale_id),
                     'contain' => array(
                         'User' => array('fields' => array('User.fname', 'User.lname')),
-                        'Receipt' => array('fields' => array('id','amount_paid', 'balance_due'), 'conditions' => $conditions_array),
+                        'Receipt' => array('fields' => array('id', 'transaction_timestamp', 'amount_paid', 'balance_due'), 'conditions' => $conditions_array),
                         'ProductTransaction' => array('fields' => array('ProductTransaction.price', 'ProductTransaction.quantity'), 'Product' => array('product_name'))
                         )));
     }
@@ -403,7 +406,7 @@ class CustomerController extends AppController {
             $rec_id = null;
         }
         $data = $this->get_sales_info($sale_id, $rec_id);
-        $this->set(compact('rec_id', 'data', 'print_layout', 'layout_title','rsite_info'));
+        $this->set(compact('rec_id', 'data', 'print_layout', 'layout_title', 'rsite_info'));
     }
 
     //this  is for getting the information needed for printing given a receipt
@@ -791,6 +794,8 @@ class CustomerController extends AppController {
         $search_trans_quan = isset($_GET['search_trans_quan']) && $_GET['search_trans_quan'] != "null" ? mysql_real_escape_string($_GET['search_trans_quan']) : "";
         $search_trans_amount = isset($_GET['search_trans_amount']) && $_GET['search_trans_amount'] != "null" ? mysql_real_escape_string($_GET['search_trans_amount']) : "";
         $search_trans_user = isset($_GET['search_trans_user']) && $_GET['search_trans_user'] != "null" ? mysql_real_escape_string($_GET['search_trans_user']) : "";
+        $sale_num = isset($_GET['sale_num']) && $_GET['sale_num'] != "null" ? mysql_real_escape_string($_GET['sale_num']) : "";
+
 
         $search_key = ($search_trans_quan == "") ? "LIKE" : "<=";
         $amount_key = ($search_trans_amount == "") ? "LIKE" : "<=";
@@ -802,6 +807,7 @@ class CustomerController extends AppController {
         $conditions_array = array(
             'Sale.inst_id' => $this->Session->read('inst_id'),
             'AND' => array(
+                'Sale.id LIKE' => "%" . $sale_num . "%",
                 'Sale.transaction_type LIKE' => "%" . $search_trans_type . "%",
                 'Sale.transaction_timestamp LIKE' => "%" . $search_trans_date . "%",
                 "Sale.total_items $search_key" => $search_value,

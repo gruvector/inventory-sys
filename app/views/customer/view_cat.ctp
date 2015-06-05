@@ -6,12 +6,14 @@
                 <a name="add_cat" id="add_cat" title="Add New Category"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_cat')); ?>" class='inlineIcon iconAdvertiserAdd'>Add New Category</a>
             </li>
             <li class='inactive activeIfSelected'>
-
+            </li>
             <li>
                 <input type="text" name="search_cat" id="search_cat" placeholder="Search By Name"/>
             </li>
-
+            <li>
+                <input type="button" name="search_butt" id="search_butt" value="Search"/>
             </li>
+
         </ul>
 
 

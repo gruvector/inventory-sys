@@ -55,6 +55,8 @@ echo "Receivable";
  else if($val['Sale']['transaction_type']=="add_revr"){
 echo "Reversal"; 
 }
+                    echo "(#".$val['Sale']['id'].")";
+
 ?>
 
                 </td>

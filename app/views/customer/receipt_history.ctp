@@ -5,7 +5,7 @@
         <tr>
 
             <th class="sortup">
-                Receipt Type
+                Receipt Type(#)
             </th>
             <th class="sortup">
                 Date
@@ -51,8 +51,9 @@
                     } else {
                         echo "Other";
                     }
-                    ?>
-
+                  
+                    echo "(#".$val['Receipt']['id'].")";
+  ?>
                 </td>
                 <td>
     <?php echo date('D, d M Y H:i:s', strtotime($val['Receipt']['transaction_timestamp'])); ?>

@@ -63,7 +63,26 @@ var transaction={
         
     }, 
     
-    
+    check_fields:function(){
+        var counter=0;
+        $(".ca").each(function(){
+            if(!(document.getElementById($(this).attr("id")).checkValidity())){
+                $(this).css("border","solid #F44 2px"); 
+                counter++;
+            }else
+            {
+                $(this).css("border","solid grey 1px");       
+
+            }
+        });
+            
+            
+            
+        if(counter==0)
+        {
+            transaction.load_prod(transaction.load_url);
+        }
+    },
 
     //this is for setting up the initial function
     init:function(){
@@ -134,27 +153,20 @@ var transaction={
         });
        
        
+       
+        $(".ca").keyup(function(e) {
+            e.preventDefault();
+            if(e.which==13){
+                transaction.check_fields();  
+            }
+        }); 
+       
+       
         $("#search_butt").live('click',function(e) {
             e.preventDefault();
-            var counter=0;
-            $(".ca").each(function(){
-                if(!(document.getElementById($(this).attr("id")).checkValidity())){
-                    $(this).css("border","solid #F44 2px"); 
-                    counter++;
-                }else
-                {
-                    $(this).css("border","solid grey 1px");       
+          
+            transaction.check_fields();  
 
-                }
-            });
-            
-            
-            
-            if(counter==0)
-            {
-                transaction.load_prod(transaction.load_url);
-            }
-         
  
          
         }); 

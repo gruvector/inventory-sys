@@ -19,7 +19,7 @@ Created by Roan Lavery
 #invoice h2 {font-size:12pt}
 
 #company-address, #client-details, #payment-details, #invoice-other, #invoice-amount td, th,  #invoice-info {font-size:9pt}
-#company-address{text-align:right}
+#company-address{text-align:right;margin-bottom: 5px;}
 #invoice .fn, #invoice .org{color:#000}
 
 #invoice #invoice-terms h2{margin-bottom:3px}
@@ -29,6 +29,8 @@ Created by Roan Lavery
 #comments {font-style:italic;margin-top:15px;line-height:1.2; color:#646464; font-size:10pt;}
 
 #invoice-other{text-align:right}
+#invoice-other h2{text-decoration: underline;}
+
 #payment-details strong, #invoice-other strong{font-weight:normal}
 
 /*=========================== LAYOUT =========================*/

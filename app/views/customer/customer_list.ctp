@@ -64,10 +64,11 @@
                             <li>
                                 <a href='#' class='inlineIcon preferences edit_cust'>Edit</a>
                             </li>
-                             <li>
+<!--                        
+     <li>
                                 <a href='#' class='inlineIcon preferences iconDelete del_cust'>Delete</a>
                             </li> 
-
+-->
 
                         </ul>
                     </td>

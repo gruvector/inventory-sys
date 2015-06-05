@@ -13,7 +13,7 @@
                 <a name="add_cust" id="add_cust" title="Add New Customer"  href="<?php echo $html->url(array('controller' => 'Customer', 'action' => 'add_customer')); ?>" class='inlineIcon iconWebsiteAdd'>Add New Supplier</a>
             </li>
             <li>
-                <input type="text" name="search_cust" id="search_cust" placeholder="Search By Email,Cell"/>
+                <input type="text" name="search_cust" id="search_cust" placeholder="Search By Email,Cell,Name"/>
             </li>
 		
         </ul>

@@ -1,5 +1,5 @@
 <div id="invoice"> 
-    <div id="invoice-header"> <img alt="Mainlogo_large" class="logo screen" src="../img/core/sbman-letterhead.png" /> 
+    <div id="invoice-header"> <img alt="Mainlogo_large" class="logo screen" src="../img/core/freeagent_logo.png" /> 
         <!-- hCard microformat --> 
         <div class="vcard" id="company-address"> 
             <div class="fn org"><strong><?php echo $rsite_info['site_name']; ?></strong></div> 
@@ -24,22 +24,22 @@
         <h2>Sale# <strong><?php echo strtoupper(htmlspecialchars($data['Sale']['id'])); ?></strong></h2> 
         <h3><?php echo date('D, d M Y H:i:s', strtotime($data['Sale']['transaction_timestamp'])); ?></h3> 
        <!-- <p id="payment-terms">Payment Terms: 30 days--></p> 
-        <p id="payment-due"><!--Payment due by 21 March 2008</p>--> 
+        <p id="payment-due">Attendant: <?php echo $data['User']['fname']." ".$data['User']['lname']; ?></p>
         <p id="payment-total">&#8373;<?php echo htmlspecialchars($data['Sale']['total_transaction']); ?></p>
     </div> 
     <!-- #invoice-info --> 
     <div class="vcard" id="client-details"> 
-        <div class="fn">John Doe</div> 
-        <div class="org">Client Company</div> 
+        <div class="fn"> </div> 
+        <div class="org"> </div> 
         <div class="adr"> 
-            <div class="street-address"> Client Street Address<br/> 
-                Street Address 2<br /> 
-                Street Address 3<br /> 
+            <div class="street-address"><br/> 
+                <br /> 
+                <br /> 
             </div> 
             <!-- street-address --> 
-            <div class="locality">LOCALITY</div> 
-            <div id="client-postcode"><span class="region">Region</span> <span class="postal-code">MV2 8SX</span></div> 
-            <div id="your-tax-number">SALES TAX: 193528491</div>
+            <div class="locality"></div> 
+            <div id="client-postcode"><span class="region"></span> <span class="postal-code"></span></div> 
+            <div id="your-tax-number"></div>
         </div> 
         <!-- adr --> 
     </div> 
@@ -62,14 +62,19 @@
                 <td class="item_r">&#163;250.00</td> 
             </tr> 
             -->
+      <tr id="discount_tr"> 
+                <td colspan="2">&nbsp;</td> 
+                <td colspan="2" class="item_r">Total Quantity</td> 
+                <td class="item_r"><?php echo htmlspecialchars($data['Sale']['total_items']); ?></td> 
+            </tr> 
             <tr id="net_total_tr"> 
                 <td colspan="2">&nbsp;</td> 
-                <td colspan="2" class="item_r">Net Total</td> 
+                <td colspan="2" class="item_r">Net Cost</td> 
                 <td class="item_r"><?php echo htmlspecialchars($data['Sale']['total_bvat']); ?></td> 
             </tr> 
             <tr id="vat_tr"> 
                 <td colspan="2">&nbsp;</td> 
-                <td colspan="2" class="item_r">VAT</td> 
+                <td colspan="2" class="item_r">VAT(<?php echo htmlspecialchars(isset($data['Sale']['vat_per']) ? $data['Sale']['vat_per']  : "0" ) ?>%)</td> 
                 <td class="item_r"><?php echo htmlspecialchars($data['Sale']['vat_transaction']); ?></td> 
             </tr> 
             <tr id="total_tr"> 
@@ -113,28 +118,24 @@
         </tbody> 
     </table> 
     <!-- invoice-amount -->
-    <div id="invoice-other"> 
-        <h2></h2> 
-        <div id="company-reg-number"><strong>Company Registration Number:</strong>1212121</div>  
-        <div id="contract-number"><strong>Contract/PO:</strong> PO 87227643</div>
-    </div> 
+ <?php   if(isset($rec_id)){ ?>
 
-    <div id="payment-details">
-        <h2>Payment Details</h2> 
-        <div id="payment-reference">Payment Reference:<strong>
+    <div id="invoice-other"> 
+   <h2>Payment Details</h2>       
+   <div id="payment-reference">Payment Reference:<strong>
                 <?php
-                $receipt_id = isset($rec_id) ? $data['Receipt'][0]['id'] : "";
-                echo htmlspecialchars("RC# " . $receipt_id);
+         
+                echo htmlspecialchars("RC# " . $rec_id);
                 ?>
             </strong> </div>
-        <!--
-          <div id="bank_name">Bank Name</div> 
-          <div id="sort-code"><strong>Bank/Sort Code:</strong> 32-75-97</div> 
-          <div id="account-number"><strong>Account Number:</strong> 28270761</div> 
-          <div id="iban"><strong>IBAN:</strong> 973547</div> 
-          <div id="bic"><strong>BIC:</strong> 220197</div> 
-        --> 
+<div>Date: <?php echo 
+date('D, d M Y H:i:s', strtotime($data['Receipt'][0]['transaction_timestamp'])); ?>
+</div>
     </div> 
+
+    <?php }  ?>
+
+
     <div id="comments">  <!-- comments Payment should be made by bank transfer or cheque made payable to John Smith.--></div> 
 
 </div> 
