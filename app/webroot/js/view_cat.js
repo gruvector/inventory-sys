@@ -87,7 +87,8 @@ var cat = {
                 modal:false,
                 buttons: {
                     "Cancel": function() {
-                        $( this ).dialog( "close" );
+                        $(this).dialog( "close" );
+                        $(this).dialog('destroy').remove();
                         cat.save_prod="false";
 
                     },
@@ -106,7 +107,7 @@ var cat = {
        
  
         var _this=this;
-          _this.cnt_prod=0;
+        _this.cnt_prod=0;
         $("#add_cat_form.cmxform input[type=text],#add_cat_form.cmxform textarea,#add_cat_form.cmxform input[type=email]").each(function(){
             if($(this).val()=="")
             {
@@ -120,7 +121,7 @@ var cat = {
             } 
         });
         
-       // alert(cat.save_prod+"--"+"--"+_this.cnt_prod);
+        // alert(cat.save_prod+"--"+"--"+_this.cnt_prod);
         if(_this.cnt_prod==0 && cat.save_prod=="true")
         {
             _this.save_data(diag_ref);

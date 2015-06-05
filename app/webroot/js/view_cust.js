@@ -16,7 +16,7 @@ var customer = {
     
     save_prod:"true",
     
-    cnt_prod:0,
+    cnt_prod:parseInt(0, 10),
 
     load_cust:function(page_link){
         
@@ -104,7 +104,8 @@ var customer = {
                 modal:false,
                 buttons: {
                     "Cancel": function() {
-                        $( this ).dialog( "close" );
+                        $(this).dialog( "close" );
+                        $(this).dialog('destroy').remove();
                         customer.save_prod="false";
 
                     },
@@ -168,7 +169,6 @@ var customer = {
                
                 if(data.status=="1")          
                 {
-                    $(".ui-dialog-content").dialog("close");
                     _this.load_cust(_this.load_url);
 
                     $(dail_ref).dialog( "close" );
