@@ -15,7 +15,10 @@
             <li>
                 <input type="text" name="search_cust" id="search_cust" placeholder="Search By Email,Cell,Name"/>
             </li>
-		
+            <li>
+                <input type="button" name="search_butt" id="search_butt" value="Search"/>
+            </li>
+
         </ul>
 
 

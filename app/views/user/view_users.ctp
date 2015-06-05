@@ -1,17 +1,22 @@
-
+<style>
+    .tableWrapper{
+        width:100% !important;
+    }
+</style>
 <div class='tableWrapper'>
     <div class='tableHeader'>
         <ul class='tableActions'>
             <li>
                 <a name="add_user" id="add_user" title="Add New User"  href="<?php echo $html->url(array('controller' => 'User', 'action' => 'add_user')); ?>" class='inlineIcon iconAdvertiserAdd'>Add New Staff</a>
             </li>
-            <li class='inactive activeIfSelected'>
 
             <li>
                 <input type="text" name="search_user" id="search_user" placeholder="Search By Name or Email"/>
             </li>
-
+    <li>
+                <input type="button" name="search_butt" id="search_butt" value="Search"/>
             </li>
+           
         </ul>
 
 

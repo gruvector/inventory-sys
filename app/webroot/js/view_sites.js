@@ -22,13 +22,21 @@ var sites = {
             url: page_link,
             dataType:'html',
             data: val!="" ? "filter="+val : "filter=null",
+            beforeSend:function(){
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Retrieving Details...");
+
+            },
             success:function(data) {
                 //  console.log(data);
                 //  alert("data has been loaded");
+                settings.close_message_diag();
+                settings.enable_okbutt_mgdialg();
                 $("#table_info").html(data);
             },
             error:function(data){
-          
+                settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();
             }
         })
     },
@@ -40,9 +48,21 @@ var sites = {
             data:dt,
             type: 'GET',
             dataType:'json',
+            beforeSend:function(){
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Updating...");
+
+            },
             success:function(data) {
+                
+                settings.close_message_diag();
+                settings.enable_okbutt_mgdialg();
                 sites.load_sites(_this.load_url);
 
+            },
+            error:function(data){
+                settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();  
             }
         })
     },
@@ -62,6 +82,13 @@ var sites = {
                 
             }
         });    
+          
+           
+        $("#search_butt").live('click',function(){
+                
+            _this.load_sites(_this.load_url); 
+                
+        }); 
           
           
         $(".unlock").live('click',function(){
@@ -99,12 +126,14 @@ var sites = {
                 position:"center",
                 modal:false,
                 buttons: {
-                    "Save": function() {
-                        _this.checkfields();
-                    },
                     "Cancel": function() {
-                        $( this ).dialog( "close" );
+                        $(this).dialog( "close" );
+                        $(this).dialog('destroy').remove();
+                    },
+                    "Save": function() {
+                        _this.checkfields($(this));
                     }
+             
                 }
             });
             $dialog.dialog('open');
@@ -114,7 +143,7 @@ var sites = {
         
     },
     
-    checkfields:function(){
+    checkfields:function(dail_ref){
        
         var counter=0;
         var _this=this;
@@ -132,12 +161,15 @@ var sites = {
         });
         if(counter==0)
         {
-            _this.save_data();
+            _this.save_data(dail_ref);
+        }
+        else{
+            settings.show_message("Please Enter Fields");
         }
        
     },
     
-    save_data:function(){
+    save_data:function(dail_ref){
         var formurl=$("#add_site_url").val();
         var formdata=$("#add_site_form.cmxform").serialize()+"&save_site=true";      
         $.ajax({
@@ -145,23 +177,28 @@ var sites = {
             data:formdata,
             type: 'GET',
             dataType:'json',
+            beforeSend:function(){
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Saving...")
+            },
             success:function(data) {
                
                 if(data.status=="1")          
                 {
-                    $(".ui-dialog-content").dialog("close");
+                    
+                    $(dail_ref).dialog( "close" );
+                    $(dail_ref).dialog('destroy').remove();
                     sites.load_sites(sites.load_url);
-
+                    settings.show_message("Data Saved Succesfully");
+                  
                 }
             },
             error:function(data){
-          
+                settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();
             }
         })
-      
-      
-      
-      
+    
       
     }
 

@@ -138,7 +138,7 @@ var settings={
             dataType:'html',
             beforeSend:function(){
                 $(".notif_div").hide();
-               // $("#LI_77").html("");
+            // $("#LI_77").html("");
             },
             success:function(data) {
                 $("#LI_77").html(data);
@@ -173,17 +173,25 @@ var settings={
              
         });
                  **/
-
+                
            
 
 
         _this.configure_stock_notif();
         setInterval(function() { 
             settings.configure_stock_notif();
-            }, 10000);
+        }, 10000);
         
         _this.configure_message_dialog();
         _this.configure_confirmation();
+        
+        
+        $("#A_128").live('click',function(e){
+                
+            settings.disable_okbutt_mgdialg();    
+            settings.show_message("Logging Out");
+        })
+        
         
         $("#A_116").live('click',function(e){
             $("#UL_120").toggle(); 
@@ -272,9 +280,11 @@ var settings={
                 buttons: {
                     "Cancel": function() {
                         $( this ).dialog( "close" );
+                        $(this).dialog('destroy').remove();
+
                     },
                     "Save": function() {
-                        settings.checkfields();
+                        settings.checkfields($(this));
                     }
                   
                 }
@@ -305,7 +315,9 @@ var settings={
         {
             _this.save_data();
         }
-      
+        else{
+            settings.show_message("Please Enter Fields");
+        }
       
     },
   
@@ -330,26 +342,29 @@ var settings={
                     //this is so that the settings can be loaded when editing user data
                 
                     _this.edit_user_status==false;
+                    settings.show_message("Data Saved Succesfully");
+
                     _this.load_users(_this.load_url);
-                    
                   
                 }
                 else if (data.status=="false" && data.message_code=="UAE")
                 {
-                   
-                    alert(data.message);  
+                    settings.show_message(data.message);
+                    settings.enable_okbutt_mgdialg();
+
                     $("#add_user_form.cmxform input[type=email]").css("border","solid #F44 2px");              
 
                 }
                 else{
                     $(".ui-dialog-content").dialog("close");
-                    _this.load_users(_this.load_url);
+                //  _this.load_users(_this.load_url);
      
                 }
         
             },
             error:function(data){
-          
+                settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();
             }
         })
       

@@ -88,7 +88,7 @@ var transaction={
                     transaction.amount_paid=0;                    
                     $( this ).dialog( "close" ); 
                 },
-                "Ok": function() {
+                "Save": function() {
             
             
                     if(transaction.amount_paid==0){
@@ -246,7 +246,7 @@ var transaction={
             e.preventDefault();
             
             var  amount_paid =$(this).val();
-            if(amount_paid < 0 || ! (event.target.validity.valid)  /**parseFloat(amount_paid)!==parseFloat(amount_paid)**/){
+            if(amount_paid < 0 || amount_paid == 0 || ! (event.target.validity.valid)  /**parseFloat(amount_paid)!==parseFloat(amount_paid)**/){
                 settings.show_message("Amount Is Invalid");
                 $(this).val(transaction.amount_paid);
             }

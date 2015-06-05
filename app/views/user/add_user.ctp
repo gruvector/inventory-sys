@@ -18,7 +18,7 @@
                 <li>
                     <input type="hidden" required name="data[User][id]" id="data[User][id]"  value="<?php echo isset($User) ? $User['User']['id'] : ""; ?>" />      
 
-                    <input type="text" required name="data[User][fname]" id="data[User][fname]" value="<?php echo isset($User) ? $User['User']['fname'] : ""; ?>" />      
+                    <input type="text" class="ca" required name="data[User][fname]" id="data[User][fname]" value="<?php echo isset($User) ? $User['User']['fname'] : ""; ?>" />      
                 </li>
             </ul>  
             <ul class='tableActions'>
@@ -26,7 +26,7 @@
                     <label>  Last  Name </label> 
                 </li>
                 <li>
-                    <input type="text" required name="data[User][lname]" id="data[User][lname]" value="<?php echo isset($User) ? $User['User']['lname'] : ""; ?>" />      
+                    <input type="text" class="ca" required name="data[User][lname]" id="data[User][lname]" value="<?php echo isset($User) ? $User['User']['lname'] : ""; ?>" />      
                 </li>
             </ul>
             <ul class='tableActions'>
@@ -37,11 +37,8 @@
                 </li>
                 <li>
 
-                    <input type="email" <?php if (isset($User)) {
-    echo "readonly=readonly";
-} else {
-    echo "";
-} ?> name="data[User][user_email]" id="data[User][user_email]" value="<?php echo isset($User) ? $User['User']['user_email'] : ""; ?>" />      
+                    <input type="email" class="ca" required <?php if (isset($User)) {echo "readonly=readonly";}  ?> 
+                   name="data[User][user_email]" id="data[User][user_email]" value="<?php echo isset($User) ? $User['User']['user_email'] : ""; ?>" />      
 
 
                 </li>
@@ -78,7 +75,7 @@
                     <li>
                     </li>
                     <li>
-                        <select required name="data[User][site_id]" id="data[User][site_id]">
+                        <select class="ca" required name="data[User][site_id]" id="data[User][site_id]">
                                     <?php foreach ($sites as $val) { ?>
                                 <option value="<?php echo $val['Site']['id'] ?>"
                                 <?php if (isset($User) && $User['User']['site_id'] == $val['Site']['id']) { ?>

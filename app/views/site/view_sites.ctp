@@ -1,3 +1,8 @@
+<style>
+    .tableWrapper{
+        width:100% !important;
+    }
+</style>
 
 <div class='tableWrapper'>
     <div class='tableHeader'>
@@ -6,11 +11,13 @@
                 <a name="add_site" id="add_site" title="Add New Site"  href="<?php echo $html->url(array('controller' => 'Site', 'action' => 'add_site')); ?>" class='inlineIcon iconAdvertiserAdd'>Add New Site</a>
             </li>
             <li class='inactive activeIfSelected'>
-
+            </li>
             <li>
-                <input type="text" name="search_site" id="search_site" placeholder="Search By Name,Address,City,Email"/>
+                <input type="text" maxlength="25" name="search_site" id="search_site" placeholder="Search By Name,Address,City,Email"/>
             </li>
 
+            <li>
+                <input type="button" name="search_butt" id="search_butt" value="Search"/>
             </li>
         </ul>
 

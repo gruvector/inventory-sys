@@ -29,13 +29,22 @@ var add_user={
             url: page_link,
             dataType:'html',
             data: val!="" ? "filter="+val : "filter=null",
+            beforeSend:function(){
+                settings.perfrom_message_close_action=function(){};
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Retrieving Details...");
+
+            },
             success:function(data) {
                 //  console.log(data);
                 //  alert("data has been loaded");
+                settings.close_message_diag();
+                settings.enable_okbutt_mgdialg();
                 $("#table_info").html(data);
             },
             error:function(data){
-          
+                settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();
             }
         })
     },
@@ -48,19 +57,37 @@ var add_user={
             data:dt,
             type: 'GET',
             dataType:'json',
+            beforeSend:function(){
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Updating...");
+
+            },
             success:function(data) {
                 
                 if (type=="reset_pass"){
-                    alert("New User Password Is "+data.new_pass);  
-                    _this.load_users(_this.load_url);
+                                        
+                    settings.show_message("New User Password Is "+data.new_pass);
+                    settings.perfrom_message_close_action=function(){
+                        _this.load_users(_this.load_url);
+   
+                    }
+                    settings.enable_okbutt_mgdialg();                   
+
+
 
                 }
                 else{
+                    settings.close_message_diag();
+                    settings.enable_okbutt_mgdialg();                   
                     _this.load_users(_this.load_url);
   
                     
                 }
 
+            },
+            error:function(data){
+                settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();  
             }
         })
     },
@@ -84,14 +111,15 @@ var add_user={
             },
          
             buttons: {
-                "Save": function() {
-                   add_roles.save_roles_user();
-                },
-                "Close": function() {
+                "Cancel": function() {
                     $(".date_field").val("");
                     $(std).html("");
                     $( this ).dialog( "close" );
+                },
+                "Save": function() {
+                    add_roles.save_roles_user($( this ));
                 }
+              
             }
         });
         std.dialog('close');
@@ -122,7 +150,11 @@ var add_user={
             }
         })    
              
-        
+        $("#search_butt").live('click',function(){
+                
+            _this.load_users(_this.load_url); 
+                
+        }); 
         
       
         $(".unlock").live('click',function(){
@@ -176,26 +208,22 @@ var add_user={
                 position:"center",
                 modal:false,
                 buttons: {
-                    "Save": function() {
-                        _this.checkfields();
-                    },
                     "Cancel": function() {
                         $( this ).dialog( "close" );
+                        $(this).dialog('destroy').remove();
+
+                    },
+                    "Save": function() {
+                        _this.checkfields($(this));
                     }
+                  
                 }
             });
             $dialog.dialog('open');
      
         });
        
-       
-       
-       
-       
-       
-       
-       
-       
+         
       
         $("#add_user_form.cmxform").live('submit',(function(){
             // _this=this;
@@ -224,30 +252,35 @@ var add_user={
     },
   
    
-    checkfields:function(){
-        var counter=0;
+    checkfields:function(diag_ref){
+
         var _this=this;
-        $("#add_user_form.cmxform input[type=text],#add_user_form select,#add_user_form radio,#add_user_form input[type=email]").each(function(){
-            if($(this).val()=="")
-            {
-                $(this).css("border","solid #F44 2px");              
+        
+        var counter=0;
+        $(".ca").each(function(){
+            if(!(document.getElementById($(this).attr("id")).checkValidity())){
+                $(this).css("border","solid #F44 2px"); 
                 counter++;
-            }
-            else{
-               
+            }else
+            {
                 $(this).css("border","solid grey 1px");       
-            
-            } 
+
+            }
         });
+              
         if(counter==0)
         {
-            _this.save_data();
+            _this.save_data(diag_ref);
+        }
+        else{
+  
+            settings.show_message("Please Enter Fields");
         }
       
       
     },
   
-    save_data:function(){
+    save_data:function(diag_ref){
         var _this=this;
         var formurl=$("#add_user_url").val();
         var formdata=$("#add_user_form.cmxform").serialize();      
@@ -255,37 +288,52 @@ var add_user={
             url: formurl,
             data:formdata,
             type: 'GET',
-            dataType:'json',
+            dataType:'json', 
+            beforeSend:function(){
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Saving...")
+            },
             success:function(data) {
                
                 if(data.status=="true")          
                 {
+
                     
-                    alert("New User "+data.name+" created."+
-                        "Password Is "+data.new_pass);
-                    $(".ui-dialog-content").dialog("close");
-                    //this is so that the settings can be loaded when editing user data
-                
-                    _this.edit_user_status==false;
-                    _this.load_users(_this.load_url);
+                    settings.show_message("New User "+data.name+" created."+"<br>Password Is "+data.new_pass);
+                    settings.perfrom_message_close_action=function(){
+                     
+                        $(diag_ref).dialog( "close" );
+                        $(diag_ref).dialog('destroy').remove();
+                        //this is so that the settings can be loaded when editing user data                
+                        _this.edit_user_status==false;
+                        _this.load_users(_this.load_url);
+   
+                    }
+                    settings.enable_okbutt_mgdialg(); 
+                    
+                    
+ 
                     
                   
                 }
                 else if (data.status=="false" && data.message_code=="UAE")
                 {
-                   
-                    alert(data.message);  
+                    settings.show_message(data.message);
+                    settings.enable_okbutt_mgdialg();
+                  
                     $("#add_user_form.cmxform input[type=email]").css("border","solid #F44 2px");              
 
                 }
                 else{
-                    $(".ui-dialog-content").dialog("close");
+                    $(diag_ref).dialog( "close" );
+                    $(diag_ref).dialog('destroy').remove();
                     _this.load_users(_this.load_url);
      
                 }
             },
             error:function(data){
-          
+                settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();
             }
         })
       
@@ -309,7 +357,7 @@ var add_roles={
         
         _this.id=id;
         _this.name=name;
-        console.log("id--"+this.id+"--name"+this.name);
+        //console.log("id--"+this.id+"--name"+this.name);
         _this.show_role_dialog(_this.id,"Edit Roles For "+_this.name);
     },
     
@@ -339,40 +387,53 @@ var add_roles={
     },
     show_role_dialog:function(id,title){
         var _this=this;
-       // var $dialog = $("<div></div>")
+        // var $dialog = $("<div></div>")
         add_user.start_diag.dialog('open')
         .load($("#edit_roles").val()+"/"+id,function(){
-        //    if(_this.picklist_status==false){ 
-                $("#user_roles").pickList({
-                    afterBuild: function() { 
-                        _this.picklist_status=true;
-                    }
-                });
-         //   }
+            //    if(_this.picklist_status==false){ 
+            $("#user_roles").pickList({
+                afterBuild: function() { 
+                    _this.picklist_status=true;
+                }
+            });
+        //   }
         });
            
 
     },
-    save_roles_user:function(){
+    save_roles_user:function(diag_ref){
         var _this=this;      
         var roles = $.map( $('#user_roles option:selected'),
             function(e) {
                 return $(e).val();
             } );
-     //   console.log(roles);
+        //   console.log(roles);
         var data="roles="+roles+"&id="+this.id;     
         $.ajax({
             url: $("#save_roles").val(),
             data: data,
+            type:'GET',
+            dataType: 'json',
+            beforeSend:function(){
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Saving...")
+            },
             success: function(data){
-                $(".ui-dialog-content").dialog("close");
-                // $("#user_roles").pickList("destroy");
-                // window.location.href=$("#view_users_url").val();
-                _this.load_users(_this.load_url);
+                
+                $(diag_ref).dialog( "close" );
+                settings.show_message("Data Saved Succesfully");
+                settings.enable_okbutt_mgdialg();
+
+            // $("#user_roles").pickList("destroy");
+            // window.location.href=$("#view_users_url").val();
+            //_this.load_users(_this.load_url);
                 
             },
-            type:'GET',
-            dataType: 'json'
+            error:function(data){
+                settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();
+            }
+         
         })
 
     },

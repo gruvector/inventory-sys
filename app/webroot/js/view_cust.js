@@ -63,6 +63,11 @@ var customer = {
             }
         }); 
         
+           $("#search_butt").live('click',function(){
+                
+                _this.load_cust(_this.load_url);
+                
+        }); 
         
         $(".del_cust").live('click',function(e) {
              
