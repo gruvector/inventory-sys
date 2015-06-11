@@ -2,8 +2,8 @@
 $links_array = array();
 $roles_array = array();
 foreach ($_SESSION['user_links'] as $val) {
-        $links_array[$val['Link']['link_category']][] = array('link_controller' => $val['Link']['link_controller'], 'link_action' => $val['Link']['link_action'], 'link_name' => $val['Link']['link_name']);
-    }
+    $links_array[$val['Link']['link_category']][] = array('link_controller' => $val['Link']['link_controller'], 'link_action' => $val['Link']['link_action'], 'link_name' => $val['Link']['link_name']);
+}
 $categories = array_keys($links_array);
 ?>
 
@@ -41,6 +41,9 @@ $categories = array_keys($links_array);
         echo $html->script('settings.js');
         echo $html->script('chosen.jquery.js');
 
+        ///this part of the code is for the socket.io tests
+        echo $html->script('socket.io/socket.io-1.3.5');
+        echo $html->script('socket.io/printClient');
 
 
         /**
