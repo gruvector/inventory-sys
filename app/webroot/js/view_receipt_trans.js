@@ -5,10 +5,28 @@
  */
 $(document).ready(function(){
 
+    printc = new PrintClient("localhost", "8085");
+    //callbacks are being used for various printing functionality
+    printc.onMessage=function(data){
+        console.log(data);
+        settings.show_message(data.payload);      
+        settings.enable_okbutt_mgdialg();      
+    };
+                    
+    printc.onDisConnect=function(){
+        settings.show_message("Printer Disconnected");      
+        settings.enable_okbutt_mgdialg();                
+    };
+    printc.onConnect=function(){
+        console.log("Printer connected");
+    };
+
+    printc.connect();
+    
     transaction.init();
 })
 
-
+  
 var transaction={
     current_stock:0,
     select_row :0,
@@ -146,9 +164,43 @@ var transaction={
         //this is for general printing of stuff
         $("#print_stuff").live('click',function(e) {
             
-            var  parameters="?id="+transaction.sale_id+"&print=true"+"&rec_id="+transaction.rec_id;
-            real_trans=$("#transaction_print_list_url").val()+parameters;
-            window.open(real_trans);
+            //            var  parameters="?id="+transaction.sale_id+"&print=true"+"&rec_id="+transaction.rec_id;
+            //            real_trans=$("#transaction_print_list_url").val()+parameters;
+            //            window.open(real_trans);
+            //            
+            url=$("#transaction_print_node_url").val()+"/"+transaction.rec_id;
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType:'json',
+                beforeSend:function(){
+                    settings.disable_okbutt_mgdialg() ;
+                    settings.show_message("Retrieving Details For Printing...");
+
+                },
+                success:function(data) {
+                    settings.show_message("Data Retrieved .Printing...");  
+                    settings.enable_okbutt_mgdialg();
+                   
+                    printc.send(data.rec_data,function(){
+                        settings.show_message("Error During Printing.<br>Please Try Again.");      
+                        settings.enable_okbutt_mgdialg();    
+                        
+                    });  
+
+                    
+
+                    console.log(data.rec_data);
+
+                },
+                error:function(data){
+                    settings.show_message("Error<br>"+"Please Try Again");
+                    settings.enable_okbutt_mgdialg();
+                }
+            })
+            
+            
   
         });
        

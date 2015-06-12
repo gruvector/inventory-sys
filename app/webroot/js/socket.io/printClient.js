@@ -6,7 +6,7 @@
 
 
 
-var SocketClient = function(server_ip, server_port) {
+var PrintClient = function(server_ip, server_port) {
     
     var client =this ;    
     this.socket=null;
@@ -17,7 +17,7 @@ var SocketClient = function(server_ip, server_port) {
         
         var url="http://"+server_ip+":"+server_port;     
         var options={
-            'reconnection':false,
+            'reconnection':true,
             'reconnectionDelay': 1000,
             'reconnectionDelayMax': 5000,
             'max reconnection attempts':999999999,
@@ -30,49 +30,47 @@ var SocketClient = function(server_ip, server_port) {
     };
     
     this.setup_events=function(func){
-      
-        client.socket.on('connect',function(){
-            console.log("i have connected");
-        });
-      
-        client.socket.on('disconnect',function(){
-            console.log("i have disconnected");
-        });
+        
         
         client.socket.on('reconnecting',function(){
             console.log("i have reconnected");
         });
         
+        client.socket.on('connect',client.onConnect); 
+
+        client.socket.on('disconnect',client.onDisConnect); 
         
-        client.socket.on('msg', function (data) {
-            console.log(data);
-        }); 
-        
-        func();
+        client.socket.on('msg',client.onMessage); 
+       
+        if( func ) {
+            func();
+        }
+
     };
     
-    this.send=function(msg){
+    this.onMessage = function(data) {
+    };
+    this.onDisConnect = function() {
+       
+    };
+
+    this.onConnect = function() {
+       
+    };
+
+      
+    this.send=function(msg,func_disc){
         
-        if( !this.socket ) {
-            console.log("WebSocket Not Initialized For This SocketClient");
-            return;
+        if( !this.socket ) {          
+            if( func_disc ) {
+                func_disc();
+            } 
         }else{
-            client.socket.emit('msg',msg);
-        //
+            client.socket.emit('msg',{
+                payload:msg
+            });
 
         }
     }
 
 }
-
-$(document).ready(function(){
-    
-    var print_client = new SocketClient("localhost", "8085");
-    var setup_function=function(){};
-    print_client.connect(setup_function);
-    print_client.send("testing server");
-    console.log(print_client.socket);
-    setTimeout(function() {                   
-        print_client.socket.emit("disconnect","test");
-    }, 5000);
-})
