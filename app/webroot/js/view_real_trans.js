@@ -4,18 +4,35 @@
  * 
  */
 $(document).ready(function(){
-
+	
+	
+    transaction.init();
+	
     printc = new PrintClient("localhost", "8083");
+	
     //callbacks are being used for various printing functionality
-    printc.onMessage=function(data){
+      printc.onMessage=function(data){
         console.log(data);
-        //settings.show_message(data.payload);      
-        //settings.enable_okbutt_mgdialg();      
+		if(data.type=="success"){
+		
+		settings.perfrom_message_close_action=function(){
+			
+			 setTimeout(function() {                   
+		transaction.load_prod(transaction.load_url);
+                }, 1000);
+			
+		settings.perfrom_message_close_action=function(){};
+		}
+		}
+        settings.show_message(data.payload);      
+        settings.enable_okbutt_mgdialg();      
     };
-                    
+               
+
+			   
     printc.onDisConnect=function(){
-        settings.show_message("Printer Disconnected");      
-        settings.enable_okbutt_mgdialg();                
+//        settings.show_message("Printer Disconnected");      
+  //      settings.enable_okbutt_mgdialg();                
     };
     printc.onConnect=function(){
         console.log("Printer connected");
@@ -23,7 +40,7 @@ $(document).ready(function(){
 
     printc.connect();
     
-    transaction.init();
+
 })
 
 
@@ -161,12 +178,19 @@ var transaction={
                 // settings.show_message("Data Retrieved .Printing...");  
                 // settings.enable_okbutt_mgdialg();
                    
-                printc.send(data.rec_data,function(){
-                    settings.show_message("Error Printing Receipt.<br>Please Try Again.");      
-                    settings.enable_okbutt_mgdialg();    
-                        
-                });    
-                transaction.load_prod(transaction.load_url);
+              settings.show_message("Data Saved .Printing...");  
+                    settings.enable_okbutt_mgdialg();
+                   
+                    printc.send(data.rec_data,function(){
+						 setTimeout(function() { 	
+					    settings.disable_okbutt_mgdialg() ;
+                        settings.show_message("Error Printing Receipt.<br>Please Try Printing Later.");  
+						setTimeout(function() { 
+						transaction.load_prod(transaction.load_url);						
+                        }, 1500);	
+						}, 1500);	
+                    });    
+               // transaction.load_prod(transaction.load_url);
        
             },
             error:function(data){

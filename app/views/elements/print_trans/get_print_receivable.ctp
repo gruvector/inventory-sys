@@ -1,5 +1,5 @@
 <div id="invoice"> 
-    <div id="invoice-header"> <img alt="Mainlogo_large" class="logo screen" src="../img/core/sbman-letterhead.png" /> 
+    <div id="invoice-header"><!-- <img alt="Mainlogo_large" class="logo screen" src="../img/core/sbman-letterhead.png" /> -->
         <!-- hCard microformat --> 
         <div class="vcard" id="company-address"> 
             <div class="fn org"><strong><?php echo $rsite_info['site_name']; ?></strong></div> 

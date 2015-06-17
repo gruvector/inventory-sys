@@ -124,7 +124,8 @@ function print_callback(error, stdout, stderr) {
         console.log(error);
         if(printer_socket_ref!=null){
             printer_socket_ref.emit('msg', {
-                payload: 'Error Printing Receipt.<br>Please Try Again.'
+                payload: 'Error Printing Receipt.<br>Please Try Again.',
+				type:'eror'
             });  
         }
     }
@@ -132,7 +133,9 @@ function print_callback(error, stdout, stderr) {
         console.log("Successful Print");
         if(printer_socket_ref!=null){
             printer_socket_ref.emit('msg', {
-                payload: 'Print Successful'
+                payload: 'Print Successful',
+				type:'success'
+				
             });
         }
    

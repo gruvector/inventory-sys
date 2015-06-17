@@ -6,17 +6,26 @@
 
 $(document).ready(function(){
 
+    transaction=new Transaction();
+    product.init();
+
     printc = new PrintClient("localhost", "8083");
     //callbacks are being used for various printing functionality
     printc.onMessage=function(data){
-        console.log(data);
-        //settings.show_message(data.payload);      
-        //settings.enable_okbutt_mgdialg();      
+  console.log(data);
+		if(data.type=="success"){
+		
+		product.perfrom_message_close_action();
+		
+
+		}
+        product.show_message(data.payload);      
+        product.enable_okbutt_mgdialg();     
     };
                     
     printc.onDisConnect=function(){
-        settings.show_message("Printer Disconnected");      
-        settings.enable_okbutt_mgdialg();                
+        //settings.show_message("Printer Disconnected");      
+        //settings.enable_okbutt_mgdialg();                
     };
     printc.onConnect=function(){
         console.log("Printer connected");
@@ -24,8 +33,7 @@ $(document).ready(function(){
 
     printc.connect();
     
-    transaction=new Transaction();
-    product.init();
+
 })
 
 
@@ -1627,32 +1635,33 @@ var product={
                 _this.show_message("Saving...");
             },
             success:function(data) {
-                _this.show_message(data.message);
-                
-                if(transaction.transaction_type=="add_sales"){             
-                   
-                 //   settings.show_message("Data Retrieved .Printing...");  
-                ///    settings.enable_okbutt_mgdialg();
-                
+				var ttype=transaction.transaction_type;
+                 _this.kill_batch(div_diag_batch);
+				 
+	    _this.perfrom_message_close_action=function(){
+		_this.close_message_diag();
+			 setTimeout(function() {                   
+          product.load_prod(product.load_url); 
+		  }, 1000);			
+		_this.perfrom_message_close_action=function(){};
+		}
+				 
+				 
+                if(ttype=="add_sales"){             
+                    _this.show_message(data.message+".<br>Printing...");              
                     printc.send(data.rec_data,function(){
-                        settings.show_message("Error Printing Receipt.<br>Please Try Again.");      
-                        settings.enable_okbutt_mgdialg();    
-                        
-                    });  
-               
-              
-                }
-                _this.kill_batch(div_diag_batch);
-        
-                setTimeout(function() {                   
-                    product.load_prod(product.load_url); 
-                    _this.enable_okbutt_mgdialg();
-                }, 1000);
-              
-                
-               
-
-          
+						 setTimeout(function() {   
+                        _this.show_message("Error Printing Receipt.<br>Please Try Again.");      
+                        _this.enable_okbutt_mgdialg();    
+                          }, 1500);	
+						
+                    });              
+                }else{
+				   _this.show_message(data.message); 
+                        _this.enable_okbutt_mgdialg();    
+				   
+				}
+                    
             //product.load_prod(product.load_url);
             },
             error:function(data){
