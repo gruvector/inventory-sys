@@ -422,10 +422,9 @@ class CustomerController extends AppController {
 
     function get_receipt_print_json($rec_id) {
         $receipt_data = $this->get_receipt_print($rec_id);
-        echo json_encode(array('status' => 'fuck_yeah','rec_data' => $receipt_data));
+        echo json_encode(array('status' => 'fuck_yeah', 'rec_data' => $receipt_data));
         exit();
-   
-        }
+    }
 
     //prepare receipt to be used for the transaction
     ////receipt type is also based on the amount the customer has paid
@@ -438,7 +437,6 @@ class CustomerController extends AppController {
     ##balance_due
     ##total_amount_paid
     function prepare_receipt($receipt_type, $amount_paid, $amount_paid_prev, $sale_id, $balance_due) {
-
 
         $receipt_data = array();
         $memberdata = $this->Session->read('memberData');

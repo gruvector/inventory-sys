@@ -61,7 +61,7 @@ var PrintClient = function(server_ip, server_port) {
       
     this.send=function(msg,func_disc){
         
-        if( !this.socket ) {          
+        if(!this.socket.connected ) {          
             if( func_disc ) {
                 func_disc();
             } 

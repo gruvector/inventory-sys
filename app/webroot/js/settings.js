@@ -178,9 +178,9 @@ var settings={
 
 
         _this.configure_stock_notif();
-        setInterval(function() { 
-            settings.configure_stock_notif();
-        }, 10000);
+//        setInterval(function() { 
+//            settings.configure_stock_notif();
+//        }, 10000);
         
         _this.configure_message_dialog();
         _this.configure_confirmation();

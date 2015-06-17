@@ -5,12 +5,12 @@
  */
 $(document).ready(function(){
 
-    printc = new PrintClient("localhost", "8085");
+    printc = new PrintClient("localhost", "8083");
     //callbacks are being used for various printing functionality
     printc.onMessage=function(data){
         console.log(data);
-        settings.show_message(data.payload);      
-        settings.enable_okbutt_mgdialg();      
+        //settings.show_message(data.payload);      
+       // settings.enable_okbutt_mgdialg();      
     };
                     
     printc.onDisConnect=function(){
@@ -180,17 +180,15 @@ var transaction={
 
                 },
                 success:function(data) {
-                    settings.show_message("Data Retrieved .Printing...");  
-                    settings.enable_okbutt_mgdialg();
+                    //settings.show_message("Data Retrieved .Printing...");  
+                    // settings.enable_okbutt_mgdialg();
                    
                     printc.send(data.rec_data,function(){
-                        settings.show_message("Error During Printing.<br>Please Try Again.");      
+                        settings.show_message("Error Printing Receipt.<br>Please Try Again.");      
                         settings.enable_okbutt_mgdialg();    
                         
                     });  
-
-                    
-
+                    transaction.load_prod(transaction.load_url);
                     console.log(data.rec_data);
 
                 },

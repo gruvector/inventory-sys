@@ -5,6 +5,24 @@
  */
 $(document).ready(function(){
 
+    printc = new PrintClient("localhost", "8083");
+    //callbacks are being used for various printing functionality
+    printc.onMessage=function(data){
+        console.log(data);
+        //settings.show_message(data.payload);      
+        //settings.enable_okbutt_mgdialg();      
+    };
+                    
+    printc.onDisConnect=function(){
+        settings.show_message("Printer Disconnected");      
+        settings.enable_okbutt_mgdialg();                
+    };
+    printc.onConnect=function(){
+        console.log("Printer connected");
+    };
+
+    printc.connect();
+    
     transaction.init();
 })
 
@@ -132,15 +150,24 @@ var transaction={
                 settings.disable_okbutt_mgdialg() ;
                 settings.show_message("Saving...");
             },
-            success:function(data) {       
+            success:function(data) {
+                
+                console.log(data);
                 transaction.total_pay_new=0;
                 transaction.total_due_new=0;
                 transaction.amount_paid=0; 
                 $(diag_ref).dialog( "close" );
-                transaction.load_prod(transaction.load_url);              
-                settings.show_message(data.message);
-                settings.enable_okbutt_mgdialg();
-            //product.load_prod(product.load_url);
+                //transaction.load_prod(transaction.load_url);              
+                // settings.show_message("Data Retrieved .Printing...");  
+                // settings.enable_okbutt_mgdialg();
+                   
+                printc.send(data.rec_data,function(){
+                    settings.show_message("Error Printing Receipt.<br>Please Try Again.");      
+                    settings.enable_okbutt_mgdialg();    
+                        
+                });    
+                transaction.load_prod(transaction.load_url);
+       
             },
             error:function(data){
                 settings.show_message("Error<br>"+data.message);
