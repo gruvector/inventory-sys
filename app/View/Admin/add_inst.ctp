@@ -5,11 +5,7 @@
  * 
  */
 ?>
-<style>
-    div.tableWrapper li {
-        width: 150px !important;
-    }   
-</style>
+
 
 
 <form name="add_institution_form" id="add_institution_form" class="cmxform">

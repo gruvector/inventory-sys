@@ -17,13 +17,21 @@ var inst = {
             url: page_link,
             dataType:'html',
             data: val!="" ? "filter="+val : "filter=null",
+                beforeSend:function(){
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Retrieving Details...");
+
+            },
             success:function(data) {
                 //  console.log(data);
                 //  alert("data has been loaded");
+                settings.close_message_diag();
+                settings.enable_okbutt_mgdialg();
                 $("#table_info").html(data);
             },
             error:function(data){
-          
+            settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();
             }
         })
     },  
@@ -97,11 +105,11 @@ var inst = {
                 position:"center",
                 modal:false,
                 buttons: {
-                    "Save": function() {
-                        _this.checkfields();
-                    },
+                 
                     "Cancel": function() {
                         $( this ).dialog( "close" );
+                    },   "Save": function() {
+                        _this.checkfields();
                     }
                 }
             });
