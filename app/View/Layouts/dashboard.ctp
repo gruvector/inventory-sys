@@ -1425,6 +1425,21 @@ $categories = array_keys($links_array);
 
                 <ul id="UL_1">
 
+
+					                              <?php 
+					                              
+        $user_roles = $this->Session->read('role_short_array');
+
+                    if ( isset($user_roles) && (in_array('SADM', $user_roles))) {
+                        ?>    
+
+                        <li class="infoUser">
+							<a href="<?php echo $this->Html->url(array('controller' => 'Admin', 'action' => 'change_inst')); ?>" class="change_inst" >Change Site</a>
+					  </li>
+
+                    <?php } 
+    
+                     ?>
                     <li id="LI_77">
                         <a href="#" id="A_78"><i id="I_79"></i><span id="SPAN_80"></span></a>
                     </li>
@@ -1448,6 +1463,16 @@ $categories = array_keys($links_array);
                                 data-id="<?php echo  $mem_data['User']['id'] ?>">
                                 <a href="profile.html" id="A_125"><i id="I_126"></i>Profile</a>
                             </li>
+                            
+                            
+  
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                             <li id="LI_127" class="buttonLogout  footer">
                                 <a href="<?php echo $this->Html->url(array('controller' => 'Dashboard', 'action' => 'logoutUser')); ?>" id="A_128">
                                     <i id="I_129"></i>Logout</a>

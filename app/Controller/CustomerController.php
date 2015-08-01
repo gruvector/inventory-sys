@@ -41,7 +41,9 @@ class CustomerController extends AppController {
         $filter = isset($_GET['filter']) && $_GET['filter'] != "null" ? $_GET['filter'] : "";
 
         $conditions_array = array(
-            'Site.site_inst_id' => $this->Session->read('inst_id'),
+            'Supplier.inst_id' => $this->Session->read('inst_id'),
+            'Supplier.site_id' => $this->Session->read('site_id'),
+
             'OR' => array(
                 'Supplier.email LIKE' => "%" . $filter . "%",
                 'Supplier.cell_number LIKE' => "%" . $filter . "%",
@@ -83,6 +85,9 @@ class CustomerController extends AppController {
 
         if (isset($_GET['save_cust'])) {
             $cust_data = $_GET['data']['Supplier'];
+            $cust_data['inst_id'] = $this->Session->read('inst_id'); 
+            $cust_data['site_id'] = $this->Session->read('site_id'); 
+
             $this->Supplier->save($cust_data);
             echo json_encode(array("status" => "1"));
             exit();
@@ -111,11 +116,14 @@ class CustomerController extends AppController {
         if (isset($_GET['perform_sales'])) {
             
         } else {
-            $products = $this->Product->find('all', array('recursive' => '-1', 'conditions' => array('Product.archive_status' => '0'), 'fields' => array('selling_price', 'id', 'product_name', 'category_product', 'stock_available')));
-            $vat = $this->Taxe->find('first', array('recursive', 'conditions' => array('Taxe.vat_category' => 'sales')));
+            $products = $this->Product->find('all', array('recursive' => '-1',
+            'conditions' => array('Product.archive_status' => '0','Product.inst_id'=>$inst_id,'Product.site_id'=>$site_id),
+            'fields' => array('selling_price', 'id', 'product_name', 'category_product', 'stock_available')));
+            $vat = $this->Taxe->find('first', array('recursive', 'conditions' => array('Taxe.inst_id'=>$inst_id,'Taxe.site_id'=>$site_id,'Taxe.vat_category' => 'sales')));
             $reverse = $this->ReverseReason->find('list', array('fields' => array('id', 'reason')));
-            $suppliers = $this->Supplier->find('all');
-
+            $suppliers = $this->Supplier->find('all',
+             array('recursive' => '-1',
+             'conditions' => array('Supplier.inst_id'=>$inst_id,'Supplier.site_id'=>$site_id)));
             $this->set(compact('categ', 'suppliers', 'reverse', 'categories', 'products', 'vat'));
         }
     }
@@ -151,6 +159,8 @@ class CustomerController extends AppController {
         if (isset($_GET['save_cat'])) {
             $cat_data = $_GET['data']['Category'];
             $cat_data['inst_id'] = $this->Session->read('inst_id');
+            $cat_data['site_id'] = $this->Session->read('site_id');
+
             $this->Category->save($cat_data);
             echo json_encode(array("status" => "1"));
             exit();
@@ -175,6 +185,8 @@ class CustomerController extends AppController {
 
         $conditions_array = array(
             'Category.inst_id' => $this->Session->read('inst_id'),
+            'Category.site_id' => $this->Session->read('site_id'),
+
             'OR' => array(
                 'Category.long_name LIKE' => "%" . $filter . "%"
                 ));
@@ -216,6 +228,11 @@ class CustomerController extends AppController {
         $inst_id = $this->Session->read('inst_id');
         $site_id = $this->Session->read('site_id');
         $memberdata = $this->Session->read('memberData');
+        $conditions_array = array(
+            'Category.inst_id' => $this->Session->read('inst_id'),
+            'Category.site_id' => $this->Session->read('site_id')
+            );
+      
 
         if (isset($_GET['save_prod'])) {
             $prod_data = $_GET['data']['Product'];
@@ -233,10 +250,14 @@ class CustomerController extends AppController {
         } else if (isset($_GET['edit_prod'])) {
             $id = $_GET['id'];
             $product = $this->Product->find('first', array('conditions' => array('Product.id' => $id)));
-            $categories = $this->Category->find('list', array('fields' => array('id', 'long_name')));
+            $categories = $this->Category->find('list', array(
+            'conditions'=>$conditions_array,
+            'fields' => array('id', 'long_name')));
             $this->set(compact('inst_id', 'site_id', 'categories', 'product'));
-        } else {
-            $categories = $this->Category->find('list', array('fields' => array('id', 'long_name')));
+        } else {	 
+            $categories = $this->Category->find('list',array(
+             'conditions'=>$conditions_array,
+             'fields' => array('id', 'long_name')));
             $this->set(compact('inst_id', 'site_id', 'categories'));
         }
     }
@@ -375,7 +396,7 @@ class CustomerController extends AppController {
                         'ProductTransaction' => array('fields' => array('ProductTransaction.price', 'ProductTransaction.quantity'), 'Product' => array('product_name'))
                         )));
     }
-
+// 
     public function get_sales_info_list() {
         $print_layout = "false";
         if (isset($_GET['print']) && $_GET['print'] == 'true') {
@@ -794,6 +815,8 @@ class CustomerController extends AppController {
 
         $conditions_array = array(
             'Receipt.inst_id' => $this->Session->read('inst_id'),
+            'Receipt.site_id' => $this->Session->read('site_id'),
+
             'Sale.transaction_type' => 'add_sales',
 
             'AND' => array(
@@ -866,6 +889,8 @@ class CustomerController extends AppController {
 
         $conditions_array = array(
             'Sale.inst_id' => $this->Session->read('inst_id'),
+            'Sale.site_id' => $this->Session->read('site_id'),
+
             'AND' => array(
                 'Sale.id LIKE' => "%" . $sale_num . "%",
                 'Sale.transaction_type LIKE' => "%" . $search_trans_type . "%",
@@ -924,6 +949,8 @@ class CustomerController extends AppController {
 
         $conditions_array = array(
             'ProductTransaction.inst_id' => $this->Session->read('inst_id'),
+            'ProductTransaction.site_id' => $this->Session->read('site_id'),
+
             'AND' => array(
                 'ProductTransaction.transaction_type LIKE' => "%" . $sfilter . "%",
                 'ProductTransaction.transaction_timestamp LIKE' => "%" . $tfilter . "%",
@@ -1000,7 +1027,10 @@ class CustomerController extends AppController {
 
         $stock_data = $this->Product->find('all', array('recursive' => -1,
             'fields' => array('id', 'product_name', 'stock_available', 'max_stock_notif', 'min_stock_notif'),
-            'conditions' => array('Product.stock_available < Product.min_stock_notif')));
+            'conditions' => array('Product.stock_available < Product.min_stock_notif',
+            'Product.inst_id' => $this->Session->read('inst_id'),
+            'Product.site_id' => $this->Session->read('site_id'),
+            )));
         $this->set(compact('stock_data'));
     }
 
@@ -1013,7 +1043,9 @@ class CustomerController extends AppController {
 
 
         $conditions_array = array(
+        
             'Product.inst_id' => $this->Session->read('inst_id'),
+            'Product.site_id' => $this->Session->read('site_id'),
             'Product.archive_status LIKE' => "%" . $arch_stat . "%",
             'OR' => array(
                 'Product.product_name LIKE' => "%" . $filter . "%"

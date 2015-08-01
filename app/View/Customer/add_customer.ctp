@@ -65,32 +65,6 @@
 
             <ul class='tableActions'>
                 <li>
-                    <label>  Site </label> 
-                </li>
-                <li>
-
-                    <select required name="data[Supplier][site_id]" id="data[Supplier][site_id]" >
-<?php foreach ($sites as $val) { ?>
-                            <option
-                            <?php if (isset($Supplier) && $Supplier['Supplier']['site_id'] == $val['Site']['id']) { ?>  selected="selected"  <?php } ?> 
-                                value="<?php echo $val['Site']['id'] ?>"><?php echo $val['Site']['site_name'] ?> </option>
-
-                            <?php } ?>
-                    </select>
-
-
-                </li>
-            </ul>          
-
-
-
-
-
-
-
-
-            <ul class='tableActions'>
-                <li>
                 </li>
                 <li>
                 </li>

@@ -17,7 +17,7 @@ class UserController extends AppController {
         parent::beforeFilter();
         $this->loadModel('User');
         $this->loadModel('UserRole');
-
+        $mem_data = $this->Session->read('memberData');
     }
 
     function view_users() {

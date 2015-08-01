@@ -2,6 +2,7 @@
 #################################################
 /app/Config/database.php
 /app/tmp
+app/tmp/
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
 /vendors
@@ -9,10 +10,11 @@
 /dist
 /tags
 *.mo
-
+*~
 # IDE and editor specific files #
 #################################
 /nbproject
+nbproject/project.*
 .idea
 
 # OS generated files #

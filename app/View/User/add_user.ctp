@@ -61,12 +61,11 @@
 -->
 
             <?php
-            if (isset($_SESSION['role_short_array']) && (
-                    in_array('SADM', $_SESSION['role_short_array']) ||
-                    in_array('ADM', $_SESSION['role_short_array'])
+            
+                    $user_roles = $this->Session->read('role_short_array');
 
-                    )
-            ) {
+            if (isset($user_roles) && (in_array('SADM',$user_roles) || in_array('ADM',$user_roles))) 
+                {
                 ?>
                 <ul class='tableActions'>
                     <li>

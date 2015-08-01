@@ -5,21 +5,19 @@
  * 
  */
 ?>
-<style>
-    div.tableWrapper li {
-        width: 150px !important;
-    }   
-</style>
+
 
 
 <form name="change_site_form" id="add_role_form" class="cmxform">
 
+
+
+
+
+
     <input type="hidden" name="change_inst_url" id="change_inst_url" value="<?php echo $this->Html->url(array('controller' => 'Admin', 'action' => 'change_inst_config')); ?>" />
     <input type="hidden" name="dashboard" id="dashboard" value="<?php echo $this->Html->url(array('controller' => 'Reception', 'action' => 'view_events')); ?>" />
     <input type="hidden" name="csite" id="csite" value="<?php echo $site_id; ?>" />
-
-    <div class='tableWrapper'>
-        <div class='tableHeader' style="border: 0px !important;">
 
             <?php foreach ($insts as $inst_val) { ?>
 
@@ -47,19 +45,8 @@
                 </li>
                 <li>
                 </li>
-
-
-
             </ul>
 
-
-
-            <div class='clear'></div>
-            <div class='corner left'></div>
-            <div class='corner right'></div>
-        </div>
-
-    </div>
 
 </form>
 

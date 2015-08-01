@@ -13,9 +13,6 @@
                 <th>
                Category
                 </th>
-                 <th>
-               Site
-                </th>
                 <th>  </th>
 
                 <th > </th>
@@ -53,10 +50,8 @@
                     <td>
                         <?php echo $val['Category']['long_name']; ?>
                     </td>
-                   <td>
-                        <?php echo $val['Site']['site_name']; ?>
-                    </td>
-                 
+             
+
 
 
                     <td>
@@ -64,11 +59,7 @@
                             <li>
                                 <a href='#' class='inlineIcon preferences edit_cust'>Edit</a>
                             </li>
-<!--                        
-     <li>
-                                <a href='#' class='inlineIcon preferences iconDelete del_cust'>Delete</a>
-                            </li> 
--->
+
 
                         </ul>
                     </td>
