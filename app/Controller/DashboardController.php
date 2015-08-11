@@ -10,7 +10,7 @@ class DashboardController extends Controller {
 
     public $name = 'Dashboard';
     public $helpers = array('Html','Form','Session');
-    public $components = array('RequestHandler', 'Session', 'Cookie');
+    public $components = array('RequestHandler', 'Session', 'Cookie','Scrypt');
     public $paginate = array('limit' => 10);
     public $uses = array('User', 'Link', 'UserRole', 'RoleLink');
     public $layout = "defaulto";
@@ -83,53 +83,70 @@ class DashboardController extends Controller {
         if (isset($_POST['username']) && isset($_POST['password'])
                 && $_POST['username'] != "" && $_POST['password'] != ""
         ) {
-            $users = $this->User->checkUser($_POST['username'], $_POST['password']);
+                      
+            $user_check = $this->User->find('first', array("conditions" => array("User.user_email" => $_POST['username'])));                
+             if (isset($user_check) && sizeof($user_check) > 1 ){               
+        
+            $pass_hash=$this->Scrypt->check_hash($_POST['password'],$user_check['User']['password']);            
+        
             //user account username and pass is available but account may be locked
             // print_r($users);
-            if (isset($users['User'])) {
+            if ($pass_hash) {
 
                 //will have to check for a  site lock as well as an institution lock here
 
-                if ($users['User']['lock_status'] >= 3) {
+                if ($user_check['User']['lock_status'] >= 3) {
                     $user_login = "false";
-                    $msg = "Account Is Locked .Please Contact Administrator";
+                    $msg = "Please Enter Correct Username and Password To Login";
                     $this->set(compact('user_login', 'msg'));
-                } else if ($users['User']['lock_status'] < 3) {
+                } else if ($user_check['User']['lock_status'] < 3) {
                     //login user
                     //will check if the site hasnt been locked 
-                    if ($users['Site']['site_lock'] == '0') {
+                    if ($user_check['Site']['site_lock'] == '0') {
                         $user_login = "false";
                         $msg = "Please Enter Correct Username and Password To Login";
                         $this->set(compact('user_login', 'msg'));
                     } else {
-                        $user_check = new User();
-                        $user_check->set(array('id' => $users['User']['id'], 'lock_status' => '0'));
-                        $user_check->save();
-                        $this->loginUser($users);
+                        $user_check_login = new User();
+                        $user_check_login->set(array('id' => $user_check['User']['id'], 'lock_status' => '0'));
+                        $user_check_login->save();
+                        $this->loginUser($user_check);
                     }
                 }
-            } else {
+            
+            }           
+             else {
                 //user wasnt able to login but other stuff is being tested 
-                $user = $this->User->find('first', array("conditions" => array("User.user_email" => $_POST['username'])));
-                // 
-                if (isset($user) && sizeof($user) > 1 && $user['User']['lock_status'] < 3) {
+                // a captcha may have to be shown here to make sure the user stuff is correct and no 
+               //hacks are being attempted	
+                if (isset($user_check) && sizeof($user_check) > 1 && $user_check['User']['lock_status'] < 3) {
                     // echo "user-statushere" . $user['User']['lock_status'];
-                    $new_lock_number = intval($user['User']['lock_status']) + 1;
-                    $user_check = new User();
-                    $user_check->set(array(
-                        'id' => $user['User']['id'],
+                    $new_lock_number = intval($user_check['User']['lock_status']) + 1;
+                    $user_check_save = new User();
+                    $user_check_save->set(array(
+                        'id' => $user_check['User']['id'],
                         'lock_status' => $new_lock_number
                     ));
-                    $user_check->save();
+                    $user_check_save->save();
                     $user_login = "false";
                     $msg = "Please Enter Correct Username and Password To Login";
-                } else if (isset($user) && sizeof($user) > 1 && $user['User']['lock_status'] >= 3
-                ) {
+                } else if (isset($user_check) && sizeof($user_check) > 1 && $user_check['User']['lock_status'] >= 3) {
                     $user_login = "false";
-                    $msg = "Account Is Locked .Please Contact Administrator";
-                }
+                    $msg = "Please Enter Correct Username and Password To Login";
+                }else{
+				    $user_login = "false";
+                    $msg = "Please Enter Correct Username and Password To Login";	
+					}
                 $this->set(compact('user_login', 'msg'));
             }
+        
+	}	
+	else{
+		
+		  $user_login = "false";
+            $msg = "Please Enter Correct Username and Password To Login";
+            $this->set(compact('user_login', 'msg'));
+		}       
         } else {
             $user_login = "false";
             $msg = "Please Enter Correct Username and Password To Login";
