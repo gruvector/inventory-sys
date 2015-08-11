@@ -6,7 +6,7 @@
         $mem_data = $this->Session->read('memberData');
         //print_r($user_links);
         //exit();
-		//$links_array = array();
+		$links_array = array();
 		//$roles_array = array();
 
 

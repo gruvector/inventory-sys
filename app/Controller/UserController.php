@@ -5,7 +5,7 @@ App::uses('AppController', 'Controller');
 class UserController extends AppController {
 
     public $name = 'User';
-    public $components = array('RequestHandler', 'Session'/** 'TicketGenericEmail'**/);
+    public $components = array('RequestHandler', 'Session','Scrypt');
     public $uses = array('User', 'Site', 'Role', 'UserRole');
     public $layout = 'dashboard';
     public $helpers = array('Form', 'Html', 'Time', 'Session','Paginator');
@@ -39,7 +39,9 @@ class UserController extends AppController {
             $data = $_GET['data']['User'];
             if (isset($_GET['data']['User']['id']) && $_GET['data']['User']['id'] != '') {
                 
-                $add_user_data = $this->User->editUser($data);
+                    $data['site_id']=$this->Session->read('site_id');
+					$data['inst_id']=$this->Session->read('inst_id');
+                    $add_user_data = $this->User->editUser($data);
                   echo json_encode(array("status" => "false"));
             } else {
 
@@ -49,10 +51,26 @@ class UserController extends AppController {
                         "message_code" => "UAE",
                         "message" => "User Already Exists . Please Change Email"));
                 } else {
+					//print_r($data);
+					$data['site_id']=$this->Session->read('site_id');
+					$data['inst_id']=$this->Session->read('inst_id');
+					//print_r($data);
+					//exit();		
+                    $pass =    $this->Scrypt->generatePass();
+                    $pass_hash=$this->Scrypt->create_hash($pass);
+					$data['password']=$pass_hash;						
                     $add_user_data = $this->User->addUser($data);
+                    
+                  if($add_user_data!=false){     
                     $data = array('id' => $add_user_data['id'], 'pass' => $add_user_data['pass']);
                     // $this->email_user_pass('new', $data);
-                    echo json_encode(array("new_pass" => $add_user_data['pass'], "status" => "true", "id" => $add_user_data['id'], "name" => $add_user_data['name']));
+                    echo json_encode(array("new_pass" => $pass, "status" => "true", "name" => $add_user_data['name']));
+               }
+              else if($add_user_data==false){     
+				   echo json_encode(array("status" => "false",
+                        "message_code" => "error",
+                        "message" => "Error Saving.<br>Please Try Again After Checking Fields"));
+				  }
                 }
 
                 //email will have to sent to new user at this point containing pass
@@ -157,10 +175,11 @@ class UserController extends AppController {
             switch ($type) {
 
                 case "reset_pass":
-                    $pass = $user->generatePass();
+                    $pass =    $this->Scrypt->generatePass();
+                    $pass_hash=$this->Scrypt->create_hash($pass);
                     $user->set(array(
                         'id' => $id,
-                        'password' => hash('sha256', $pass)
+                        'password' => $pass_hash
                     ));
                     $user->save();
                     $data = array('pass' => $pass, 'id' => $id);
