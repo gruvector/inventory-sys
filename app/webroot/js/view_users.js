@@ -311,10 +311,6 @@ var add_user={
    
                     }
                     settings.enable_okbutt_mgdialg(); 
-                    
-                    
- 
-                    
                   
                 }
                 else if (data.status=="false" && data.message_code=="UAE")
@@ -324,7 +320,11 @@ var add_user={
                   
                     $("#add_user_form.cmxform input[type=email]").css("border","solid #F44 2px");              
 
-                }
+                }             
+                else if (data.status=="false" && data.message_code=="error"){
+				settings.show_message(data.message);
+				settings.enable_okbutt_mgdialg();
+}
                 else{
                     $(diag_ref).dialog( "close" );
                     $(diag_ref).dialog('destroy').remove();

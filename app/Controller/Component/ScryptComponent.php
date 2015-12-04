@@ -41,6 +41,21 @@ class ScryptComponent extends Component {
 		  }
       
       //this is for checking the password hash
+      
+      
+      
+    /**
+     * for  password hash
+     * values below will have to be put into the system as constants and 
+     * also removed from the final password
+     * @param string $password
+     * @param string $hash     to be used to compare
+     * @param int    $N        The CPU difficultly (must be a power of 2, > 1)
+     * @param int    $r        The memory difficultly
+     * @param int    $p        The parallel difficultly
+     * @return boolean whether password check was succesful or not 
+     */
+     
        public function check_hash($password,$hash,$N=self::CPU_DIFF,$r=self::MEM_DIFF,$p=SELF::PAR_DIFF){
 		   
 		   list($salt,$hash)=explode('$',$hash);
@@ -49,14 +64,16 @@ class ScryptComponent extends Component {
 		  
 		  }
 		  
-    //this is for  generating salt 		 		  
+    //this is for  generating salt 	
+    //this is for the length of the salt	 		  
 		 public function generateSalt($length=30){
 			 
 		return  Password::generateSalt($length);
 		
 			 } 
 			 
-		//easy pass for low security//high user convience	 
+		//easy pass for low security
+		//high user convience	 
 			 
      function generatePass() {
         $len = 10;

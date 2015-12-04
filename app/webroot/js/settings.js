@@ -50,6 +50,11 @@ var settings={
         diag.dialog('close');
      
     },
+    
+    confirmation_action:function(){
+		
+		
+		},
     show_confirmation:function(message){
         _this=this;
         $(_this.confirm_diag).dialog('close');
@@ -58,6 +63,7 @@ var settings={
         $(_this.confirm_diag).dialog('open');
 
     },
+  
   
     show_message:function(message){
         _this=this;
@@ -176,7 +182,6 @@ var settings={
                 
            
 
-
         _this.configure_stock_notif();
 //        setInterval(function() { 
 //            settings.configure_stock_notif();
@@ -203,8 +208,10 @@ var settings={
             $("#UL_81").toggle(); 
         });
         
-        
+        ///have to fix this stuff up really well and some fancy stuff to it 
         $(".change_inst").live('click',function(e){
+				
+			
             e.preventDefault();
             var title="Change Site"
             var $dialog = $("<div></div>")
@@ -219,6 +226,9 @@ var settings={
                 position:"center",
                 modal:false,
                 buttons: {
+					  "Close": function() {
+                        $( this ).dialog( "close" );
+                    },
                     "Save": function() {
                         
                         //alert()
@@ -232,16 +242,20 @@ var settings={
                                     
                                 if($('#csite').val()==$(this).attr("site_id")) 
                                 {
-                                    alert("This Site Is Already The Default Site\n\Change Default Site Or Press Close To Exit") ;
+                                    settings.show_message("This Site Is Already The Default Site\n\Change Default Site Or Press Close To Exit") ;
                                     return false;
                                 }
                                 else{
-                                    if(confirm("You Are About To Change Your Active Institution And Site\n\Do You Want To Continue ?"))
-                                    {
-                                        site_id=$(this).attr("site_id");
+									/**
+									setting.configure_confirmation=function(){
+										site_id=$(this).attr("site_id");
                                         inst_id=$(this).attr("inst_id");
-                                        _this.change_inst(site_id, inst_id); 
-                                    }
+                                        settings.change_inst(site_id, inst_id); 
+										};
+										* **/
+										
+										settings.show_confirmation("You Are About To Change Sites.\nDO You Want To Continue ?");
+                                   
                                 }
                                 return false;
                             }
@@ -249,9 +263,7 @@ var settings={
                         })
                         
                     },
-                    "Close": function() {
-                        $( this ).dialog( "close" );
-                    }
+                  
                 }
             });
             $dialog.dialog('open');
@@ -355,6 +367,11 @@ var settings={
                     $("#add_user_form.cmxform input[type=email]").css("border","solid #F44 2px");              
 
                 }
+             else if (data.status=="false" && data.message_code=="error"){
+   settings.show_message(data.message);
+     settings.enable_okbutt_mgdialg();
+}
+                
                 else{
                     $(".ui-dialog-content").dialog("close");
                 //  _this.load_users(_this.load_url);
