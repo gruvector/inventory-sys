@@ -1,34 +1,66 @@
-CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Active Record, Association Data Mapping, Front Controller and MVC. Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.
+# README #
 
-The Cake Software Foundation - promoting development related to CakePHP
-http://cakefoundation.org/
 
-CakePHP - the rapid development PHP framework
-http://www.cakephp.org
+### What is this repository for? ###
 
-Cookbook - user documentation for learning about CakePHP
-http://book.cakephp.org
+* This repository is for an  open source inventory system .
+  This inventory system can be used for entities/institutions which have multiple sites but 
+  need a centralized system for monitoring inventory across all sites
+* It can be used for performing sales,receivables,invoicing and also reversal(cancellation) of transasctions for the various inventory items
+* Staff management functions(creation,deletion,role assignments) can be done for sites,users
+* Support for barcodes isnt yet supported but will be built in soon
+  
+* Version
+  https://nayibor@bitbucket.org/nayibor/inventory_sys.git
 
-API - quick reference to CakePHP
-http://api.cakephp.org
 
-The Bakery - everything CakePHP
-http://bakery.cakephp.org
 
-The Show - live and archived podcasts about CakePHP and more
-http://live.cakephp.org
+### How do I get set up? ###
 
-CakePHP Google Group - community mailing list and forum
-http://groups.google.com/group/cake-php
+* Summary of set up
+  
+* Configuration
+* Dependencies
+  cakephp 2.6.9 or above.  
+  php-scrypt - A PHP wrapper fo the scrypt hashing algorithm for hashing passwords  
+  Scrypt is a key derivation function designed to be far more secure against hardware brute-force attacks .
+  instructions for the installation php-scrypt can be found at https://github.com/DomBlack/php-scrypt 
 
-#cakephp on irc.freenode.net - chat with CakePHP developers
-irc://irc.freenode.net/cakephp
+* Database configuration
+  inventory_sys uses a mysql database .
+  create a database called inventory_sys on your host machine .
+  run the setup.mysql script in the database  to initialize the database after it has been created .
+  go to inventory_sys/Config/app/config/database.php
+  change the value of host,login,password,database to those of your database in the section below
+  public $default = array(
+		'datasource' => 'Database/Mysql',
+		'persistent' => false,
+		'host' => 'host_ip/host_name',
+		'login' => 'username_database',
+		'password' => 'password_database',
+		'database' => 'database_name',
+		'prefix' => '',
+		//'encoding' => 'utf8',
+	);
 
-CakeForge - open development for CakePHP
-http://cakeforge.org
 
-CakePHP gear
-http://www.cafepress.com/cakefoundation
+* Deployment instructions
+  copy the inventory_sys folder to to your web root folder of your web server installation.
+   browse to http://host_ip/host_name/inventory_sys/
+   login in with default credentials 
+  if u get issues with url rewriting or problems with paths go to 
+  http://book.cakephp.org/2.0/en/installation/url-rewriting.html for further help
+  
 
-Recommended Reading
-http://astore.amazon.com/cakesoftwaref-20/
+
+* How to run tests
+
+### Contribution guidelines ###
+
+* Writing tests
+* Code review
+* Other guidelines
+
+### Who do I talk to? ###
+
+* nayibor@gmail.com
