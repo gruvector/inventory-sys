@@ -23,8 +23,8 @@
   web server can be apache,iis or any which supports php 5.5.9 or above and also supports mysql .
 
 * Dependencies
-   php 5.5.9 or above
-   nodejs v0.10.25 or above
+  php 5.5.9 or above
+  nodejs v0.10.25 or above
   this is used for the print server which will print the receipts
   cakephp 2.6.9 or above.  
   php-scrypt - A PHP wrapper fo the scrypt hashing algorithm for hashing passwords  
@@ -47,6 +47,12 @@
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
+
+  application has to be configured to know printer it is using for printing .
+  this can be configured in inventory_sys/app/webroot/js/socket.io/printServer.js
+  by changing the var printer_lpr_options="" to point to the correct printing device .
+  So if the receipt printer device is LPT1 the variable becomes
+  var printer_lpr_options="LPT1";
 
 
 * Deployment instructions

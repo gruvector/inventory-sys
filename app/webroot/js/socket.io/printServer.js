@@ -7,7 +7,7 @@
 var app_print = require('http').createServer();
 var io_print = require('/usr/local/lib/node_modules/socket.io')(app_print);
 var exec = require('child_process').exec;
-var printer_lpr_options=" > LPT1";
+var printer_lpr_options="LPT1";
 var printer_socket_ref=null;
 
 console.log("-----starting print Server-----");
@@ -39,7 +39,7 @@ function doPrint(json_rsp) {
      
     var print_string = format_print(json_rsp);
     console.log(print_string);
-    exec("echo \""+print_string+"\" | "+printer_lpr_options,print_callback);
+    exec("echo \""+print_string+"\" | > "+printer_lpr_options,print_callback);
     //>print /d:LPT1 "test"
 
 }
