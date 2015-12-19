@@ -74,7 +74,7 @@ class DATABASE_CONFIG {
 		'host' => 'localhost',
 		'login' => 'inventory',
 		'password' => 'inventory',
-		'database' => 'inventory_sys',
+		'database' => 'inventory_sys_def',
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
