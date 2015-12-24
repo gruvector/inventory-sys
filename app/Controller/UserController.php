@@ -40,7 +40,7 @@ class UserController extends AppController {
                
                if($new_pass!=$repeat_new)
                {
-			  echo json_encode(array("status" => "false","message"=>"Repeat Password Isnt Same As Old Password"));
+			  echo json_encode(array("status" => "false","message"=>"Repeat Password Isnt Correct"));
 			   }
 			   else{
 				   
