@@ -1419,15 +1419,15 @@ $categories = array_keys($links_array);
     <body class="hasInterface hasGradient hasSidebar">
         <input type="hidden" name="add_user_url" id="add_user_url" value="<?php echo $this->Html->url(array('controller' => 'User', 'action' => 'add_user')); ?>" />
         <input type="hidden" name="stock_notif_url" id="stock_notif_url" value="<?php echo $this->Html->url(array('controller' => 'Customer', 'action' => 'min_stock_notif')); ?>" />
+	        <input type="hidden" name="update_pass_url" id="update_pass_url" value="<?php echo $this->Html->url(array('controller' => 'User', 'action' => 'update_password')); ?>" />
 
+ 
         <div id="oaHeader">
             <div id="oaNavigationExtraTop">
 
                 <ul id="UL_1">
 
-
-					                              <?php 
-					                              
+					                              <?php 				                              
         $user_roles = $this->Session->read('role_short_array');
 
                     if ( isset($user_roles) && (in_array('SADM', $user_roles))) {
@@ -1451,28 +1451,13 @@ $categories = array_keys($links_array);
                                 ?> </span>
                             <i id="I_119" class="fa fa-cog"></i>
                         </a>
-                        <ul id="UL_120">
-                            <!--
-                              <li id="LI_121">
-                                  <a href="#" id="A_122"><i id="I_123"></i>Settings</a>
-                              </li>
-                            -->
-                            <li id="LI_124" class="infoUser stn" 
-                                href="<?php echo $this->Html->url(array('controller' => 'User', 'action' => 'add_user')); ?>"
-                                name="<?php echo  $mem_data['User']['fname'] . " " .  $mem_data['User']['lname'] ?>"
-                                data-id="<?php echo  $mem_data['User']['id'] ?>">
-                                <a href="profile.html" id="A_125"><i id="I_126"></i>Profile</a>
+                        <ul id="UL_120">     
+                            <li id="LI_124" >
+                          <a class="infoUser stn" style="text-decoration:none;color: #444;" 
+                          href="<?php echo $this->Html->url(array('controller' => 'Admin', 'action' => 'change_password')); ?>" >
+                       <i id="I_126"></i>Change Password</a>
                             </li>
-                            
-                            
-  
-                            
-                            
-                            
-                            
-                            
-                            
-                            
+                               
                             <li id="LI_127" class="buttonLogout  footer">
                                 <a href="<?php echo $this->Html->url(array('controller' => 'Dashboard', 'action' => 'logoutUser')); ?>" id="A_128">
                                     <i id="I_129"></i>Logout</a>

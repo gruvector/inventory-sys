@@ -42,7 +42,7 @@ $(document).ready(function(){
 //this is the Transaction object
 function Transaction(){
 	
-    //below three attributes are properties of a  current transaction	
+    //below  attributes are properties of a  current transaction	
     //not all attributes of a transaction will be used depending on the transaction type
     this.total_transaction=0.00;//type is Float
     this.total_quantity_items=0;//type in integer

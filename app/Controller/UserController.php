@@ -11,13 +11,16 @@ class UserController extends AppController {
     public $helpers = array('Form', 'Html', 'Time', 'Session','Paginator');
 
     function beforeFilter() {
-//will have to check whether the user logged in is an adminstrator/superadmin
 // first before allowing the user to access
+//checking ajax links to make sure they can be authenticated and only legitimate users are allowed to access ajax links has to be added .
+//differnt link  has to be made for editing your own personal info
+
 
         parent::beforeFilter();
         $this->loadModel('User');
         $this->loadModel('UserRole');
-        $mem_data = $this->Session->read('memberData');
+
+        
     }
 
     function view_users() {
@@ -26,8 +29,42 @@ class UserController extends AppController {
         $this->set(compact('layout_title'));
     }
 
-    function compare_pass() {
-        
+    function update_password() {
+                $this->autoLayout = false;
+               $mem_data = $this->Session->read('memberData');
+               $old_pass=$_GET['old_pass'];
+               $new_pass=$_GET['new_pass'];
+               $repeat_new=$_GET['repeat_new'];
+               $mem_user_data=$mem_data['User'];
+               
+               
+               if($new_pass!=$repeat_new)
+               {
+			  echo json_encode(array("status" => "false","message"=>"Repeat Password Isnt Same As Old Password"));
+			   }
+			   else{
+				   
+			  $pass_hash=$this->Scrypt->check_hash($old_pass,$mem_user_data['password']);
+				 if ($pass_hash) { 
+                    $pass_new_hash=$this->Scrypt->create_hash($new_pass);
+                    $user = new User();
+                    $user->set(array(
+                        'id' => $mem_user_data['id'],
+                        'password' => $pass_new_hash
+                    ));
+                    $user->save();
+                    echo json_encode(array("status" => "true"));
+
+				              
+        }else{
+		echo json_encode(array("status" => "false","message"=>"Old PassWord Incorrect"));
+
+			}
+				 
+				   
+				   }
+               
+     exit();
     }
 
     //have to first check whether a user exists first before the user is added
@@ -36,11 +73,12 @@ class UserController extends AppController {
 
         if (isset($_GET['add_user']) && $_GET['add_user'] == '1') {
 
+            $mem_data = $this->Session->read('memberData');
+            $user_data=$mem_data['User'];
             $data = $_GET['data']['User'];
             if (isset($_GET['data']['User']['id']) && $_GET['data']['User']['id'] != '') {
                 
-                    $data['site_id']=$this->Session->read('site_id');
-					$data['inst_id']=$this->Session->read('inst_id');
+                
                     $add_user_data = $this->User->editUser($data);
                   echo json_encode(array("status" => "false"));
             } else {

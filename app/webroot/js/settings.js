@@ -159,11 +159,13 @@ var settings={
 
 
     },
-            
-            
+     
+    
             
     init:function(){
         _this=this;
+
+        _this.setup_password_notif();
 
         /**
                  *global ajax behaviour for the whole application
@@ -275,12 +277,15 @@ var settings={
 
             e.preventDefault();
             var data="";
-            var title="Edit "+$(this).attr("name");
-            data="id="+$(this).data("id")+"&edit_user="+"true";
+            var title="Change Password";
+            data="";
             _this.edit_user_status=true;
             
             var $dialog = $("<div></div>")
             .load($(this).attr('href'),data,function(rdata){
+
+						 $(".check_pass_error").css('color','red').html("").hide();
+
                 })
             .dialog({
                 autoOpen: false,
@@ -296,7 +301,7 @@ var settings={
 
                     },
                     "Save": function() {
-                        settings.checkfields($(this));
+                        settings.check_password_data(this);
                     }
                   
                 }
@@ -306,7 +311,82 @@ var settings={
         });
        
         
-    },
+    }, 
+    
+    
+    //setup_password_notification
+    setup_password_notif:function(){
+		
+		 $(".check_pass_error").html("").hide();
+		
+		},
+    
+    //this is for validating the password data on the client side
+    check_password_data:function(old_diag){
+		_this=this;
+		check_pass_status="true";
+		var old_pass,new_pass;
+		
+		 $(".check_pass_error").html("").hide();
+		 
+		  if($("#new_password").val()!=$("#repeat_password").val() || ($("#repeat_password").val() =="" || $("#password_old").val()=="") )
+            {
+            $(".check_pass_error").html("Old Password Empty Or New Password And Repeat Password Not The Same").show();
+            check_pass_status="false";
+        }else{
+		}
+		
+		      if(check_pass_status=="false")
+				{return 0 ;}
+        else if(check_pass_status=="true")
+        {
+			old_pass=$("#password_old").val();
+			new_pass=$("#new_password").val();
+			repeat_new_pass=$("#repeat_password").val();
+            _this.update_password(old_pass,new_pass,repeat_new_pass,old_diag);
+        }
+        
+		},
+    
+    
+    update_password:function(old_pass,new_pass,repeat_new_pass,old_diag){
+		
+		  var _this=this;
+        var formurl=$("#update_pass_url").val();
+        var formdata="old_pass="+old_pass+"&new_pass="+new_pass+"&repeat_new="+repeat_new_pass;      
+        $.ajax({
+            url: formurl,
+            data:formdata,
+            type: 'GET',
+            dataType:'json',
+             beforeSend:function(){
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Saving...");
+            },
+            success:function(data) {
+               
+               if(data.status=="true"){
+                   
+                        settings.show_message("Password Updated Succesfully");
+                        settings.enable_okbutt_mgdialg();
+                        $( old_diag ).dialog( "close" );
+                        $(old_diag).dialog('destroy').remove();
+}
+            else if (data.status=="false"){
+        $(".check_pass_error").html(data.message).show();
+                 settings.close_message_diag();
+               // settings.show_message("Error<br>"+data.message);
+                settings.enable_okbutt_mgdialg();
+	 }        
+         },
+         error:function(){
+			   settings.show_message("Error<br>"+"Please Try Again");
+                settings.enable_okbutt_mgdialg();
+			 }
+		
+		})
+        },
+    
     
     checkfields:function(){
         var counter=0;
