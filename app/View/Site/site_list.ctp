@@ -22,9 +22,8 @@
             <th  >
 
             </th>
-  <th  >
-
-            </th>
+  <th></th>  
+  <th></th>
             <th class='last alignRight'>
 
             </th>
@@ -82,16 +81,21 @@
                         </li>
                         <li>
                             <?php if ($val['Site']['site_lock'] =="0") { ?>
-
                                 <a href='#' class='inlineIcon preferences iconopen unlock'>UnLock</a>
                             <?php } else if ($val['Site']['site_lock'] =="1") { ?>
                                 <a href='#' class='inlineIcon preferences iconlock lock'>Lock</a>
 
-                            <?php } ?>                        </li> 
+                            <?php } ?></li> 
 
+                        <li>
+                         <?php if ($val['Site']['id'] ==$site_id) { ?>
+                                <a href='#' class='inlineIcon  iconopen unlock'>Default</a>
+                            <?php } else if ($val['Site']['site_active_status'] != $site_id) { ?>
+                                <a href='#' class='inlineIcon iconlock change_default'>Make Default</a>
+                            <?php } ?></li> 
                     </ul>
-                </td>
-                <td></td> <td></td> <td></td>
+                </td>            
+                <td></td> <td></td> <td></td> <td></td>
             </tr>
             <?php
             $row_color++;

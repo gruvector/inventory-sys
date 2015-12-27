@@ -1,7 +1,8 @@
 <style>
     .tableWrapper{
         width:100% !important;
-    }
+     }
+
 </style>
 
 <div class='tableWrapper'>

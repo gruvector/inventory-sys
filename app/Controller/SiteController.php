@@ -23,8 +23,44 @@ class SiteController extends AppController {
         $this->set(compact('layout_title'));
     }
 
+
+   //this is for changing the default site and institution to a differnt site
+
+   function change_def_site(){
+	   
+	   $this->autoLayout = false;   
+	   $site_id=$_POST['site_id'];
+	   $mem_data_roles = $this->Session->read('role_short_array');
+               if (in_array('SADM', $mem_data_roles) || in_array('ADM',$mem_data_roles)) {
+       
+     $sites_allow = $this->Site->find("first", array("conditions" => array("Site.id"=>$site_id,"Site.site_inst_id" => $this->Session->read('inst_id'))));
+
+          if(sizeof($sites_allow)>0){
+
+        $this->Session->write('site_id', $site_id);
+		echo json_encode(array("status" => "true","message"=>"Default Site Changed"));
+			  
+			  }
+			  else{
+
+		echo json_encode(array("status" => "true","message"=>"You Can Only Change Sites In Your Institution"));
+	     
+				  }
+     
+	   }else{
+	    echo json_encode(array("status" => "false","message"=>"Permission Denied"));
+  
+		   }
+	   
+	   
+	   exit();
+	   
+	   
+	   }
+
     function site_list($paginate_link = null) {
 
+		$site_id=$this->Session->read("site_id");
         $this->autoLayout = false;
 
         $filter = isset($_GET['filter']) && $_GET['filter'] != "null" ? $_GET['filter'] : "";
@@ -58,8 +94,7 @@ class SiteController extends AppController {
                     'limit' => 10));
             $sites = $this->paginate('Site');
         }
-
-        $this->set(compact('sites'));
+        $this->set(compact('sites','site_id'));
     }
 
     function change_status() {

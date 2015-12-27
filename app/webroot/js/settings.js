@@ -120,6 +120,37 @@ var settings={
         })
     },
     
+    
+    change_site:function(site_id){
+		
+        var _this=this;
+        var formurl=$("#make_def_url").val();
+        var formdata="site_id="+site_id;     
+        $.ajax({
+            url: formurl,
+            data:formdata,
+            type: 'POST',
+            dataType:'json',
+              beforeSend:function(){
+                settings.disable_okbutt_mgdialg() ;
+                settings.show_message("Changing Default Site...")
+            },
+            success:function(data) {
+               
+                settings.show_message(data.message);
+                settings.enable_okbutt_mgdialg();
+             if(data.status=="true"){
+			sites.load_sites(sites.load_url);
+				 }
+                },
+            error:function(data){
+          
+            }
+        })
+    },
+		
+    
+    
     setup_ajax:function(){
 		
         $(document).bind("ajaxSend",function(){
@@ -161,6 +192,8 @@ var settings={
     },
      
     
+
+  
             
     init:function(){
         _this=this;
@@ -191,6 +224,18 @@ var settings={
         
         _this.configure_message_dialog();
         _this.configure_confirmation();
+        
+        
+        
+        $(".change_default").live('click',function(e){
+		e.preventDefault();
+		$val_data=$(this).closest("tr").attr("id");
+		settings.change_site($val_data);
+			});
+       
+        
+        
+        
         
         
         $("#A_128").live('click',function(e){

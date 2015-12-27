@@ -1420,6 +1420,7 @@ $categories = array_keys($links_array);
         <input type="hidden" name="add_user_url" id="add_user_url" value="<?php echo $this->Html->url(array('controller' => 'User', 'action' => 'add_user')); ?>" />
         <input type="hidden" name="stock_notif_url" id="stock_notif_url" value="<?php echo $this->Html->url(array('controller' => 'Customer', 'action' => 'min_stock_notif')); ?>" />
 	        <input type="hidden" name="update_pass_url" id="update_pass_url" value="<?php echo $this->Html->url(array('controller' => 'User', 'action' => 'update_password')); ?>" />
+	        <input type="hidden" name="make_def_url" id="make_def_url" value="<?php echo $this->Html->url(array('controller' => 'Site', 'action' => 'change_def_site')); ?>" />
 
  
         <div id="oaHeader">
@@ -1427,7 +1428,7 @@ $categories = array_keys($links_array);
 
                 <ul id="UL_1">
 
-					                              <?php 				                              
+					                              <?php /** 				                              
         $user_roles = $this->Session->read('role_short_array');
 
                     if ( isset($user_roles) && (in_array('SADM', $user_roles))) {
@@ -1439,7 +1440,7 @@ $categories = array_keys($links_array);
 
                     <?php } 
     
-                     ?>
+                  **/   ?>
                     <li id="LI_77">
                         <a href="#" id="A_78"><i id="I_79"></i><span id="SPAN_80"></span></a>
                     </li>

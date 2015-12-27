@@ -95,6 +95,14 @@
 
                             <?php } ?>                        </li> 
 
+ <li>
+                         <?php /** if ($val['Site']['id'] ==$site_id) { ?>
+                                <a href='#' class='inlineIcon  iconopen unlock'>Default</a>
+                            <?php } else if ($val['Site']['site_active_status'] != $site_id) { ?>
+                                <a href='#' class='inlineIcon iconlock change_default'>Make Default</a>
+                            <?php } **/ ?></li> 
+
+
                     </ul>
                 </td>
                 <td></td> <td></td> <td></td>
