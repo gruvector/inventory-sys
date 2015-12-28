@@ -57,7 +57,7 @@
 
 * Deployment instructions
    copy the inventory_sys folder to to your web root folder of your web server installation.
-   browse to http://host_ip/host_name/inventory_sys/
+   browse to http://host_ip|host_name/inventory_sys/
    login in with default credentials 
    username:inv@inv.com
    password:p5vnvNjijoS7
