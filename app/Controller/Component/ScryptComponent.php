@@ -11,51 +11,48 @@ class ScryptComponent extends Component {
 
    private $controller = null;
     
-    const CPU_DIFF =128;
+   const CPU_DIFF =128;
    
    const  MEM_DIFF=8;
    
    const  PAR_DIFF=1;
 
-    public function initialize(Controller $controller) {
+   public function initialize(Controller $controller) {
         $this->controller = $controller;
     }
 
+
  /**
-     * Create a password hash
-     *values below will have to be put into the system as constants and 
-     * also removed from the final password
-     * @param string $password The clear text password
-     * @param string $salt     The salt to use, or null to generate a random one
-     * @param int    $N        The CPU difficultly (must be a power of 2, > 1)
-     * @param int    $r        The memory difficultly
-     * @param int    $p        The parallel difficultly
-     *
-     * @return string The hashed password
-     */
-      public function create_hash($password,$salt=false,$N=self::CPU_DIFF,$r=self::MEM_DIFF,$p=SELF::PAR_DIFF){
-		 
-		 $combined_hash=Password::hash($password,$salt,$N,$r,$p);
-		 list ($N, $r, $p, $salt, $hash) = explode('$', $combined_hash);
-		 return  $salt . '$' . $hash ;
-		  }
-      
-      //this is for checking the password hash
-      
-      
-      
-    /**
      * for  password hash
      * values below will have to be put into the system as constants and 
      * also removed from the final password
      * @param string $password
      * @param string $hash     to be used to compare
-     * @param int    $N        The CPU difficultly (must be a power of 2, > 1)
-     * @param int    $r        The memory difficultly
-     * @param int    $p        The parallel difficultly
-     * @return boolean whether password check was succesful or not 
-     */
-     
+     * @param int    $N        The CPU difficultly (must be a power of 2, > 1) --General work factor, iteration count.
+     * @param int    $r        The memory difficultly --relative memory cost   --blocksize in use for underlying hash; fine-tunes the relative memory-cost.
+     * @param int    $p        The parallel difficultly --parallelization cost --parallelization factor; fine-tunes the relative cpu-cost.
+    */  
+      public function create_hash($password,$salt=false,$N=self::CPU_DIFF,$r=self::MEM_DIFF,$p=SELF::PAR_DIFF){
+		 
+		  try {
+		 $combined_hash=Password::hash($password,$salt,$N,$r,$p);
+		 list ($N, $r, $p, $salt, $hash) = explode('$', $combined_hash);
+		 return  $salt . '$' . $hash ;
+		 }catch(Exception $e){
+		 return false ;
+	
+		 
+		  }
+		  }
+      
+      
+ /*
+  *  this is for checking the password hash 
+  *  for checking hashes
+     *@param int    $N        The CPU difficultly (must be a power of 2, > 1) --General work factor, iteration count.
+     *@param int    $r        The memory difficultly --relative memory cost   --blocksize in use for underlying hash; fine-tunes the relative memory-cost.
+     *@param int    $p        The parallel difficultly --parallelization cost --parallelization factor; fine-tunes the relative cpu-cost.
+  */
        public function check_hash($password,$hash,$N=self::CPU_DIFF,$r=self::MEM_DIFF,$p=SELF::PAR_DIFF){
 		   
 		   list($salt,$hash)=explode('$',$hash);
@@ -66,7 +63,7 @@ class ScryptComponent extends Component {
 		  
     //this is for  generating salt 	
     //this is for the length of the salt	 		  
-		 public function generateSalt($length=30){
+	   public function generateSalt($length=30){
 			 
 		return  Password::generateSalt($length);
 		

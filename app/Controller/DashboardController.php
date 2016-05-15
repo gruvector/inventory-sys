@@ -44,7 +44,6 @@ class DashboardController extends Controller {
         $this->Session->write('memberData', $user);
         $this->Session->write('site_id', $user['User']['site_id']);
         $this->Session->write('inst_id', $user['Site']['site_inst_id']);
-
         $this->getLinks($user['User']['id']);
         $this->redirect(array('controller' => 'Customer', 'action' => 'view_products'));
     }
@@ -86,9 +85,9 @@ class DashboardController extends Controller {
                       
             $user_check = $this->User->find('first', array("conditions" => array("User.user_email" => $_POST['username'])));                
              if (isset($user_check) && sizeof($user_check) > 1 ){               
-        
-            $pass_hash=$this->Scrypt->check_hash($_POST['password'],$user_check['User']['password']);            
-        
+            //echo "here";exit;
+             $pass_hash=$this->Scrypt->check_hash($_POST['password'],$user_check['User']['password']);            
+           //$pass_hash=true;
             //user account username and pass is available but account may be locked
             // print_r($users);
             if ($pass_hash) {

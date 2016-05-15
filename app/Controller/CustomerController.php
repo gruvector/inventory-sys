@@ -221,6 +221,18 @@ class CustomerController extends AppController {
         $layout_title = "View Products";
         $this->set(compact('layout_title'));
     }
+    
+    public function view_products_back() {
+
+        $layout_title = "View Products";
+        $this->set(compact('layout_title'));
+    }
+    
+    public function view_products_merc() {
+
+        $layout_title = "View Products";
+        $this->set(compact('layout_title'));
+    }
 
     //this is for adding new products to the inventory system
     public function add_product() {
