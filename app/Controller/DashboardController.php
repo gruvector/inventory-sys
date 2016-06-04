@@ -10,12 +10,13 @@ class DashboardController extends Controller {
 
     public $name = 'Dashboard';
     public $helpers = array('Html','Form','Session');
-    public $components = array('RequestHandler', 'Session', 'Cookie','Scrypt');
+    public $components = array('RequestHandler', 'Session', 'Cookie');
     public $paginate = array('limit' => 10);
     public $uses = array('User', 'Link', 'UserRole', 'RoleLink');
     public $layout = "defaulto";
 
     function beforeFilter() {
+		
         $this->checkMainCred();
         $this->loadModel('User');
     }
@@ -40,8 +41,10 @@ class DashboardController extends Controller {
     }
 
     function loginUser($user) {
-
-        $this->Session->write('memberData', $user);
+		
+		$user['User']['password']='';
+		$user['User']['user_email']='';
+		$this->Session->write('memberData', $user);
         $this->Session->write('site_id', $user['User']['site_id']);
         $this->Session->write('inst_id', $user['Site']['site_inst_id']);
         $this->getLinks($user['User']['id']);
@@ -77,23 +80,17 @@ class DashboardController extends Controller {
 
     //shortcut for checking login for users at login page
     function index() {
- 
-        $status_user = "false";
-        if (isset($_POST['username']) && isset($_POST['password'])
-                && $_POST['username'] != "" && $_POST['password'] != ""
-        ) {
-                      
-            $user_check = $this->User->find('first', array("conditions" => array("User.user_email" => $_POST['username'])));                
+		
+        if (isset($_POST['username']) && isset($_POST['password']) && $_POST['username'] != "" && $_POST['password'] != "") {
+         $user_check = $this->User->find('first', array(
+        'fields' => array('User.user_email','User.site_id','User.id','User.fname','User.lname','User.password','User.lock_status'),
+        'contain' => array('Site'=>array('fields'=>array('Site.site_lock','Site.site_inst_id','Site.id','Site.site_name'))),
+         "conditions" => array("User.user_email" => $_POST['username'])));         
+                    
              if (isset($user_check) && sizeof($user_check) > 1 ){               
-            //echo "here";exit;
-             $pass_hash=$this->Scrypt->check_hash($_POST['password'],$user_check['User']['password']);            
-           //$pass_hash=true;
-            //user account username and pass is available but account may be locked
-            // print_r($users);
-            if ($pass_hash) {
-
+             $newHash = Security::hash($_POST['password'], 'blowfish',$user_check['User']['password']); 
+                if ($newHash==$user_check['User']['password']) {
                 //will have to check for a  site lock as well as an institution lock here
-
                 if ($user_check['User']['lock_status'] >= 3) {
                     $user_login = "false";
                     $msg = "Please Enter Correct Username and Password To Login";

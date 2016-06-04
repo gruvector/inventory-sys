@@ -1585,6 +1585,7 @@ var product={
             return;
         }
            
+         
         var counter=0;
         $(".check").each(function(){
       

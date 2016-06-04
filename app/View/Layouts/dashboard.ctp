@@ -1,6 +1,6 @@
 <?php
 
-
+ 
         $user_links = $this->Session->read('user_links');
         $user_roles = $this->Session->read('role_short_array');
         $mem_data = $this->Session->read('memberData');

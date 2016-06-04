@@ -5,7 +5,7 @@ App::uses('AppController', 'Controller');
 class UserController extends AppController {
 
     public $name = 'User';
-    public $components = array('RequestHandler', 'Session','Scrypt');
+    public $components = array('RequestHandler', 'Session');
     public $uses = array('User', 'Site', 'Role', 'UserRole');
     public $layout = 'dashboard';
     public $helpers = array('Form', 'Html', 'Time', 'Session','Paginator');
@@ -31,41 +31,52 @@ class UserController extends AppController {
 
     function update_password() {
                 $this->autoLayout = false;
+               Security::setHash('blowfish');
                $mem_data = $this->Session->read('memberData');
                $old_pass=$_GET['old_pass'];
                $new_pass=$_GET['new_pass'];
                $repeat_new=$_GET['repeat_new'];
-               $mem_user_data=$mem_data['User'];
-               
-               
+               $mem_user_data=$mem_data['User'];                       
                if($new_pass!=$repeat_new)
                {
 			  echo json_encode(array("status" => "false","message"=>"Repeat Password Isnt Correct"));
 			   }
 			   else{
-				   
-			  $pass_hash=$this->Scrypt->check_hash($old_pass,$mem_user_data['password']);
-				 if ($pass_hash) { 
-                    $pass_new_hash=$this->Scrypt->create_hash($new_pass);
+               $user_check = $this->User->find('first', array(
+               'contain'=>array(),
+               'fields' => array('User.password'),"conditions" => array("User.id" => $mem_user_data['id'])));
+               $newHash = Security::hash($old_pass, 'blowfish',$user_check['User']['password']); 
+				 if ($newHash==$user_check['User']['password']) {
+                    $pass_new_hash=Security::hash($new_pass);
                     $user = new User();
                     $user->set(array(
                         'id' => $mem_user_data['id'],
                         'password' => $pass_new_hash
                     ));
                     $user->save();
-                    echo json_encode(array("status" => "true"));
-
-				              
+                    echo json_encode(array("status" => "true"));              
         }else{
 		echo json_encode(array("status" => "false","message"=>"Old PassWord Incorrect"));
-
-			}
-				 
-				   
-				   }
+			
+			 }
+			 }
                
      exit();
     }
+
+ //stupiddumb passgenerator for basic passes due to use case
+   public function generatePass() {
+        $len = 5;
+        $base = "abcdefghijklmnopqrstuvwxzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        $max = strlen($base) - 1;
+        $passcode = '';
+        mt_srand((double) microtime() * 1000000);
+        while (strlen($passcode) < $len + 2)
+            $passcode.=$base{mt_rand(0, $max)};
+        return $passcode;
+    }
+
+
 
     //have to first check whether a user exists first before the user is added
     function add_user() {
@@ -91,16 +102,15 @@ class UserController extends AppController {
                 } else {
 					//print_r($data);
 					$data['site_id']=$this->Session->read('site_id');
-					$data['inst_id']=$this->Session->read('inst_id');
-					//print_r($data);
-					//exit();		
-                    $pass =    $this->Scrypt->generatePass();
-                    $pass_hash=$this->Scrypt->create_hash($pass);
+					$data['inst_id']=$this->Session->read('inst_id');	
+                    $pass =    $this->generatePass();
+                    Security::setHash('blowfish');
+                    $pass_hash=Security::hash($pass);
 					$data['password']=$pass_hash;						
                     $add_user_data = $this->User->addUser($data);
                     
                   if($add_user_data!=false){     
-                    $data = array('id' => $add_user_data['id'], 'pass' => $add_user_data['pass']);
+                    //$data = array('id' => $add_user_data['id'], 'pass' => $add_user_data['pass']);
                     // $this->email_user_pass('new', $data);
                     echo json_encode(array("new_pass" => $pass, "status" => "true", "name" => $add_user_data['name']));
                }
@@ -213,8 +223,10 @@ class UserController extends AppController {
             switch ($type) {
 
                 case "reset_pass":
-                    $pass =    $this->Scrypt->generatePass();
-                    $pass_hash=$this->Scrypt->create_hash($pass);
+                                    
+                    $pass = $this->generatePass();
+                    Security::setHash('blowfish');
+                    $pass_hash=Security::hash($pass);
                     $user->set(array(
                         'id' => $id,
                         'password' => $pass_hash
