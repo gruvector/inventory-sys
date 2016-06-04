@@ -57,8 +57,8 @@
    browse to http://host_ip|host_name/inventory_sys/
    login in with default credentials 
    username:inv@inv.com
-   password:p5vnvNjijoS7
-   please reset password after you login 
+   password:123
+   please reset password after you login . later password requirements will be added to  password logins but not currently in system 
     
   if u get issues with url rewriting or problems with paths go to 
   http://book.cakephp.org/2.0/en/installation/url-rewriting.html for further help
