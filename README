@@ -27,9 +27,6 @@
   nodejs v0.10.25 or above
   this is used for the print server which will print the receipts
   cakephp 2.6.9 or above.  
-  php-scrypt - A PHP wrapper fo the scrypt hashing algorithm for hashing passwords  
-  Scrypt is a key derivation function designed to be far more secure against hardware brute-force attacks .
-  instructions for the installation php-scrypt can be found at https://github.com/DomBlack/php-scrypt 
 
 * Configuration
   inventory_sys uses a mysql database .
