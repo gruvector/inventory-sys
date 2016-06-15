@@ -84,7 +84,7 @@ class DashboardController extends Controller {
         if (isset($_POST['username']) && isset($_POST['password']) && $_POST['username'] != "" && $_POST['password'] != "") {
          $user_check = $this->User->find('first', array(
         'fields' => array('User.user_email','User.site_id','User.id','User.fname','User.lname','User.password','User.lock_status'),
-        'contain' => array('Site'=>array('fields'=>array('Site.site_lock','Site.site_inst_id','Site.id','Site.site_name'))),
+        'contain' => array('Site'=>array('fields'=>array('Site.address','Site.email','Site.phone','Site.city','Site.site_lock','Site.site_inst_id','Site.id','Site.site_name'))),
          "conditions" => array("User.user_email" => $_POST['username'])));         
                     
              if (isset($user_check) && sizeof($user_check) > 1 ){               
