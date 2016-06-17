@@ -308,7 +308,7 @@ function Item(id,unit_price,stock_avail,name){
           
             this.quant_sale=parseInt(quant_sale,10);     
             this.cost=this.unit_price*this.quant_sale;
-            this.new_stock=this.stock_avail-this.quant_sale;  
+            this.new_stock=this.stock_avail;  
             
                      
             transaction.total_transaction=transaction.round_value(transaction.total_transaction+(this.cost));              
@@ -975,7 +975,7 @@ var product={
     perform_search_sale:function(stock,unit_price,name,itemId){
         _this=this;
         
-        if (stock==0){
+        if (stock<=0){
             _this.error_interface(" Stock Of "+name+" Is "+stock+" Please Restock ");
 
         //   alert(" Stock is "+stock+" Please Restock ");
