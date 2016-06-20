@@ -719,7 +719,7 @@ var product={
         var amount_paid_td=document.createElement("td");
         var amount_paid_in=document.createElement("input");
         $(amount_paid_in).attr("type","number");
-        $(amount_paid_in).attr("step","0.00001");
+        $(amount_paid_in).attr("step","0.1");
         $(amount_paid_in).attr("min","0");
 
 
@@ -1370,8 +1370,8 @@ var product={
             
         });
         
-        $(".amount_paid_in").live('keyup',function(event){
-            
+        $(".amount_paid_in").live('change keyup',function(event){
+          
             var amount_paid =$(this).val();
             var old_amount=transaction.amount_paid;
             if(amount_paid < 0 || ! (event.target.validity.valid)  /**parseFloat(amount_paid)!==parseFloat(amount_paid)**/){
