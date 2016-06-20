@@ -1347,7 +1347,7 @@ var product={
         
         //this is where all the fun modification will begin 
         //will have a ripple effect on the  interface 
-        $(".item_for_sale").live('keyup',function(event){
+        $(".item_for_sale").live('change keyup',function(event){
          
             var itemId=$(this).closest("tr").data('id');
             var item= transaction.getItem(itemId);
