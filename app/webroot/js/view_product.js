@@ -232,7 +232,8 @@ function Item(id,unit_price,stock_avail,name){
     //thsi also changes the totalcost of the transaction as well as changes the new_stock
     //shouldent be more than the stock available
     //very interesting trick in javascript below
-    //this is for sales
+	    //this is for sales
+		
     this.setQuant=function(quant_sale){
         
                
