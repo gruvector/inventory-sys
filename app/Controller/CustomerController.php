@@ -1069,7 +1069,7 @@ class CustomerController extends AppController {
             $this->paginate = array(
                 'Product' => array(
                     'conditions' => $conditions_array,
-                    'order' => array('Product.id' => 'desc'),
+                    'order' => array('Product.product_name' => 'asc'),
                     'page' => $page_array[1],
                     'limit' => 10));
             $prods = $this->paginate('Product');
@@ -1078,7 +1078,7 @@ class CustomerController extends AppController {
             $this->paginate = array(
                 'Product' => array(
                     'conditions' => $conditions_array,
-                    'order' => array('Product.id' => 'desc'),
+                    'order' => array('Product.product_name' => 'asc'),
                     'limit' => 10));
             $prods = $this->paginate('Product');
             echo ($paginate_link);
