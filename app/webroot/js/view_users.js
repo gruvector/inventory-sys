@@ -207,7 +207,7 @@ var add_user={
                 width: 500,
                 height: 300,
                 position:"center",
-                modal:true,
+                modal:false,
                 buttons: {
                     "Cancel": function() {
                         $( this ).dialog( "close" );
