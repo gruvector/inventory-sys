@@ -22,30 +22,31 @@ $categories = array_keys($links_array);
         <?php echo $this->Html->charset(); ?>
         <title>INVENTORY SYS</title>
         <?php
+
         echo $this->Html->css('login.css');
         echo $this->Html->css('form.css');
         echo $this->Html->css('main.css');
-        echo $this->Html->css('jquery-ui.css');
-        echo $this->Html->css('ui.theme.css');
-        echo $this->Html->css('custom.jq.css');
-        echo $this->Html->css('jquery-picklist.css');
+        echo  $this->Html->css('dashboard_notif.css');
         echo $this->Html->css('chosen.css');
-        //   echo $this->Html->css('bootstrap.min.css');
         echo $this->Html->css('font-awesome.min.css');
-        // echo $this->Html->css('animate.min.css');
-        //   echo $this->Html->css('style.css');
+        echo $this->Html->css('jquery/jquery-ui-1.11.4_jquery-ui.css');
+        
+        echo $this->Html->css('jquery-picklist.css');
 
 
-        echo $this->Html->script('jquery.min.1.8.js');
-        echo $this->Html->script('jquery.main.js');
-        echo $this->Html->script('custom.min.js');
-        echo $this->Html->script('jquery-ui.js');
+     //jquery scripts and other stuff
+        echo $this->Html->script('jquery/jquery-1.12.3.js');
+        echo $this->Html->script('jquery/jquery-migrate-1.4.0.js');  
+
+        echo $this->Html->script('jquery/jquery-ui-1.11.4_jquery-ui.js');
+        echo $this->Html->script('chosen.jquery.js');
+
+ 
         echo $this->Html->script('form.js');
-        echo $this->Html->script('jquery.ui.widget.min.js');
         echo $this->Html->script('jquery-picklist.min.js');
         echo $this->Html->script('datepicker.js');
 
-        //    echo $this->Html->script('jquery.ui.datetime.min.js');
+        echo $this->Html->script('jquery.ui.datetime.min.js');
         echo $this->Html->script('jquery-ui-timepicker-addon.js');
         echo $this->Html->script('settings.js');
         echo $this->Html->script('chosen.jquery.js');
@@ -55,11 +56,7 @@ $categories = array_keys($links_array);
         echo $this->Html->script('socket.io/printClient');
 
 
-        /**
-          echo $this->Html->css('jquery-ui-1.10.3.custom');
-          echo $this->Html->script('jquery-1.9.1');
-          echo $this->Html->script('jquery-ui-1.10.3.custom');
-         * */
+       
         ?>
 
         <style>
