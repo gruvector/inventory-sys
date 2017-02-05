@@ -12,9 +12,9 @@
 * manual for application is being done .will be uploaded soon
   
 
-### How do I get set up? ###
 
-## Summary of set up . ##
+
+## Summary of set up ##
   the inventory_sys is a web based application so typically a web server and database management system is needed .
   web server can be apache,iis or any which supports php 5.5.9 or above and also supports mysql .
 
@@ -26,8 +26,9 @@
 
 ## Configuration ##
   inventory_sys uses a mysql database .
-  create a database called inventory_sys on your host machine .
-  run the inventory_sys_def_install.sql a mysql script in the database  to populate the database after it has been created .
+  create a database called ```inventory_sys``` on your host machine .
+  
+  Run the ```inventory_sys_def_install.sql``` a mysql script in the database  to populate the database after it has been created .
   go to inventory_sys/Config/app/config/database.php
   change the value of host,login,password,database to those of your database in the section below.
   
@@ -49,7 +50,7 @@
   this can be configured in inventory_sys/app/webroot/js/socket.io/printServer.js
   by changing the var printer_lpr_options="" to point to the correct printing device .
   So if the receipt printer device is LPT1 the variable becomes
-  var printer_lpr_options="LPT1";
+  ```var printer_lpr_options="LPT1"```
 
 
 ## Deployment instructions ## 
@@ -60,7 +61,7 @@
    password:123
    please reset password after you login . later password requirements will be added to  password logins but not currently in system 
     
-  if u get issues with url rewriting or problems with paths go to 
+  If u get issues with url rewriting or problems with paths go to 
   http://book.cakephp.org/2.0/en/installation/url-rewriting.html for further help
   
 
