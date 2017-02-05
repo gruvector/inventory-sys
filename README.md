@@ -3,7 +3,7 @@
 
 ## What is this repository for? ##
 
-* This repository is for an  open source web based  inventory system.
+* This repository is for an  open source web based  inventory system
   This inventory system can be used for entities/institutions which have multiple sites but 
   need a centralized system for monitoring inventory across all sites. 
 * It can be used for performing sales,receivables,invoicing and also reversal(cancellation) of transasctions for the various inventory items
@@ -59,7 +59,7 @@
    
    Browse to ```http://host_ip|host_name/inventory_sys/```.
    
-   Login in with default credentials 
+   Login in with default credentials: 
    *```username:inv@inv.com```
    *```password:123```
    
