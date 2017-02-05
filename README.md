@@ -60,8 +60,8 @@
    Browse to ```http://host_ip|host_name/inventory_sys/```.
    
    Login in with default credentials: 
-   *```username:inv@inv.com```
-   *```password:123```
+   *username:inv@inv.com
+   *password:123
    
    Please reset password after you login . later password requirements will be added to  password logins but not currently in system 
     
