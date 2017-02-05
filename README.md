@@ -29,7 +29,8 @@
   create a database called ```inventory_sys``` on your host machine .
   
   Run the ```inventory_sys_def_install.sql``` a mysql script in the database  to populate the database after it has been created .
-  go to inventory_sys/Config/app/config/database.php
+  
+  Go to inventory_sys/Config/app/config/database.php
   change the value of host,login,password,database to those of your database in the section below.
   
   ```
@@ -55,11 +56,14 @@
 
 ## Deployment instructions ## 
    copy the inventory_sys folder to to your web root folder of your web server installation.
-   browse to http://host_ip|host_name/inventory_sys/
-   login in with default credentials 
-   username:inv@inv.com
-   password:123
-   please reset password after you login . later password requirements will be added to  password logins but not currently in system 
+   
+   Browse to ```http://host_ip|host_name/inventory_sys/```.
+   
+   Login in with default credentials 
+   *```username:inv@inv.com```
+   *```password:123```
+   
+   Please reset password after you login . later password requirements will be added to  password logins but not currently in system 
     
   If u get issues with url rewriting or problems with paths go to 
   http://book.cakephp.org/2.0/en/installation/url-rewriting.html for further help
