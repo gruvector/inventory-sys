@@ -680,4 +680,4 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', 'buHJE9e4ip1pAUGHC9DN9paVQQkH4qupM4sQlW6O$7c6679383d2a1aa476d9d6c273aeefa5f394a32df8bcbc2c009d829913c3f06a', 'Admin', 'Default', '1', 'inv@inv.com', '0', '2015-12-19 21:48:15', '1');
+INSERT INTO `users` VALUES ('1', '$2a$07$hta8VtKUnNmwgwyQZU7Dx.2AILnNDIksJXsr6nHbMn3XNepNHYLzG', 'Admin', 'Default', '1', 'inv@inv.com', '0', '2015-12-19 21:48:15', '1');
